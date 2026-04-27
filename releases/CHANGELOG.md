@@ -1,3 +1,7 @@
+## v1.1.0 (code 2) — 2026-04-27
+
+- _describe changes here_
+
 ## v1.0.0 (code 1) — 2026-04-27
 
 Initial release.
