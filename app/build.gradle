@@ -32,9 +32,50 @@ android {
         }
     }
 
+    flavorDimensions += "issue"
+    productFlavors {
+        full {
+            dimension "issue"
+            resValue "string", "app_name", "A11y Violations Demo"
+        }
+        imagesText {
+            dimension "issue"
+            applicationIdSuffix ".imagestext"
+            versionNameSuffix "-imagestext"
+            resValue "string", "app_name", "A11y: Images with text"
+        }
+        imageviewLabel {
+            dimension "issue"
+            applicationIdSuffix ".imageviewlabel"
+            versionNameSuffix "-imageviewlabel"
+            resValue "string", "app_name", "A11y: ImageView label"
+        }
+        interactiveLabel {
+            dimension "issue"
+            applicationIdSuffix ".interactivelabel"
+            versionNameSuffix "-interactivelabel"
+            resValue "string", "app_name", "A11y: Interactive label"
+        }
+        readingOrder {
+            dimension "issue"
+            applicationIdSuffix ".readingorder"
+            versionNameSuffix "-readingorder"
+            resValue "string", "app_name", "A11y: Reading order"
+        }
+        visualOrder {
+            dimension "issue"
+            applicationIdSuffix ".visualorder"
+            versionNameSuffix "-visualorder"
+            resValue "string", "app_name", "A11y: Visual order"
+        }
+    }
+
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            output.outputFileName = "ai-app-a11y-detection-v${variant.versionName}.apk"
+            def flavor = variant.flavorName
+            def base = variant.mergedFlavor.versionName.split("-")[0]
+            def suffix = (flavor == "full") ? "" : "-${flavor.toLowerCase()}"
+            output.outputFileName = "ai-app-a11y-detection${suffix}-v${base}.apk"
         }
     }
 }

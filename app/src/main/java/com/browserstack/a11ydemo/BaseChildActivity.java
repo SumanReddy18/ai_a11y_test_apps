@@ -11,8 +11,9 @@ public abstract class BaseChildActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActionBar bar = getSupportActionBar();
         if (bar != null) {
-            bar.setDisplayHomeAsUpEnabled(true);
-            bar.setDisplayShowHomeEnabled(true);
+            boolean showUp = !isTaskRoot();
+            bar.setDisplayHomeAsUpEnabled(showUp);
+            bar.setDisplayShowHomeEnabled(showUp);
         }
     }
 

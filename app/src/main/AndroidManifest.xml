@@ -3,27 +3,25 @@
 
     <application
         android:allowBackup="true"
-        android:label="A11y Violations Demo"
+        android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/Theme.Main">
 
-        <activity android:name=".MainActivity" android:exported="true" android:label="A11y Violations Demo">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <!-- All activities are declared here. Each flavor's manifest decides which
+             one carries the LAUNCHER intent-filter and removes the rest. -->
 
-        <activity android:name=".ImageWithTextActivity" android:exported="false"
+        <activity android:name=".MainActivity" android:exported="true" android:label="@string/app_name" />
+
+        <activity android:name=".ImageWithTextActivity" android:exported="true"
             android:label="1. Images with text" android:theme="@style/Theme.Child" />
-        <activity android:name=".ImageViewLabelActivity" android:exported="false"
+        <activity android:name=".ImageViewLabelActivity" android:exported="true"
             android:label="2. ImageView label" android:theme="@style/Theme.Child" />
-        <activity android:name=".InteractiveLabelActivity" android:exported="false"
+        <activity android:name=".InteractiveLabelActivity" android:exported="true"
             android:label="3. Interactive label" android:theme="@style/Theme.Child" />
-        <activity android:name=".ReadingOrderActivity" android:exported="false"
+        <activity android:name=".ReadingOrderActivity" android:exported="true"
             android:label="4. Reading order" android:theme="@style/Theme.Child" />
-        <activity android:name=".VisualOrderActivity" android:exported="false"
+        <activity android:name=".VisualOrderActivity" android:exported="true"
             android:label="5. Visual order" android:theme="@style/Theme.Child" />
         <activity android:name=".AllViolationsActivity" android:exported="false"
             android:label="All violations" android:theme="@style/Theme.Child" />

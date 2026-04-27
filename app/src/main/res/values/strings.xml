@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">A11y Violations Demo</string>
-
     <string name="header_title">BrowserStack Issue Detection Agent</string>
     <string name="header_subtitle">5 AI-enhanced accessibility rules — each violated on its own screen.</string>
 
