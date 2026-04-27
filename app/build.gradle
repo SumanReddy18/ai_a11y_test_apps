@@ -11,7 +11,7 @@ android {
         minSdk 24
         targetSdk 34
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
 
     buildFeatures {
@@ -34,7 +34,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            output.outputFileName = "ai-app-a11y-detection.apk"
+            output.outputFileName = "ai-app-a11y-detection-v${variant.versionName}.apk"
         }
     }
 }
