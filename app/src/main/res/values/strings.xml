@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">A11y Violations Demo</string>
+
+    <string name="header_title">BrowserStack Issue Detection Agent</string>
+    <string name="header_subtitle">5 AI-enhanced accessibility rules — each violated on its own screen.</string>
+
+    <string name="rule1_title">1. Images with text</string>
+    <string name="rule1_desc">Image carries informational text, but the alt label is missing or generic.</string>
+
+    <string name="rule2_title">2. ImageView accessibility label</string>
+    <string name="rule2_desc">Decorative-looking ImageViews actually convey meaning, with no/poor contentDescription.</string>
+
+    <string name="rule3_title">3. Interactive element accessibility label</string>
+    <string name="rule3_desc">Icon-only buttons whose labels are missing, generic, or contextually wrong.</string>
+
+    <string name="rule4_title">4. Meaningful reading order</string>
+    <string name="rule4_desc">Screen-reader focus order does not match the logical reading order.</string>
+
+    <string name="rule5_title">5. Meaningful visual order</string>
+    <string name="rule5_desc">Visual arrangement contradicts the natural left-to-right / top-to-bottom flow.</string>
+</resources>

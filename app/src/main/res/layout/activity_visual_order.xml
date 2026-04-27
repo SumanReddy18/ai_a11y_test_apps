@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout style="@style/ScreenRoot">
+
+        <TextView style="@style/ScreenH1" android:text="@string/rule5_title"/>
+        <TextView style="@style/ScreenSub" android:text="@string/rule5_desc"/>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION"/>
+
+        <!-- Form: visual order is scrambled - Submit appears first, then Email, then Name -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sign up"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingBottom="10dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:backgroundTint="@color/brand_primary"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textColor="@color/text_primary"
+                android:paddingTop="14dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="you@example.com"
+                android:inputType="textEmailAddress"
+                android:autofillHints="emailAddress"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Full name"
+                android:textColor="@color/text_primary"
+                android:paddingTop="14dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Your name"
+                android:inputType="textPersonName"
+                android:autofillHints="name"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Step 3 of 3"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:paddingTop="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Step 1 of 3"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Step 2 of 3"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="14dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:text="Visual flow puts Submit before its inputs and renders Step 3 → Step 1 → Step 2. Sighted users with cognitive accessibility needs (and any user, really) cannot follow the natural top-to-bottom order."/>
+    </LinearLayout>
+</ScrollView>

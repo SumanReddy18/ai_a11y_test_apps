@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_title"
+            android:textColor="@color/text_primary"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:paddingTop="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_subtitle"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:paddingTop="6dp"
+            android:paddingBottom="12dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quick jump"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:paddingBottom="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingBottom="16dp">
+
+            <TextView android:id="@+id/num1" style="@style/NumBtn" android:text="1"
+                android:contentDescription="Open rule 1: Images with text"/>
+            <TextView android:id="@+id/num2" style="@style/NumBtn" android:text="2"
+                android:contentDescription="Open rule 2: ImageView accessibility label"/>
+            <TextView android:id="@+id/num3" style="@style/NumBtn" android:text="3"
+                android:contentDescription="Open rule 3: Interactive element accessibility label"/>
+            <TextView android:id="@+id/num4" style="@style/NumBtn" android:text="4"
+                android:contentDescription="Open rule 4: Meaningful reading order"/>
+            <TextView android:id="@+id/num5" style="@style/NumBtn" android:text="5"
+                android:contentDescription="Open rule 5: Meaningful visual order"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/btnAll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/brand_primary"
+            android:padding="16dp"
+            android:layout_marginBottom="14dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="See all 5 violations on one page →"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="One scan, all rules fire."
+                android:textColor="#FFFFFF"
+                android:alpha="0.85"
+                android:textSize="12sp"
+                android:paddingTop="2dp"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/btn1" style="@style/RuleCard">
+            <TextView style="@style/RuleTitle" android:text="@string/rule1_title"/>
+            <TextView style="@style/RuleDesc" android:text="@string/rule1_desc"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/btn2" style="@style/RuleCard">
+            <TextView style="@style/RuleTitle" android:text="@string/rule2_title"/>
+            <TextView style="@style/RuleDesc" android:text="@string/rule2_desc"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/btn3" style="@style/RuleCard">
+            <TextView style="@style/RuleTitle" android:text="@string/rule3_title"/>
+            <TextView style="@style/RuleDesc" android:text="@string/rule3_desc"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/btn4" style="@style/RuleCard">
+            <TextView style="@style/RuleTitle" android:text="@string/rule4_title"/>
+            <TextView style="@style/RuleDesc" android:text="@string/rule4_desc"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/btn5" style="@style/RuleCard">
+            <TextView style="@style/RuleTitle" android:text="@string/rule5_title"/>
+            <TextView style="@style/RuleDesc" android:text="@string/rule5_desc"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Run BrowserStack App Accessibility scans on this APK to see each rule fire."
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:paddingTop="20dp"
+            android:gravity="center"/>
+    </LinearLayout>
+</ScrollView>

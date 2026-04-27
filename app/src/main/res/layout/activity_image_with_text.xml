@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout style="@style/ScreenRoot">
+
+        <TextView style="@style/ScreenH1" android:text="@string/rule1_title"/>
+        <TextView style="@style/ScreenSub" android:text="@string/rule1_desc"/>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 1: no contentDescription"/>
+
+        <!-- Real image containing visible text. No alt at all. -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/text_wrap_image"/>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 2: generic label &quot;image&quot;"
+            android:layout_marginTop="18dp"/>
+
+        <!-- Same image, generic useless contentDescription -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/text_wrap_image"
+            android:contentDescription="image"/>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 3: label ignores embedded text"
+            android:layout_marginTop="18dp"/>
+
+        <!-- Same image, contentDescription that does NOT capture the actual text in the image -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/text_wrap_image"
+            android:contentDescription="A diagram"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="14dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:text="The image visibly contains the text &quot;CSS text-wrap&quot; (and supporting copy). A screen-reader user gets nothing, &quot;image&quot;, or &quot;A diagram&quot; — none of which expose the actual text in the picture. The Issue Detection Agent should flag all three."/>
+    </LinearLayout>
+</ScrollView>

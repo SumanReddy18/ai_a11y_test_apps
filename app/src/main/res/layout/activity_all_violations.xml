@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="All 5 violations on one page"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Every BrowserStack Issue Detection Agent rule is violated below. Scan this single screen to fire all five at once."
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp"
+            android:paddingTop="6dp"
+            android:paddingBottom="20dp"/>
+
+        <!-- ============== 1. Images with text ============== -->
+        <TextView style="@style/ScreenH1" android:text="@string/rule1_title"/>
+        <TextView style="@style/ScreenSub" android:text="@string/rule1_desc"/>
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/text_wrap_image"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/text_wrap_image"
+            android:contentDescription="image"/>
+
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="@color/card_border" android:layout_marginVertical="24dp"/>
+
+        <!-- ============== 2. ImageView label ============== -->
+        <TextView style="@style/ScreenH1" android:text="@string/rule2_title"/>
+        <TextView style="@style/ScreenSub" android:text="@string/rule2_desc"/>
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="14dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_avatar"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="Anya Sharma" android:textColor="@color/text_primary"
+                    android:textSize="15sp" android:textStyle="bold"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="Verified seller" android:textColor="@color/text_secondary"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="14dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_warning"
+                android:contentDescription="icon"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:text="Out of stock"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="@color/card_border" android:layout_marginVertical="24dp"/>
+
+        <!-- ============== 3. Interactive label ============== -->
+        <TextView style="@style/ScreenH1" android:text="@string/rule3_title"/>
+        <TextView style="@style/ScreenSub" android:text="@string/rule3_desc"/>
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="14dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+            <ImageButton
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/ic_heart"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+            <ImageButton
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_share"
+                android:contentDescription="button"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+            <ImageButton
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_trash"
+                android:contentDescription="share"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/brand_primary"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="@color/card_border" android:layout_marginVertical="24dp"/>
+
+        <!-- ============== 4. Reading order ============== -->
+        <TextView style="@style/ScreenH1" android:text="@string/rule4_title"/>
+        <TextView style="@style/ScreenSub" android:text="@string/rule4_desc"/>
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:id="@+id/ro_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Wireless Headphones X9"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/ro_buy"/>
+
+            <TextView
+                android:id="@+id/ro_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="₹4,999  (was ₹7,999)"
+                android:textColor="@color/violation_red"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/ro_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/ro_desc"/>
+
+            <TextView
+                android:id="@+id/ro_desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Active noise cancelling with 32-hour battery life and adaptive EQ tuned for podcasts and music."
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/ro_price"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/ro_title"/>
+
+            <Button
+                android:id="@+id/ro_buy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="Buy now"
+                android:backgroundTint="@color/brand_primary"
+                android:textColor="#FFFFFF"
+                app:layout_constraintTop_toBottomOf="@id/ro_desc"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="@color/card_border" android:layout_marginVertical="24dp"/>
+
+        <!-- ============== 5. Visual order ============== -->
+        <TextView style="@style/ScreenH1" android:text="@string/rule5_title"/>
+        <TextView style="@style/ScreenSub" android:text="@string/rule5_desc"/>
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sign up"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingBottom="10dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:backgroundTint="@color/brand_primary"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textColor="@color/text_primary"
+                android:paddingTop="14dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="you@example.com"
+                android:inputType="textEmailAddress"
+                android:autofillHints="emailAddress"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Full name"
+                android:textColor="@color/text_primary"
+                android:paddingTop="14dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Your name"
+                android:inputType="textPersonName"
+                android:autofillHints="name"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Step 3 of 3"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:paddingTop="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Step 1 of 3"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Step 2 of 3"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tap the back arrow to return home and explore each violation in isolation."
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingTop="24dp"/>
+    </LinearLayout>
+</ScrollView>

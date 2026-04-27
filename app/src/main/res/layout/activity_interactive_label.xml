@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout style="@style/ScreenRoot">
+
+        <TextView style="@style/ScreenH1" android:text="@string/rule3_title"/>
+        <TextView style="@style/ScreenSub" android:text="@string/rule3_desc"/>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="6dp"
+            android:text="Article actions"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+
+        <!-- Icon-only action bar: each ImageButton lacks proper labels -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="14dp"
+            android:background="@drawable/card_bg">
+
+            <!-- Violation: missing contentDescription entirely -->
+            <ImageButton
+                android:id="@+id/btnFavorite"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/ic_heart"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
+            <!-- Violation: generic, useless label -->
+            <ImageButton
+                android:id="@+id/btnShare"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_share"
+                android:contentDescription="button"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
+            <!-- Violation: contextually wrong label (says "share" but is the delete button) -->
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_trash"
+                android:contentDescription="share"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="14dp"
+            android:paddingBottom="6dp"
+            android:text="Tappable text-only views with no label exposed"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+
+        <!-- Clickable view that looks like a button but no role/label hint -->
+        <View
+            android:id="@+id/cta"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/brand_primary"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="14dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:text="Three icon buttons: missing label / generic &quot;button&quot; / wrong label &quot;share&quot; on a delete icon. Plus an orange CTA View with no text and no contentDescription — TalkBack just says &quot;unlabeled&quot;."/>
+    </LinearLayout>
+</ScrollView>

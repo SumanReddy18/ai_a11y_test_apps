@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout style="@style/ScreenRoot">
+
+        <TextView style="@style/ScreenH1" android:text="@string/rule4_title"/>
+        <TextView style="@style/ScreenSub" android:text="@string/rule4_desc"/>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:text="Card looks like: Title → Price → Description → Buy. But traversalAfter wires TalkBack focus as: Buy → Title → Description → Price."/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Wireless Headphones X9"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/buy"/>
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="₹4,999  (was ₹7,999)"
+                android:textColor="@color/violation_red"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/desc"/>
+
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Active noise cancelling with 32-hour battery life and adaptive EQ tuned for podcasts and music."
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/price"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/title"/>
+
+            <Button
+                android:id="@+id/buy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="Buy now"
+                android:backgroundTint="@color/brand_primary"
+                android:textColor="#FFFFFF"
+                app:layout_constraintTop_toBottomOf="@id/desc"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="14dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:text="Visual order: Title, Price, Description, Buy.\nScreen-reader order (via accessibilityTraversalAfter): Buy → Title → Description → Price.\nA blind user is asked to buy before knowing what or for how much."/>
+    </LinearLayout>
+</ScrollView>
