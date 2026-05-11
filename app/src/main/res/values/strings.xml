@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="header_title">BrowserStack Issue Detection Agent</string>
-    <string name="header_subtitle">5 AI-enhanced accessibility rules — each violated on its own screen.</string>
+    <string name="header_subtitle">7 AI-enhanced accessibility rules — each violated on its own screen.</string>
 
     <string name="rule1_title">1. Images with text</string>
     <string name="rule1_desc">Image carries informational text, but the alt label is missing or generic.</string>
@@ -17,4 +17,10 @@
 
     <string name="rule5_title">5. Meaningful visual order</string>
     <string name="rule5_desc">Visual arrangement contradicts the natural left-to-right / top-to-bottom flow.</string>
+
+    <string name="rule6_title">6. Missing heading</string>
+    <string name="rule6_desc">Section titles look like headings visually but are not exposed as headings to TalkBack — heading navigation skips them.</string>
+
+    <string name="rule7_title">7. Incorrect heading</string>
+    <string name="rule7_desc">Body copy, ads, or error states are marked as headings — heading navigation lands on noise instead of real sections.</string>
 </resources>

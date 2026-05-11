@@ -18,6 +18,8 @@
         <activity android:name=".ImageViewLabelActivity" tools:node="remove" />
         <activity android:name=".InteractiveLabelActivity" tools:node="remove" />
         <activity android:name=".VisualOrderActivity" tools:node="remove" />
+        <activity android:name=".MissingHeadingActivity" tools:node="remove" />
+        <activity android:name=".IncorrectHeadingActivity" tools:node="remove" />
         <activity android:name=".AllViolationsActivity" tools:node="remove" />
     </application>
 

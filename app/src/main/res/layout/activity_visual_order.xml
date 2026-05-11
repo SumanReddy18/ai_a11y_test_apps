@@ -9,7 +9,7 @@
         <TextView style="@style/ScreenSub" android:text="@string/rule5_desc"/>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION"/>
+            android:text="VIOLATION 1: sign-up form"/>
 
         <!-- Form: visual order is scrambled - Submit appears first, then Email, then Name -->
         <LinearLayout
@@ -87,12 +87,191 @@
                 android:textSize="12sp"/>
         </LinearLayout>
 
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 2: checkout form"
+            android:layout_marginTop="18dp"/>
+
+        <!-- Checkout form: Pay button comes before card details, expiry/CVV reversed -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Checkout"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingBottom="10dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pay ₹4,999"
+                android:backgroundTint="@color/brand_primary"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Card number"
+                android:textColor="@color/text_primary"
+                android:paddingTop="14dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1234 5678 9012 3456"
+                android:inputType="number"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CVV"
+                android:textColor="@color/text_primary"
+                android:paddingTop="14dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="123"
+                android:inputType="numberPassword"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Expiry"
+                android:textColor="@color/text_primary"
+                android:paddingTop="14dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="MM/YY"
+                android:inputType="datetime"/>
+        </LinearLayout>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 3: onboarding wizard"
+            android:layout_marginTop="18dp"/>
+
+        <!-- Wizard with Finish button before steps, and step labels in reverse order -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set up your workspace"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingBottom="10dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Finish setup"
+                android:backgroundTint="@color/brand_primary"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="4. Invite teammates"
+                android:textColor="@color/text_primary"
+                android:paddingTop="14dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3. Choose a plan"
+                android:textColor="@color/text_primary"
+                android:paddingTop="6dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2. Pick an avatar"
+                android:textColor="@color/text_primary"
+                android:paddingTop="6dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Create workspace name"
+                android:textColor="@color/text_primary"
+                android:paddingTop="6dp"/>
+        </LinearLayout>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 4: receipt list"
+            android:layout_marginTop="18dp"/>
+
+        <!-- Itemized receipt where total appears above the items -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Order receipt"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingBottom="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total: ₹2,400"
+                android:textColor="@color/violation_red"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Item 3 — Phone case (₹400)"
+                android:textColor="@color/text_primary"
+                android:paddingTop="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Item 1 — USB-C cable (₹600)"
+                android:textColor="@color/text_primary"
+                android:paddingTop="6dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Item 2 — Charger brick (₹1,400)"
+                android:textColor="@color/text_primary"
+                android:paddingTop="6dp"/>
+        </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="14dp"
             android:textColor="@color/text_secondary"
             android:textSize="12sp"
-            android:text="Visual flow puts Submit before its inputs and renders Step 3 → Step 1 → Step 2. Sighted users with cognitive accessibility needs (and any user, really) cannot follow the natural top-to-bottom order."/>
+            android:text="Four sections, all with scrambled visual flow: Submit/Pay/Finish before their inputs, steps and items in reverse, totals before line items. Sighted users with cognitive accessibility needs cannot follow the natural top-to-bottom order."/>
     </LinearLayout>
 </ScrollView>

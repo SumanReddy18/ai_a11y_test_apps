@@ -23,6 +23,10 @@
             android:label="4. Reading order" android:theme="@style/Theme.Child" />
         <activity android:name=".VisualOrderActivity" android:exported="true"
             android:label="5. Visual order" android:theme="@style/Theme.Child" />
+        <activity android:name=".MissingHeadingActivity" android:exported="true"
+            android:label="6. Missing heading" android:theme="@style/Theme.Child" />
+        <activity android:name=".IncorrectHeadingActivity" android:exported="true"
+            android:label="7. Incorrect heading" android:theme="@style/Theme.Child" />
         <activity android:name=".AllViolationsActivity" android:exported="false"
             android:label="All violations" android:theme="@style/Theme.Child" />
     </application>

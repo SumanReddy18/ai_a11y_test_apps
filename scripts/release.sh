@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build all 6 flavor APKs (1 full + 5 single-issue), drop them under
+# Build all 8 flavor APKs (1 full + 7 single-issue), drop them under
 # releases/v<version>/, and stub a CHANGELOG entry.
 #
 # Usage:

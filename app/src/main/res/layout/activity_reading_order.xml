@@ -9,7 +9,7 @@
         <TextView style="@style/ScreenSub" android:text="@string/rule4_desc"/>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION"/>
+            android:text="VIOLATION 1: product card"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -80,12 +80,157 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 2: news article card"
+            android:layout_marginTop="22dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:text="Visual: Headline → Byline → Body → Read more. Traversal: Read more → Headline → Body → Byline."/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:id="@+id/headline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Mars rover finds new mineral deposit"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/readmore"/>
+
+            <TextView
+                android:id="@+id/byline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="By Sneha K. — 2h ago"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                app:layout_constraintTop_toBottomOf="@id/headline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/body"/>
+
+            <TextView
+                android:id="@+id/body"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="The discovery, made by the Perseverance rover, suggests subsurface water flow continued long after the planet cooled."
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/byline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/headline"/>
+
+            <Button
+                android:id="@+id/readmore"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="Read more"
+                android:backgroundTint="@color/brand_primary"
+                android:textColor="#FFFFFF"
+                app:layout_constraintTop_toBottomOf="@id/body"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 3: invoice summary"
+            android:layout_marginTop="22dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:text="Visual: Invoice # → Customer → Total → Pay now. Traversal: Pay now → Invoice # → Total → Customer."/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:id="@+id/invNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Invoice #INV-2042"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/payNow"/>
+
+            <TextView
+                android:id="@+id/invCustomer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Customer: Acme Industries Pvt Ltd"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                app:layout_constraintTop_toBottomOf="@id/invNumber"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/invTotal"/>
+
+            <TextView
+                android:id="@+id/invTotal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Total due: ₹38,400 (incl. GST)"
+                android:textColor="@color/violation_red"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/invCustomer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/invNumber"/>
+
+            <Button
+                android:id="@+id/payNow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="Pay now"
+                android:backgroundTint="@color/brand_primary"
+                android:textColor="#FFFFFF"
+                app:layout_constraintTop_toBottomOf="@id/invTotal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="14dp"
             android:textColor="@color/text_secondary"
             android:textSize="12sp"
-            android:text="Visual order: Title, Price, Description, Buy.\nScreen-reader order (via accessibilityTraversalAfter): Buy → Title → Description → Price.\nA blind user is asked to buy before knowing what or for how much."/>
+            android:text="Three cards, three scrambled traversal orders.\nA blind user is asked to buy/read/pay before knowing what or for how much."/>
     </LinearLayout>
 </ScrollView>
