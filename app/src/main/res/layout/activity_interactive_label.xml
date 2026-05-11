@@ -9,7 +9,7 @@
         <TextView style="@style/ScreenSub" android:text="@string/rule3_desc"/>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION"/>
+            android:text="VIOLATION 1: article actions"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -59,6 +59,111 @@
                 android:background="?attr/selectableItemBackgroundBorderless"/>
         </LinearLayout>
 
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 2: comment toolbar"
+            android:layout_marginTop="18dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="Comment toolbar"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+
+        <!-- Second icon row: same kind of violations on different actions -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="14dp"
+            android:background="@drawable/card_bg">
+
+            <!-- Violation: empty contentDescription -->
+            <ImageButton
+                android:id="@+id/btnLike"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/ic_heart"
+                android:contentDescription=""
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
+            <!-- Violation: filename used as label -->
+            <ImageButton
+                android:id="@+id/btnRepost"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_share"
+                android:contentDescription="ic_share"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
+            <!-- Violation: generic "icon" label -->
+            <ImageButton
+                android:id="@+id/btnRemove"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_trash"
+                android:contentDescription="icon"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+        </LinearLayout>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 3: media controls"
+            android:layout_marginTop="18dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="Media controls"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+
+        <!-- Third icon row: media controls -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="14dp"
+            android:background="@drawable/card_bg">
+
+            <!-- Violation: wrong label — heart icon labeled as "play" -->
+            <ImageButton
+                android:id="@+id/btnPlay"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/ic_heart"
+                android:contentDescription="play"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
+            <!-- Violation: missing contentDescription entirely -->
+            <ImageButton
+                android:id="@+id/btnSkip"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_share"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
+            <!-- Violation: generic "image" label -->
+            <ImageButton
+                android:id="@+id/btnStop"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_trash"
+                android:contentDescription="image"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+        </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,12 +183,32 @@
             android:clickable="true"
             android:focusable="true"/>
 
+        <!-- Second unlabeled CTA: clickable, no contentDescription, no text -->
+        <View
+            android:id="@+id/ctaSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/violation_red"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- Third unlabeled CTA -->
+        <View
+            android:id="@+id/ctaTertiary"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/text_primary"
+            android:clickable="true"
+            android:focusable="true"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="14dp"
             android:textColor="@color/text_secondary"
             android:textSize="12sp"
-            android:text="Three icon buttons: missing label / generic &quot;button&quot; / wrong label &quot;share&quot; on a delete icon. Plus an orange CTA View with no text and no contentDescription — TalkBack just says &quot;unlabeled&quot;."/>
+            android:text="Nine icon buttons across three rows: missing label / generic / empty / filename / wrong label. Plus three colored CTA Views with no text and no contentDescription — TalkBack just says &quot;unlabeled&quot;."/>
     </LinearLayout>
 </ScrollView>

@@ -24,21 +24,89 @@
             android:text="VIOLATION 2: generic label &quot;image&quot;"
             android:layout_marginTop="18dp"/>
 
-        <!-- Same image, generic useless contentDescription -->
+        <!-- Different image (text filled with picture), generic useless contentDescription -->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:layout_marginTop="8dp"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
-            android:src="@drawable/text_wrap_image"
+            android:src="@drawable/text_image_fill"
             android:contentDescription="image"/>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
             android:text="VIOLATION 3: label ignores embedded text"
             android:layout_marginTop="18dp"/>
 
-        <!-- Same image, contentDescription that does NOT capture the actual text in the image -->
+        <!-- Quote-in-image; contentDescription does NOT capture the actual text -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/text_image_quote"
+            android:contentDescription="A diagram"/>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 4: empty contentDescription"
+            android:layout_marginTop="18dp"/>
+
+        <!-- contentDescription explicitly set to empty string — hides info-bearing image from TalkBack -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/text_image_ocr"
+            android:contentDescription=""/>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 5: generic label &quot;photo&quot;"
+            android:layout_marginTop="18dp"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/text_image_fill"
+            android:contentDescription="photo"/>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 6: filename used as label"
+            android:layout_marginTop="18dp"/>
+
+        <!-- Filename is not a meaningful label and ignores visible text -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/text_image_quote"
+            android:contentDescription="text_image_quote.jpg"/>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 7: marketing label hides the text"
+            android:layout_marginTop="18dp"/>
+
+        <!-- Marketing copy as label, completely ignores embedded text -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/text_image_ocr"
+            android:contentDescription="Welcome banner"/>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 8: single word &quot;graphic&quot;"
+            android:layout_marginTop="18dp"/>
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="220dp"
@@ -46,7 +114,7 @@
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
             android:src="@drawable/text_wrap_image"
-            android:contentDescription="A diagram"/>
+            android:contentDescription="graphic"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -54,6 +122,6 @@
             android:paddingTop="14dp"
             android:textColor="@color/text_secondary"
             android:textSize="12sp"
-            android:text="The image visibly contains the text &quot;CSS text-wrap&quot; (and supporting copy). A screen-reader user gets nothing, &quot;image&quot;, or &quot;A diagram&quot; — none of which expose the actual text in the picture. The Issue Detection Agent should flag all three."/>
+            android:text="Each image visibly contains text (e.g. &quot;CSS text-wrap&quot;, a filled-text design, a quote, &quot;Image to Text&quot;). A screen-reader user gets nothing, &quot;image&quot;, &quot;A diagram&quot;, &quot;photo&quot;, &quot;graphic&quot;, an empty string, a filename, or unrelated marketing copy — none of which expose the actual text in the picture. The Issue Detection Agent should flag every one."/>
     </LinearLayout>
 </ScrollView>

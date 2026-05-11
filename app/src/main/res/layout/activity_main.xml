@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:paddingBottom="16dp">
+            android:paddingBottom="8dp">
 
             <TextView android:id="@+id/num1" style="@style/NumBtn" android:text="1"
                 android:contentDescription="Open rule 1: Images with text"/>
@@ -53,8 +53,21 @@
                 android:contentDescription="Open rule 3: Interactive element accessibility label"/>
             <TextView android:id="@+id/num4" style="@style/NumBtn" android:text="4"
                 android:contentDescription="Open rule 4: Meaningful reading order"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingBottom="16dp">
+
             <TextView android:id="@+id/num5" style="@style/NumBtn" android:text="5"
                 android:contentDescription="Open rule 5: Meaningful visual order"/>
+            <TextView android:id="@+id/num6" style="@style/NumBtn" android:text="6"
+                android:contentDescription="Open rule 6: Missing heading"/>
+            <TextView android:id="@+id/num7" style="@style/NumBtn" android:text="7"
+                android:contentDescription="Open rule 7: Incorrect heading"/>
         </LinearLayout>
 
         <LinearLayout android:id="@+id/btnAll"
@@ -70,7 +83,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="See all 5 violations on one page →"
+                android:text="See all 7 violations on one page →"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
@@ -107,6 +120,16 @@
         <LinearLayout android:id="@+id/btn5" style="@style/RuleCard">
             <TextView style="@style/RuleTitle" android:text="@string/rule5_title"/>
             <TextView style="@style/RuleDesc" android:text="@string/rule5_desc"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/btn6" style="@style/RuleCard">
+            <TextView style="@style/RuleTitle" android:text="@string/rule6_title"/>
+            <TextView style="@style/RuleDesc" android:text="@string/rule6_desc"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/btn7" style="@style/RuleCard">
+            <TextView style="@style/RuleTitle" android:text="@string/rule7_title"/>
+            <TextView style="@style/RuleDesc" android:text="@string/rule7_desc"/>
         </LinearLayout>
 
         <TextView

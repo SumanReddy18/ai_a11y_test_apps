@@ -68,6 +68,18 @@ android {
             versionNameSuffix "-visualorder"
             resValue "string", "app_name", "A11y: Visual order"
         }
+        missingHeading {
+            dimension "issue"
+            applicationIdSuffix ".missingheading"
+            versionNameSuffix "-missingheading"
+            resValue "string", "app_name", "A11y: Missing heading"
+        }
+        incorrectHeading {
+            dimension "issue"
+            applicationIdSuffix ".incorrectheading"
+            versionNameSuffix "-incorrectheading"
+            resValue "string", "app_name", "A11y: Incorrect heading"
+        }
     }
 
     applicationVariants.all { variant ->
