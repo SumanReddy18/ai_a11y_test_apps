@@ -1056,6 +1056,58 @@
                 android:accessibilityHeading="true"/>
         </LinearLayout>
 
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="@color/card_border" android:layout_marginVertical="24dp"/>
+
+        <!-- ============== 8. Link text purpose ============== -->
+        <TextView style="@style/ScreenH1" android:text="@string/rule8_title"/>
+        <TextView style="@style/ScreenSub" android:text="@string/rule8_desc"/>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 1: links that don't convey purpose"/>
+
+        <!-- Links whose text ("Read more", raw URL) doesn't convey purpose. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Our updated privacy terms are now in effect."
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Read more"
+                android:textColor="@color/brand_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:paddingTop="4dp"
+                android:clickable="true"
+                android:focusable="true"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Full documentation:"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="https://www.browserstack.com/docs/app-accessibility/overview"
+                android:textColor="@color/brand_primary"
+                android:textSize="14sp"
+                android:paddingTop="4dp"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
