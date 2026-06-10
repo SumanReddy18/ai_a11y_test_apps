@@ -1,292 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp">
 
-    <LinearLayout style="@style/ScreenRoot">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="@string/rule2_title"/>
 
-        <TextView style="@style/ScreenH1" android:text="@string/rule2_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule2_desc"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:layout_marginTop="2dp"
+        android:text="@string/rule2_desc"/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: avatar with no contentDescription"/>
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:columnCount="2"
+        android:rowCount="5"
+        android:useDefaultMargins="false">
 
-        <!-- Profile row: avatar conveys identity but has no contentDescription -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/card_bg">
+        <!-- 1: Portrait of a specific person — no contentDescription -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meaningful_img_01"/>
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_avatar"/>
+        <!-- 2: Portrait — generic "image" -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meaningful_img_02"
+            android:contentDescription="image"/>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Anya Sharma"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Verified seller"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-        </LinearLayout>
+        <!-- 3: Portrait — empty contentDescription hides identity -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meaningful_img_03"
+            android:contentDescription=""/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: status icon labeled &quot;icon&quot;"
-            android:layout_marginTop="14dp"/>
+        <!-- 4: Portrait — filename used as label -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meaningful_img_04"
+            android:contentDescription="avatar_04.jpg"/>
 
-        <!-- Status indicator: warning icon means "out of stock" but uses generic label -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
+        <!-- 5: Product (sneakers) — generic "photo" -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meaningful_img_05"
+            android:contentDescription="photo"/>
 
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_warning"
-                android:contentDescription="icon"/>
+        <!-- 6: Product — importantForAccessibility="no" hides the meaningful image from TalkBack
+             (BrowserStack rule clause: "Inaccessible to Assistive Technology") -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meaningful_img_06"
+            android:contentDescription="Nike Air sneaker, white"
+            android:importantForAccessibility="no"/>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:text="Out of stock"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
-        </LinearLayout>
+        <!-- 7: Product (watch) — wrong/marketing label -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meaningful_img_07"
+            android:contentDescription="Shop now"/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: heart icon labeled &quot;picture&quot;"
-            android:layout_marginTop="14dp"/>
+        <!-- 8: Warning/status — single word "icon" -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meaningful_img_08"
+            android:contentDescription="icon"/>
 
-        <!-- Heart icon used as "favorited" status, contentDescription wrong -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
+        <!-- 9: Warning/status — "graphic" -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meaningful_img_09"
+            android:contentDescription="graphic"/>
 
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_heart"
-                android:contentDescription="picture"/>
+        <!-- 10: Fire/alert — generic "picture" -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meaningful_img_10"
+            android:contentDescription="picture"/>
+    </GridLayout>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:text="3,420 likes"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
-        </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: second avatar — no contentDescription"
-            android:layout_marginTop="14dp"/>
-
-        <!-- Another profile row: avatar conveys author identity but has no contentDescription -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_avatar"/>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Rahul Mehta"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Top reviewer"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 5: warning labeled &quot;image&quot;"
-            android:layout_marginTop="14dp"/>
-
-        <!-- Severity icon meaning "payment failed" labeled with generic "image" -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_warning"
-                android:contentDescription="image"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:text="Payment failed"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
-        </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 6: heart icon labeled &quot;icon&quot;"
-            android:layout_marginTop="14dp"/>
-
-        <!-- Heart icon meaning "added to wishlist" with generic label -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_heart"
-                android:contentDescription="icon"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:text="Added to wishlist"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
-        </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 7: warning with empty contentDescription"
-            android:layout_marginTop="14dp"/>
-
-        <!-- Empty contentDescription hides the meaningful icon -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_warning"
-                android:contentDescription=""/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:text="Account suspended"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
-        </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 8: avatar labeled &quot;image&quot;"
-            android:layout_marginTop="14dp"/>
-
-        <!-- Avatar identifying a specific user, but generic "image" label -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_avatar"
-                android:contentDescription="image"/>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Priya Iyer"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Premium member"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="14dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:text="Each ImageView conveys meaning (identity, status, favorited count, payment state, wishlist) but has missing, empty, or generic contentDescription (&quot;icon&quot; / &quot;picture&quot; / &quot;image&quot;)."/>
-    </LinearLayout>
-</ScrollView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:textColor="@color/text_secondary"
+        android:textSize="11sp"
+        android:text="Violations of ImageView Element Accessibility Label: (1) Missing — absent or empty contentDescription. (2) Inadequate — generic (&quot;image&quot;/&quot;photo&quot;/&quot;icon&quot;/&quot;picture&quot;/&quot;graphic&quot;), filename, or mismatched copy. (3) Inaccessible — label hidden via importantForAccessibility=&quot;no&quot;. WCAG 1.1.1."/>
+</LinearLayout>

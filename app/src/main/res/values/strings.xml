@@ -6,11 +6,11 @@
     <string name="rule1_title">1. Images with text</string>
     <string name="rule1_desc">Image carries informational text, but the alt label is missing or generic.</string>
 
-    <string name="rule2_title">2. ImageView accessibility label</string>
-    <string name="rule2_desc">Decorative-looking ImageViews actually convey meaning, with no/poor contentDescription.</string>
+    <string name="rule2_title">2. Meaningful a11y label for image</string>
+    <string name="rule2_desc">Non-decorative ImageView elements must have a clear contentDescription. Violations: missing, empty, inadequate (generic/filename/mismatched), or hidden from screen readers.</string>
 
     <string name="rule3_title">3. Interactive element accessibility label</string>
-    <string name="rule3_desc">Icon-only buttons whose labels are missing, generic, or contextually wrong.</string>
+    <string name="rule3_desc">Interactive elements (ImageButton, Button, custom clickable Views) need a non-null, descriptive label. Violations: missing, generic, or contextually inaccurate.</string>
 
     <string name="rule4_title">4. Meaningful reading order</string>
     <string name="rule4_desc">Screen-reader focus order does not match the logical reading order.</string>

@@ -1,127 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp">
 
-    <LinearLayout style="@style/ScreenRoot">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="@string/rule1_title"/>
 
-        <TextView style="@style/ScreenH1" android:text="@string/rule1_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule1_desc"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:layout_marginTop="2dp"
+        android:text="@string/rule1_desc"/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: no contentDescription"/>
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:columnCount="2"
+        android:rowCount="5"
+        android:useDefaultMargins="false">
 
-        <!-- Real image containing visible text. No alt at all. -->
+        <!-- 1: no contentDescription -->
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_wrap_image"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unsplash_text_01"/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: generic label &quot;image&quot;"
-            android:layout_marginTop="18dp"/>
-
-        <!-- Different image (text filled with picture), generic useless contentDescription -->
+        <!-- 2: generic "image" -->
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_image_fill"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unsplash_text_02"
             android:contentDescription="image"/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: label ignores embedded text"
-            android:layout_marginTop="18dp"/>
-
-        <!-- Quote-in-image; contentDescription does NOT capture the actual text -->
+        <!-- 3: description ignores embedded text -->
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_image_quote"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unsplash_text_03"
             android:contentDescription="A diagram"/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: empty contentDescription"
-            android:layout_marginTop="18dp"/>
-
-        <!-- contentDescription explicitly set to empty string — hides info-bearing image from TalkBack -->
+        <!-- 4: empty contentDescription -->
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_image_ocr"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unsplash_text_04"
             android:contentDescription=""/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 5: generic label &quot;photo&quot;"
-            android:layout_marginTop="18dp"/>
-
+        <!-- 5: generic "photo" -->
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_image_fill"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unsplash_text_05"
             android:contentDescription="photo"/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 6: filename used as label"
-            android:layout_marginTop="18dp"/>
-
-        <!-- Filename is not a meaningful label and ignores visible text -->
+        <!-- 6: filename used as label -->
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_image_quote"
-            android:contentDescription="text_image_quote.jpg"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unsplash_text_06"
+            android:contentDescription="img_06.jpg"/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 7: marketing label hides the text"
-            android:layout_marginTop="18dp"/>
-
-        <!-- Marketing copy as label, completely ignores embedded text -->
+        <!-- 7: marketing label hides text -->
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_image_ocr"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unsplash_text_07"
             android:contentDescription="Welcome banner"/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 8: single word &quot;graphic&quot;"
-            android:layout_marginTop="18dp"/>
-
+        <!-- 8: single word "graphic" -->
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_wrap_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unsplash_text_08"
             android:contentDescription="graphic"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="14dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:text="Each image visibly contains text (e.g. &quot;CSS text-wrap&quot;, a filled-text design, a quote, &quot;Image to Text&quot;). A screen-reader user gets nothing, &quot;image&quot;, &quot;A diagram&quot;, &quot;photo&quot;, &quot;graphic&quot;, an empty string, a filename, or unrelated marketing copy — none of which expose the actual text in the picture. The Issue Detection Agent should flag every one."/>
-    </LinearLayout>
-</ScrollView>
+        <!-- 9: generic "icon" -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unsplash_text_09"
+            android:contentDescription="icon"/>
+
+        <!-- 10: generic "picture" -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unsplash_text_10"
+            android:contentDescription="picture"/>
+
+    </GridLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:textColor="@color/text_secondary"
+        android:textSize="11sp"
+        android:text="Each image visibly contains text. Screen readers get nothing, &quot;image&quot;, &quot;photo&quot;, &quot;graphic&quot;, an empty string, a filename, or unrelated copy — Issue Detection Agent should flag every one."/>
+</LinearLayout>

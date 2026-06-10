@@ -1,214 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp">
 
-    <LinearLayout style="@style/ScreenRoot">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="@string/rule3_title"/>
 
-        <TextView style="@style/ScreenH1" android:text="@string/rule3_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule3_desc"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:layout_marginTop="2dp"
+        android:text="@string/rule3_desc"/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: article actions"/>
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:columnCount="2"
+        android:rowCount="5"
+        android:useDefaultMargins="false">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="6dp"
-            android:text="Article actions"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold"
-            android:textSize="15sp"/>
+        <!-- 1: ImageButton — no contentDescription (Missing label) -->
+        <ImageButton
+            android:id="@+id/btnFavorite"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:padding="18dp"
+            android:src="@drawable/ic_heart"
+            android:scaleType="fitCenter"
+            android:background="@drawable/card_bg"/>
 
-        <!-- Icon-only action bar: each ImageButton lacks proper labels -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="14dp"
-            android:background="@drawable/card_bg">
+        <!-- 2: ImageButton — generic "button" (Inadequate) -->
+        <ImageButton
+            android:id="@+id/btnShare"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:padding="18dp"
+            android:src="@drawable/ic_share"
+            android:scaleType="fitCenter"
+            android:background="@drawable/card_bg"
+            android:contentDescription="button"/>
 
-            <!-- Violation: missing contentDescription entirely -->
-            <ImageButton
-                android:id="@+id/btnFavorite"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:src="@drawable/ic_heart"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+        <!-- 3: ImageButton trash labeled "share" (Contextually inaccurate) -->
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:padding="18dp"
+            android:src="@drawable/ic_trash"
+            android:scaleType="fitCenter"
+            android:background="@drawable/card_bg"
+            android:contentDescription="share"/>
 
-            <!-- Violation: generic, useless label -->
-            <ImageButton
-                android:id="@+id/btnShare"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_share"
-                android:contentDescription="button"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+        <!-- 4: ImageButton warning — empty contentDescription -->
+        <ImageButton
+            android:id="@+id/btnAlert"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:padding="18dp"
+            android:src="@drawable/ic_warning"
+            android:scaleType="fitCenter"
+            android:background="@drawable/card_bg"
+            android:contentDescription=""/>
 
-            <!-- Violation: contextually wrong label (says "share" but is the delete button) -->
-            <ImageButton
-                android:id="@+id/btnDelete"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_trash"
-                android:contentDescription="share"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-        </LinearLayout>
+        <!-- 5: ImageButton chevron — filename/identifier as label -->
+        <ImageButton
+            android:id="@+id/btnNext"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:padding="18dp"
+            android:src="@drawable/ic_chevron"
+            android:scaleType="fitCenter"
+            android:background="@drawable/card_bg"
+            android:contentDescription="ic_chevron"/>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: comment toolbar"
-            android:layout_marginTop="18dp"/>
+        <!-- 6: ImageButton avatar — generic "icon" -->
+        <ImageButton
+            android:id="@+id/btnProfile"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:padding="18dp"
+            android:src="@drawable/ic_avatar"
+            android:scaleType="fitCenter"
+            android:background="@drawable/card_bg"
+            android:contentDescription="icon"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:text="Comment toolbar"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold"
-            android:textSize="15sp"/>
+        <!-- 7: Wide logo-style ImageButton — no contentDescription -->
+        <ImageButton
+            android:id="@+id/btnLogo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_logo_text"
+            android:scaleType="fitCenter"
+            android:background="@drawable/card_bg"/>
 
-        <!-- Second icon row: same kind of violations on different actions -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="14dp"
-            android:background="@drawable/card_bg">
+        <!-- 8: Promo banner ImageButton — generic "banner" -->
+        <ImageButton
+            android:id="@+id/btnPromo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_promo_banner"
+            android:scaleType="fitCenter"
+            android:background="@drawable/card_bg"
+            android:contentDescription="banner"/>
 
-            <!-- Violation: empty contentDescription -->
-            <ImageButton
-                android:id="@+id/btnLike"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:src="@drawable/ic_heart"
-                android:contentDescription=""
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-
-            <!-- Violation: filename used as label -->
-            <ImageButton
-                android:id="@+id/btnRepost"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_share"
-                android:contentDescription="ic_share"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-
-            <!-- Violation: generic "icon" label -->
-            <ImageButton
-                android:id="@+id/btnRemove"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_trash"
-                android:contentDescription="icon"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-        </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: media controls"
-            android:layout_marginTop="18dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:text="Media controls"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold"
-            android:textSize="15sp"/>
-
-        <!-- Third icon row: media controls -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="14dp"
-            android:background="@drawable/card_bg">
-
-            <!-- Violation: wrong label — heart icon labeled as "play" -->
-            <ImageButton
-                android:id="@+id/btnPlay"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:src="@drawable/ic_heart"
-                android:contentDescription="play"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-
-            <!-- Violation: missing contentDescription entirely -->
-            <ImageButton
-                android:id="@+id/btnSkip"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_share"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-
-            <!-- Violation: generic "image" label -->
-            <ImageButton
-                android:id="@+id/btnStop"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_trash"
-                android:contentDescription="image"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="14dp"
-            android:paddingBottom="6dp"
-            android:text="Tappable text-only views with no label exposed"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold"
-            android:textSize="15sp"/>
-
-        <!-- Clickable view that looks like a button but no role/label hint -->
+        <!-- 9: Custom clickable View (blue CTA) — no label at all -->
         <View
-            android:id="@+id/cta"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:id="@+id/ctaPrimary"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
             android:background="@color/brand_primary"
             android:clickable="true"
             android:focusable="true"/>
 
-        <!-- Second unlabeled CTA: clickable, no contentDescription, no text -->
+        <!-- 10: Custom clickable View (red CTA) — no label at all -->
         <View
-            android:id="@+id/ctaSecondary"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="10dp"
+            android:id="@+id/ctaDanger"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="3dp"
             android:background="@color/violation_red"
             android:clickable="true"
             android:focusable="true"/>
+    </GridLayout>
 
-        <!-- Third unlabeled CTA -->
-        <View
-            android:id="@+id/ctaTertiary"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/text_primary"
-            android:clickable="true"
-            android:focusable="true"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="14dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:text="Nine icon buttons across three rows: missing label / generic / empty / filename / wrong label. Plus three colored CTA Views with no text and no contentDescription — TalkBack just says &quot;unlabeled&quot;."/>
-    </LinearLayout>
-</ScrollView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:textColor="@color/text_secondary"
+        android:textSize="11sp"
+        android:text="Violations: (1) Missing — absent or empty contentDescription. (2) Inadequate — generic (&quot;button&quot;, &quot;icon&quot;, &quot;banner&quot;) or filename. (3) Contextually wrong — label does not match the element&apos;s action. (4) Custom clickable Views with no label at all. WCAG 1.3.1 / 2.4.6 / 4.1.2."/>
+</LinearLayout>
