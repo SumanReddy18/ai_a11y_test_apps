@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="header_title">BrowserStack Issue Detection Agent</string>
-    <string name="header_subtitle">7 AI-enhanced accessibility rules — each violated on its own screen.</string>
+    <string name="header_subtitle">8 AI-enhanced accessibility rules — each violated on its own screen.</string>
 
     <string name="rule1_title">1. Images with text</string>
     <string name="rule1_desc">Image carries informational text, but the alt label is missing or generic.</string>
@@ -23,4 +23,7 @@
 
     <string name="rule7_title">7. Incorrect heading</string>
     <string name="rule7_desc">Body copy, ads, or error states are marked as headings — heading navigation lands on noise instead of real sections.</string>
+
+    <string name="rule8_title">8. Link text purpose</string>
+    <string name="rule8_desc">Links labelled \"click here\", \"read more\", or a raw URL don\'t convey their destination out of context.</string>
 </resources>
