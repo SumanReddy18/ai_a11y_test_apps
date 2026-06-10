@@ -68,6 +68,8 @@
                 android:contentDescription="Open rule 6: Missing heading"/>
             <TextView android:id="@+id/num7" style="@style/NumBtn" android:text="7"
                 android:contentDescription="Open rule 7: Incorrect heading"/>
+            <TextView android:id="@+id/num8" style="@style/NumBtn" android:text="8"
+                android:contentDescription="Open rule 8: Link text purpose"/>
         </LinearLayout>
 
         <LinearLayout android:id="@+id/btnAll"
@@ -83,7 +85,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="See all 7 violations on one page →"
+                android:text="See all 8 violations on one page →"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
@@ -130,6 +132,11 @@
         <LinearLayout android:id="@+id/btn7" style="@style/RuleCard">
             <TextView style="@style/RuleTitle" android:text="@string/rule7_title"/>
             <TextView style="@style/RuleDesc" android:text="@string/rule7_desc"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/btn8" style="@style/RuleCard">
+            <TextView style="@style/RuleTitle" android:text="@string/rule8_title"/>
+            <TextView style="@style/RuleDesc" android:text="@string/rule8_desc"/>
         </LinearLayout>
 
         <TextView
