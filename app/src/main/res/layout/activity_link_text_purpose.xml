@@ -11,9 +11,9 @@
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
             android:text="VIOLATION 1: article footer links"/>
 
-        <!-- A row of links where the text gives no clue about the destination.
-             Out of context, TalkBack's "links" rotor reads only "click here",
-             "read more", "here" — none describe where they go. -->
+        <!-- Each line is a real link: the vague phrase is wrapped in a
+             ClickableSpan in code, so the scanner sees a LINK element whose
+             text ("click here", "Read more", "here") conveys no destination. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,63 +23,33 @@
             android:background="@drawable/card_bg">
 
             <TextView
+                android:id="@+id/linkClickHere"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="To view our refund policy, click here"
                 android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"/>
-            <!-- Violation: link text is "click here" — no purpose conveyed -->
-            <TextView
-                android:id="@+id/linkClickHere"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="click here"
-                android:textColor="@color/brand_primary"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:paddingTop="4dp"
-                android:clickable="true"
-                android:focusable="true"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="New pricing is now live."
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:paddingTop="14dp"/>
-            <!-- Violation: generic "Read more" -->
             <TextView
                 android:id="@+id/linkReadMore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Read more"
-                android:textColor="@color/brand_primary"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:paddingTop="4dp"
-                android:clickable="true"
-                android:focusable="true"/>
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Full release notes are available."
+                android:text="New pricing is now live. Read more"
                 android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"
                 android:paddingTop="14dp"/>
-            <!-- Violation: bare "here" -->
+
             <TextView
                 android:id="@+id/linkHere"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="here"
-                android:textColor="@color/brand_primary"
+                android:text="Full release notes are available here"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:paddingTop="4dp"
-                android:clickable="true"
-                android:focusable="true"/>
+                android:paddingTop="14dp"/>
         </LinearLayout>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
@@ -97,60 +67,33 @@
             android:background="@drawable/card_bg">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Automate tests on real devices."
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
-            <TextView
                 android:id="@+id/linkLearnMore1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Learn more"
-                android:textColor="@color/brand_primary"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:paddingTop="4dp"
-                android:clickable="true"
-                android:focusable="true"/>
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Catch accessibility issues early."
+                android:text="Automate tests on real devices. Learn more"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:paddingTop="14dp"/>
+                android:textColorLink="@color/brand_primary"
+                android:textSize="14sp"/>
+
             <TextView
                 android:id="@+id/linkLearnMore2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Learn more"
-                android:textColor="@color/brand_primary"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:paddingTop="4dp"
-                android:clickable="true"
-                android:focusable="true"/>
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Scale your CI pipeline."
+                android:text="Catch accessibility issues early. Learn more"
                 android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"
                 android:paddingTop="14dp"/>
+
             <TextView
                 android:id="@+id/linkLearnMore3"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Learn more"
-                android:textColor="@color/brand_primary"
+                android:text="Scale your CI pipeline. Learn more"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:paddingTop="4dp"
-                android:clickable="true"
-                android:focusable="true"/>
+                android:paddingTop="14dp"/>
         </LinearLayout>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
@@ -169,21 +112,57 @@
             android:background="@drawable/card_bg">
 
             <TextView
+                android:id="@+id/linkRawUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Documentation:"
+                android:text="Documentation: https://www.browserstack.com/docs/app-accessibility/overview?ref=demo&amp;src=apk"
                 android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"/>
+        </LinearLayout>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 4: more ambiguous links"
+            android:layout_marginTop="18dp"/>
+
+        <!-- Extra non-descriptive link phrases to ensure several distinct
+             link-text-purpose violations are flagged. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg">
+
             <TextView
-                android:id="@+id/linkRawUrl"
-                android:layout_width="wrap_content"
+                android:id="@+id/linkTapHere"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="https://www.browserstack.com/docs/app-accessibility/overview?ref=demo&amp;src=apk"
-                android:textColor="@color/brand_primary"
+                android:text="To update your billing details, tap here"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/linkThis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="For onboarding steps, see this"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"
-                android:paddingTop="4dp"
-                android:clickable="true"
-                android:focusable="true"/>
+                android:paddingTop="14dp"/>
+
+            <TextView
+                android:id="@+id/linkMore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Integrations are expanding every week. More"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
         </LinearLayout>
 
         <TextView
@@ -192,6 +171,6 @@
             android:paddingTop="14dp"
             android:textColor="@color/text_secondary"
             android:textSize="12sp"
-            android:text="Every link above is tappable but its label (&quot;click here&quot;, &quot;Read more&quot;, &quot;here&quot;, three identical &quot;Learn more&quot;, and a raw URL) fails to describe its destination out of context. The AI scanner should flag each link whose text does not convey its purpose."/>
+            android:text="Every coloured phrase above is a real link (a ClickableSpan in the text), but its label (&quot;click here&quot;, &quot;Read more&quot;, &quot;here&quot;, three identical &quot;Learn more&quot;, a raw URL, &quot;tap here&quot;, &quot;this&quot;, &quot;More&quot;) fails to describe its destination out of context. The AI scanner should flag each link whose text does not convey its purpose."/>
     </LinearLayout>
 </ScrollView>
