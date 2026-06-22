@@ -4,6 +4,8 @@
 - **Rule 2 (Meaningful a11y label for image)**: renamed from "ImageView accessibility label". Replaced vector-icon card list with 10 unique meaningful Unsplash photos (portraits, products, status signs) in a 2×5 grid. Aligned with BrowserStack rule clauses #1 Missing / #2 Inadequate / #3 Inaccessible — including an `importantForAccessibility="no"` case for clause #3.
 - **Rule 3 (Interactive element accessibility label)**: replaced scrolling card sections with a single-screen 2×5 grid of 10 unique interactive elements — 8 ImageButtons (heart/share/trash/warning/chevron/avatar + wide LOGO and BANNER) and 2 custom clickable Views. Covers missing/empty/generic/filename/wrong-context plus custom-view violations.
 - **Rule 8 (Link text purpose)**: new `linkTextPurpose` flavor merged in — links labelled "click here", "read more", or raw URLs that don't convey their destination out of context. Release now produces **9 APKs** (`ai-app-a11y-detection-linktextpurpose-v<ver>.apk` added).
+- **Combined "All violations" screen (full flavor)** resynced with the eight single-issue screens — it had drifted to the pre-rework layouts. Now mirrors each screen exactly: 10-image grids for rules 1–3, 4 visual-order cases, 4 missing-heading cases, 5 incorrect-heading cases, all 8 rules in the header. The link-text-purpose section now uses real `ClickableSpan` links (previously plain `clickable` TextViews that never fired the rule).
+- Added a floating **"Next ↓"** button to the combined screen that smooth-scrolls to the next violation section (wraps to top after the last). Rebuilt at the same version (`1.2.0` / code 3), no bump.
 
 ## v1.1.0 (code 2) — 2026-04-27
 

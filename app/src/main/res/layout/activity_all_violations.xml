@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/allScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:paddingBottom="96dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="All 7 violations on one page"
+            android:text="All 8 violation types on one page"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold"/>
@@ -21,365 +27,360 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Every BrowserStack Issue Detection Agent rule is violated multiple times below. Scan this single screen to fire dozens at once."
+            android:text="Every BrowserStack Issue Detection Agent rule is violated multiple times below. This screen mirrors the eight single-issue screens. Scan it to fire dozens of violations at once."
             android:textColor="@color/text_secondary"
             android:textSize="13sp"
             android:paddingTop="6dp"
             android:paddingBottom="20dp"/>
 
         <!-- ============== 1. Images with text ============== -->
-        <TextView style="@style/ScreenH1" android:text="@string/rule1_title"/>
+        <TextView android:id="@+id/sec1" style="@style/ScreenH1" android:text="@string/rule1_title"/>
         <TextView style="@style/ScreenSub" android:text="@string/rule1_desc"/>
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: no contentDescription"/>
+            android:text="VIOLATION: 10 images containing text, none described properly"/>
 
-        <ImageView
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_wrap_image"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:columnCount="2"
+            android:useDefaultMargins="false">
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: generic &quot;image&quot;"
-            android:layout_marginTop="14dp"/>
+            <!-- 1: no contentDescription -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/unsplash_text_01"/>
+            <!-- 2: generic "image" -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/unsplash_text_02"
+                android:contentDescription="image"/>
+            <!-- 3: description ignores embedded text -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/unsplash_text_03"
+                android:contentDescription="A diagram"/>
+            <!-- 4: empty contentDescription -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/unsplash_text_04"
+                android:contentDescription=""/>
+            <!-- 5: generic "photo" -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/unsplash_text_05"
+                android:contentDescription="photo"/>
+            <!-- 6: filename used as label -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/unsplash_text_06"
+                android:contentDescription="img_06.jpg"/>
+            <!-- 7: marketing label hides text -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/unsplash_text_07"
+                android:contentDescription="Welcome banner"/>
+            <!-- 8: single word "graphic" -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/unsplash_text_08"
+                android:contentDescription="graphic"/>
+            <!-- 9: generic "icon" -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/unsplash_text_09"
+                android:contentDescription="icon"/>
+            <!-- 10: generic "picture" -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/unsplash_text_10"
+                android:contentDescription="picture"/>
+        </GridLayout>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_wrap_image"
-            android:contentDescription="image"/>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: ignores embedded text"
-            android:layout_marginTop="14dp"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_wrap_image"
-            android:contentDescription="A diagram"/>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: empty contentDescription"
-            android:layout_marginTop="14dp"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_wrap_image"
-            android:contentDescription=""/>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 5: filename as label"
-            android:layout_marginTop="14dp"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/text_wrap_image"
-            android:contentDescription="text_wrap_image.jpg"/>
+        <TextView style="@style/ScreenSub"
+            android:text="Each image visibly contains text. Screen readers get nothing, &quot;image&quot;, &quot;photo&quot;, &quot;graphic&quot;, an empty string, a filename, or unrelated copy."/>
 
         <View android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 2. ImageView label ============== -->
-        <TextView style="@style/ScreenH1" android:text="@string/rule2_title"/>
+        <TextView android:id="@+id/sec2" style="@style/ScreenH1" android:text="@string/rule2_title"/>
         <TextView style="@style/ScreenSub" android:text="@string/rule2_desc"/>
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: avatar — no label"/>
+            android:text="VIOLATION: 10 meaningful images, none with an adequate label"/>
 
-        <LinearLayout
+        <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/card_bg">
+            android:columnCount="2"
+            android:useDefaultMargins="false">
+
+            <!-- 1: portrait — no contentDescription -->
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_avatar"/>
-            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1">
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:text="Anya Sharma" android:textColor="@color/text_primary"
-                    android:textSize="15sp" android:textStyle="bold"/>
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:text="Verified seller" android:textColor="@color/text_secondary"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: warning labeled &quot;icon&quot;"
-            android:layout_marginTop="14dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/meaningful_img_01"/>
+            <!-- 2: portrait — generic "image" -->
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_warning"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/meaningful_img_02"
+                android:contentDescription="image"/>
+            <!-- 3: portrait — empty contentDescription -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/meaningful_img_03"
+                android:contentDescription=""/>
+            <!-- 4: portrait — filename as label -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/meaningful_img_04"
+                android:contentDescription="avatar_04.jpg"/>
+            <!-- 5: product — generic "photo" -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/meaningful_img_05"
+                android:contentDescription="photo"/>
+            <!-- 6: product — hidden from TalkBack via importantForAccessibility="no" -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/meaningful_img_06"
+                android:contentDescription="Nike Air sneaker, white"
+                android:importantForAccessibility="no"/>
+            <!-- 7: product — wrong/marketing label -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/meaningful_img_07"
+                android:contentDescription="Shop now"/>
+            <!-- 8: status — single word "icon" -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/meaningful_img_08"
                 android:contentDescription="icon"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:text="Out of stock"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
-        </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: heart labeled &quot;picture&quot;"
-            android:layout_marginTop="14dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
+            <!-- 9: status — "graphic" -->
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_heart"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/meaningful_img_09"
+                android:contentDescription="graphic"/>
+            <!-- 10: alert — generic "picture" -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/meaningful_img_10"
                 android:contentDescription="picture"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:text="3,420 likes"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
-        </LinearLayout>
+        </GridLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: warning labeled &quot;image&quot;"
-            android:layout_marginTop="14dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_warning"
-                android:contentDescription="image"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:text="Payment failed"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
-        </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 5: avatar labeled &quot;image&quot;"
-            android:layout_marginTop="14dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_avatar"
-                android:contentDescription="image"/>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1">
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:text="Priya Iyer" android:textColor="@color/text_primary"
-                    android:textSize="15sp" android:textStyle="bold"/>
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:text="Premium member" android:textColor="@color/text_secondary"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-        </LinearLayout>
+        <TextView style="@style/ScreenSub"
+            android:text="Missing/empty labels, generic words, a filename, a mismatched marketing label, and one image hidden from assistive tech via importantForAccessibility=&quot;no&quot;."/>
 
         <View android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 3. Interactive label ============== -->
-        <TextView style="@style/ScreenH1" android:text="@string/rule3_title"/>
+        <TextView android:id="@+id/sec3" style="@style/ScreenH1" android:text="@string/rule3_title"/>
         <TextView style="@style/ScreenSub" android:text="@string/rule3_desc"/>
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: article actions"/>
+            android:text="VIOLATION: 10 interactive controls, none with a usable label"/>
 
-        <LinearLayout
+        <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="14dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/card_bg">
+            android:columnCount="2"
+            android:useDefaultMargins="false">
+
+            <!-- 1: ImageButton — no contentDescription -->
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="18dp"
                 android:src="@drawable/ic_heart"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+                android:scaleType="fitCenter"
+                android:background="@drawable/card_bg"/>
+            <!-- 2: ImageButton — generic "button" -->
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="18dp"
                 android:src="@drawable/ic_share"
-                android:contentDescription="button"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+                android:scaleType="fitCenter"
+                android:background="@drawable/card_bg"
+                android:contentDescription="button"/>
+            <!-- 3: trash labeled "share" -->
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="18dp"
                 android:src="@drawable/ic_trash"
-                android:contentDescription="share"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-        </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: comment toolbar"
-            android:layout_marginTop="14dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
+                android:scaleType="fitCenter"
+                android:background="@drawable/card_bg"
+                android:contentDescription="share"/>
+            <!-- 4: warning — empty contentDescription -->
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:src="@drawable/ic_heart"
-                android:contentDescription=""
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="18dp"
+                android:src="@drawable/ic_warning"
+                android:scaleType="fitCenter"
+                android:background="@drawable/card_bg"
+                android:contentDescription=""/>
+            <!-- 5: chevron — filename as label -->
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_share"
-                android:contentDescription="ic_share"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="18dp"
+                android:src="@drawable/ic_chevron"
+                android:scaleType="fitCenter"
+                android:background="@drawable/card_bg"
+                android:contentDescription="ic_chevron"/>
+            <!-- 6: avatar — generic "icon" -->
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_trash"
-                android:contentDescription="icon"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-        </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: media controls"
-            android:layout_marginTop="14dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="18dp"
+                android:src="@drawable/ic_avatar"
+                android:scaleType="fitCenter"
+                android:background="@drawable/card_bg"
+                android:contentDescription="icon"/>
+            <!-- 7: logo-style ImageButton — no contentDescription -->
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:src="@drawable/ic_heart"
-                android:contentDescription="play"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_logo_text"
+                android:scaleType="fitCenter"
+                android:background="@drawable/card_bg"/>
+            <!-- 8: promo banner ImageButton — generic "banner" -->
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_share"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-            <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_trash"
-                android:contentDescription="image"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-        </LinearLayout>
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_promo_banner"
+                android:scaleType="fitCenter"
+                android:background="@drawable/card_bg"
+                android:contentDescription="banner"/>
+            <!-- 9: custom clickable View (blue CTA) — no label -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:background="@color/brand_primary"
+                android:clickable="true"
+                android:focusable="true"/>
+            <!-- 10: custom clickable View (red CTA) — no label -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:background="@color/violation_red"
+                android:clickable="true"
+                android:focusable="true"/>
+        </GridLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: unlabeled clickable Views"
-            android:layout_marginTop="14dp"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/brand_primary"
-            android:clickable="true"
-            android:focusable="true"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/violation_red"
-            android:clickable="true"
-            android:focusable="true"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/text_primary"
-            android:clickable="true"
-            android:focusable="true"/>
+        <TextView style="@style/ScreenSub"
+            android:text="Missing/empty labels, generic words (&quot;button&quot;, &quot;icon&quot;, &quot;banner&quot;), a filename, a label that contradicts the action, and two custom clickable Views with no label at all."/>
 
         <View android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 4. Reading order ============== -->
-        <TextView style="@style/ScreenH1" android:text="@string/rule4_title"/>
+        <TextView android:id="@+id/sec4" style="@style/ScreenH1" android:text="@string/rule4_title"/>
         <TextView style="@style/ScreenSub" android:text="@string/rule4_desc"/>
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
             android:text="VIOLATION 1: product card"/>
@@ -486,7 +487,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="The discovery suggests subsurface water flow continued long after the planet cooled."
+                android:text="The discovery, made by the Perseverance rover, suggests subsurface water flow continued long after the planet cooled."
                 android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/ro_byline"
@@ -575,7 +576,7 @@
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 5. Visual order ============== -->
-        <TextView style="@style/ScreenH1" android:text="@string/rule5_title"/>
+        <TextView android:id="@+id/sec5" style="@style/ScreenH1" android:text="@string/rule5_title"/>
         <TextView style="@style/ScreenSub" android:text="@string/rule5_desc"/>
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
             android:text="VIOLATION 1: sign-up form"/>
@@ -770,15 +771,64 @@
                 android:paddingTop="6dp"/>
         </LinearLayout>
 
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 4: receipt list"
+            android:layout_marginTop="14dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Order receipt"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingBottom="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total: ₹2,400"
+                android:textColor="@color/violation_red"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Item 3 — Phone case (₹400)"
+                android:textColor="@color/text_primary"
+                android:paddingTop="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Item 1 — USB-C cable (₹600)"
+                android:textColor="@color/text_primary"
+                android:paddingTop="6dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Item 2 — Charger brick (₹1,400)"
+                android:textColor="@color/text_primary"
+                android:paddingTop="6dp"/>
+        </LinearLayout>
+
         <View android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 6. Missing heading ============== -->
-        <TextView style="@style/ScreenH1" android:text="@string/rule6_title"/>
+        <TextView android:id="@+id/sec6" style="@style/ScreenH1" android:text="@string/rule6_title"/>
         <TextView style="@style/ScreenSub" android:text="@string/rule6_desc"/>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: settings sections rendered as plain text"/>
+            android:text="VIOLATION 1: settings page sections"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -815,10 +865,137 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
                 android:paddingTop="2dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Privacy"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Control who can see your activity and profile."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:paddingTop="2dp"/>
         </LinearLayout>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: dashboard cards — titles indistinguishable from values"
+            android:text="VIOLATION 2: blog article sections"
+            android:layout_marginTop="14dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Why mobile accessibility matters"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="More than 1 in 7 users rely on assistive tech on mobile. Apps that ignore them lock out paying customers and risk legal exposure."
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="The business case"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="16dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Inclusive apps consistently see higher retention and stronger app-store reviews."
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="4dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="The legal case"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="16dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Inaccessible apps have triggered ADA and EU EAA complaints in every major market."
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="4dp"/>
+        </LinearLayout>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 3: order summary sections"
+            android:layout_marginTop="14dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Items"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Noise cancelling headphones · ₹4,999"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="2dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Shipping"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="221B Baker Street, Mumbai · arrives Fri"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="2dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Payment"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Visa ending 4242 · UPI fallback enabled"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="2dp"/>
+        </LinearLayout>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 4: dashboard card titles"
             android:layout_marginTop="14dp"/>
 
         <LinearLayout
@@ -856,66 +1033,32 @@
                 android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:paddingTop="2dp"/>
-        </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: article subheads rendered as body"
-            android:layout_marginTop="14dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Why mobile accessibility matters"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="The business case"
+                android:text="Revenue this week"
                 android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Inclusive apps consistently see higher retention and stronger app-store reviews."
+                android:text="₹12.4 L"
                 android:textColor="@color/text_primary"
                 android:textSize="14sp"
-                android:paddingTop="4dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="The legal case"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:paddingTop="14dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Inaccessible apps have triggered ADA and EU EAA complaints worldwide."
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:paddingTop="4dp"/>
+                android:paddingTop="2dp"/>
         </LinearLayout>
 
         <View android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 7. Incorrect heading ============== -->
-        <TextView style="@style/ScreenH1" android:text="@string/rule7_title"/>
+        <TextView android:id="@+id/sec7" style="@style/ScreenH1" android:text="@string/rule7_title"/>
         <TextView style="@style/ScreenSub" android:text="@string/rule7_desc"/>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: body paragraph marked as heading"/>
+            android:text="VIOLATION 1: body paragraph as heading"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -943,7 +1086,7 @@
         </LinearLayout>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: inline error marked as heading"
+            android:text="VIOLATION 2: inline error labelled as heading"
             android:layout_marginTop="14dp"/>
 
         <LinearLayout
@@ -976,7 +1119,7 @@
         </LinearLayout>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: every list row marked as heading"
+            android:text="VIOLATION 3: every list item is a heading"
             android:layout_marginTop="14dp"/>
 
         <LinearLayout
@@ -1016,12 +1159,65 @@
                 android:paddingTop="6dp"
                 android:textColor="@color/text_primary"
                 android:textSize="14sp"
+                android:text="Mum — call me when you land"
+                android:accessibilityHeading="true"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
                 android:text="Zomato — 30% off this weekend"
                 android:accessibilityHeading="true"/>
         </LinearLayout>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: button marked as heading"
+            android:text="VIOLATION 4: ad / promo flagged as heading"
+            android:layout_marginTop="14dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Articles"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:accessibilityHeading="true"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sponsored — Try Cloud Plus free for 30 days. No credit card needed."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:paddingTop="10dp"
+                android:accessibilityHeading="true"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Why mobile accessibility matters in 2026"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:paddingTop="14dp"
+                android:accessibilityHeading="true"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5 min read · BrowserStack engineering"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:paddingTop="2dp"/>
+        </LinearLayout>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 5: button label as heading"
             android:layout_marginTop="14dp"/>
 
         <LinearLayout
@@ -1060,13 +1256,16 @@
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 8. Link text purpose ============== -->
-        <TextView style="@style/ScreenH1" android:text="@string/rule8_title"/>
+        <!-- Each coloured phrase below is a REAL link: the vague phrase is wrapped
+             in a ClickableSpan in AllViolationsActivity.linkify(), so the scanner
+             sees a LINK element whose text fails to convey its destination. A plain
+             android:clickable TextView is NOT a link and would never fire this rule. -->
+        <TextView android:id="@+id/sec8" style="@style/ScreenH1" android:text="@string/rule8_title"/>
         <TextView style="@style/ScreenSub" android:text="@string/rule8_desc"/>
 
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: links that don't convey purpose"/>
+            android:text="VIOLATION 1: article footer links"/>
 
-        <!-- Links whose text ("Read more", raw URL) doesn't convey purpose. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1075,37 +1274,130 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/card_bg">
             <TextView
+                android:id="@+id/av_linkClickHere"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Our updated privacy terms are now in effect."
+                android:text="To view our refund policy, click here"
                 android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"/>
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Read more"
-                android:textColor="@color/brand_primary"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:paddingTop="4dp"
-                android:clickable="true"
-                android:focusable="true"/>
-            <TextView
+                android:id="@+id/av_linkReadMore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Full documentation:"
+                android:text="New pricing is now live. Read more"
                 android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"
                 android:paddingTop="14dp"/>
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/av_linkHere"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="https://www.browserstack.com/docs/app-accessibility/overview"
-                android:textColor="@color/brand_primary"
+                android:text="Full release notes are available here"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"
-                android:paddingTop="4dp"
-                android:clickable="true"
-                android:focusable="true"/>
+                android:paddingTop="14dp"/>
+        </LinearLayout>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 2: repeated 'Learn more' links"
+            android:layout_marginTop="14dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg">
+            <TextView
+                android:id="@+id/av_linkLearnMore1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Automate tests on real devices. Learn more"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/av_linkLearnMore2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Catch accessibility issues early. Learn more"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:id="@+id/av_linkLearnMore3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Scale your CI pipeline. Learn more"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+        </LinearLayout>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 3: raw URL as link text"
+            android:layout_marginTop="14dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg">
+            <TextView
+                android:id="@+id/av_linkRawUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Documentation: https://www.browserstack.com/docs/app-accessibility/overview?ref=demo&amp;src=apk"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
+            android:text="VIOLATION 4: more ambiguous links"
+            android:layout_marginTop="14dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg">
+            <TextView
+                android:id="@+id/av_linkTapHere"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="To update your billing details, tap here"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/av_linkThis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="For onboarding steps, see this"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:id="@+id/av_linkMore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Integrations are expanding every week. More"
+                android:textColor="@color/text_primary"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
         </LinearLayout>
 
         <TextView
@@ -1117,4 +1409,18 @@
             android:gravity="center"
             android:paddingTop="24dp"/>
     </LinearLayout>
-</ScrollView>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnNextViolation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:paddingHorizontal="20dp"
+        android:text="Next ↓"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:backgroundTint="@color/brand_primary"
+        android:elevation="6dp"/>
+</FrameLayout>
