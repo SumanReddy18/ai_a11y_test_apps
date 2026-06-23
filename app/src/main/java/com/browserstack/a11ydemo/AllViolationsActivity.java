@@ -1,6 +1,8 @@
 package com.browserstack.a11ydemo;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -21,6 +23,18 @@ public class AllViolationsActivity extends BaseChildActivity {
             R.id.sec5, R.id.sec6, R.id.sec7, R.id.sec8
     };
 
+    // Auto-scroll: the screen walks itself through every section, on a loop, so a
+    // continuous accessibility scan captures all of them without any taps. It loops
+    // (rather than scrolling once) because the scan is started by the harness only
+    // after app upload + config — well after launch — so a single pass would race
+    // ahead and miss sections. Looping means any full cycle covers every section.
+    // Dwell long enough per section for the scan to capture the viewport. (The
+    // manual "Next ↓" button still works for hand testing.)
+    private static final long AUTOSCROLL_INITIAL_DELAY_MS = 4000; // settle before the first hop
+    private static final long AUTOSCROLL_STEP_DELAY_MS = 7000;     // dwell per section for the scan
+    private final Handler autoScrollHandler = new Handler(Looper.getMainLooper());
+    private int autoScrollIndex = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +43,7 @@ public class AllViolationsActivity extends BaseChildActivity {
         final ScrollView scroll = findViewById(R.id.allScroll);
         Button next = findViewById(R.id.btnNextViolation);
         next.setOnClickListener(v -> scrollToNextSection(scroll));
+        startAutoScroll(scroll);
 
         // Rule 8 — Link text purpose. A plain clickable TextView is NOT a link to
         // accessibility services, so the rule never fires. Wrap each vague phrase in
@@ -49,6 +64,32 @@ public class AllViolationsActivity extends BaseChildActivity {
         linkify(R.id.av_linkTapHere, "tap here");
         linkify(R.id.av_linkThis, "this");
         linkify(R.id.av_linkMore, "More");
+    }
+
+    /**
+     * Walks through every section on a timer, looping back to the top after the
+     * last one, so a continuous scan captures each section hands-free regardless
+     * of when scanning starts. Each section is held for
+     * {@code AUTOSCROLL_STEP_DELAY_MS} before advancing.
+     */
+    private void startAutoScroll(ScrollView scroll) {
+        autoScrollHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                View anchor = findViewById(SECTION_ANCHORS[autoScrollIndex]);
+                if (anchor != null) {
+                    scroll.smoothScrollTo(0, anchor.getTop());
+                }
+                autoScrollIndex = (autoScrollIndex + 1) % SECTION_ANCHORS.length;
+                autoScrollHandler.postDelayed(this, AUTOSCROLL_STEP_DELAY_MS);
+            }
+        }, AUTOSCROLL_INITIAL_DELAY_MS);
+    }
+
+    @Override
+    protected void onDestroy() {
+        autoScrollHandler.removeCallbacksAndMessages(null);
+        super.onDestroy();
     }
 
     /**
