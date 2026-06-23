@@ -43,7 +43,8 @@ releases/
 ## Flavors (the core mechanism)
 
 Each accessibility rule is a Gradle **product flavor** on the `issue` dimension,
-defined in `app/build.gradle`. There are **9 flavors**: `full` + 8 single-issue.
+defined in `app/build.gradle`. There are **10 flavors**: `full` + 8 single-issue +
+`allViolations`.
 
 | Flavor | applicationIdSuffix | Demonstrates |
 |---|---|---|
@@ -56,6 +57,7 @@ defined in `app/build.gradle`. There are **9 flavors**: `full` + 8 single-issue.
 | `missingHeading` | `.missingheading` | Missing heading |
 | `incorrectHeading` | `.incorrectheading` | Incorrect heading |
 | `linkTextPurpose` | `.linktextpurpose` | Link text purpose |
+| `allViolations` | `.allviolations` | all rules on one screen — launches straight into `AllViolationsActivity` (no home/install screen) |
 
 How a single-issue APK is produced:
 
