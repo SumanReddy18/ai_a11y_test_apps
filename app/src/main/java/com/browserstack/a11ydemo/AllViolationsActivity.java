@@ -30,8 +30,8 @@ public class AllViolationsActivity extends BaseChildActivity {
     // ahead and miss sections. Looping means any full cycle covers every section.
     // Dwell long enough per section for the scan to capture the viewport. (The
     // manual "Next ↓" button still works for hand testing.)
-    private static final long AUTOSCROLL_INITIAL_DELAY_MS = 4000; // settle before the first hop
-    private static final long AUTOSCROLL_STEP_DELAY_MS = 7000;     // dwell per section for the scan
+    private static final long AUTOSCROLL_INITIAL_DELAY_MS = 5000;  // settle before the first hop
+    private static final long AUTOSCROLL_STEP_DELAY_MS = 14000;    // dwell per section for the scan
     private final Handler autoScrollHandler = new Handler(Looper.getMainLooper());
     private int autoScrollIndex = 0;
 
