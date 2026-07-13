@@ -10,7 +10,7 @@
     <string name="rule2_desc">Non-decorative ImageView elements must have a clear contentDescription. Violations: missing, empty, inadequate (generic/filename/mismatched), or hidden from screen readers.</string>
 
     <string name="rule3_title">3. Interactive element accessibility label</string>
-    <string name="rule3_desc">Interactive elements (ImageButton, Button, custom clickable Views) need a non-null, descriptive label. Violations: missing, generic, or contextually inaccurate.</string>
+    <string name="rule3_desc">Every interactive element needs a non-null, descriptive label. Covers interactable (ImageButton/clickable View), Switch, Checkbox, and Editable (EditText) elements. Violations: missing, generic, or contextually inaccurate label.</string>
 
     <string name="rule4_title">4. Meaningful reading order</string>
     <string name="rule4_desc">Screen-reader focus order does not match the logical reading order.</string>

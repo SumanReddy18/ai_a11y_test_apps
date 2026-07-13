@@ -258,7 +258,7 @@
         <TextView android:id="@+id/sec3" style="@style/ScreenH1" android:text="@string/rule3_title"/>
         <TextView style="@style/ScreenSub" android:text="@string/rule3_desc"/>
         <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION: 10 interactive controls, none with a usable label"/>
+            android:text="VIOLATION: interactable, Switch, Checkbox &amp; Editable controls, none with a usable label"/>
 
         <GridLayout
             android:layout_width="match_parent"
@@ -375,6 +375,56 @@
 
         <TextView style="@style/ScreenSub"
             android:text="Missing/empty labels, generic words (&quot;button&quot;, &quot;icon&quot;, &quot;banner&quot;), a filename, a label that contradicts the action, and two custom clickable Views with no label at all."/>
+
+        <!-- Switch elements — Switch element content label -->
+        <TextView android:id="@+id/sec3_switch" style="@style/RuleTitle"
+            android:layout_marginTop="4dp"
+            android:text="Switch elements — Switch element content label"/>
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"/>
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:contentDescription="switch"/>
+
+        <!-- Checkbox elements — Checkbox element content label -->
+        <TextView style="@style/RuleTitle"
+            android:layout_marginTop="16dp"
+            android:text="Checkbox elements — Checkbox element content label"/>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"/>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:contentDescription="checkbox"/>
+
+        <!-- Editable elements — Editable element content label -->
+        <TextView style="@style/RuleTitle"
+            android:layout_marginTop="16dp"
+            android:text="Editable elements — Editable element content label"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:inputType="text"
+            android:importantForAutofill="no"/>
+        <TextView style="@style/ScreenSub"
+            android:paddingTop="12dp" android:paddingBottom="0dp"
+            android:text="Email"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:importantForAutofill="no"/>
+
+        <TextView style="@style/ScreenSub" android:paddingTop="12dp"
+            android:text="Switch &amp; Checkbox: no android:text and no contentDescription (or a generic one). Editable: EditText with no hint, no contentDescription, and a visible &quot;Email&quot; caption not linked via labelFor."/>
 
         <View android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
