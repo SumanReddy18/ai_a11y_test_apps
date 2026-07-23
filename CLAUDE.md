@@ -5,40 +5,51 @@ flavor, or deploying.
 
 ## What this is
 
-A native **Android (Java)** app that *deliberately* violates BrowserStack App
-Accessibility rules, one rule per build "flavor". It is a test fixture for the
-[BrowserStack App Accessibility Issue Detection Agent](https://www.browserstack.com/docs/app-accessibility/ai-powered-testing/issue-detection-agent):
-you upload an APK, the scanner runs, and it should report the violation that the
-APK was built to demonstrate.
+A test fixture for the
+[BrowserStack App Accessibility Issue Detection Agent](https://www.browserstack.com/docs/app-accessibility/ai-powered-testing/issue-detection-agent)
+that *deliberately* violates accessibility rules, one rule per build "flavor". You upload the
+app, the scanner runs, and it should report the violation the build was made to demonstrate.
 
-- Build system: **Gradle** (Android Gradle Plugin), single module `:app`
-- Language: **Java**, `minSdk 24`, `compileSdk`/`targetSdk 34`, Java 17 source level
-- Package: `com.browserstack.a11ydemo`
-- Current version: `versionName 1.2.0` / `versionCode 3` (in `app/build.gradle`)
+The repo is a **monorepo with two platform ports** that reproduce the SAME 8 violations:
+
+- **`android/`** — native **Java** app, **Gradle** flavors. `minSdk 24`, `compileSdk`/`targetSdk 34`,
+  Java 17, package `com.browserstack.a11ydemo`. This is the original / source-of-truth fixture.
+- **`ios/`** — native **SwiftUI** app, **XcodeGen** targets (one per rule), deployment target iOS 16.
+  See `ios/README.md`. Built only on CI (no local iOS SDK) — see [[ios-fixture-ci-builds]].
+
+Both are built and released together by `.github/workflows/release.yml` (see **Releasing** below).
+Current version lives in `android/app/build.gradle` (`versionName`/`versionCode`) and is mirrored
+into `ios/project.yml`; the release workflow bumps both.
 
 ## Repo layout
 
 ```
-app/
-  build.gradle                         # flavors, versioning, APK naming (the important file)
-  src/
-    main/                              # ALL shared code, layouts, strings, drawables
-      java/com/browserstack/a11ydemo/
-        MainActivity.java              # home + quick-jump nav (full flavor only)
-        AllViolationsActivity.java     # every violation on one screen (full flavor only)
-        BaseChildActivity.java         # base: up-navigation; all violation screens extend this
-        <Rule>Activity.java            # one Activity per rule (see table below)
-      res/layout/activity_*.xml        # one layout per rule screen
-      res/values/strings.xml           # ruleN_title / ruleN_desc strings
-      AndroidManifest.xml              # declares ALL activities (the superset)
-    <flavor>/AndroidManifest.xml       # per-flavor override: launcher + remove other activities
-scripts/
-  release.sh                           # build all flavors -> releases/v<version>/ (+ optional version bump)
-  push-to-qa.sh                        # kubectl cp the APKs to the QA live-server pod
-releases/
-  v<version>/*.apk                     # committed pre-built APKs
-  CHANGELOG.md
+android/                               # the Android (Java/Gradle) fixture
+  app/
+    build.gradle                       # flavors, versioning, APK naming (the important file)
+    src/
+      main/                            # ALL shared code, layouts, strings, drawables
+        java/com/browserstack/a11ydemo/
+          MainActivity.java            # home + quick-jump nav (full flavor only)
+          AllViolationsActivity.java   # every violation on one screen (full flavor only)
+          BaseChildActivity.java       # base: up-navigation; all violation screens extend this
+          <Rule>Activity.java          # one Activity per rule (see table below)
+        res/layout/activity_*.xml      # one layout per rule screen
+        res/values/strings.xml         # ruleN_title / ruleN_desc strings
+        AndroidManifest.xml            # declares ALL activities (the superset)
+      <flavor>/AndroidManifest.xml     # per-flavor override: launcher + remove other activities
+  gradlew, settings.gradle, gradle/    # Gradle wrapper + project config
+  scripts/
+    release.sh                         # build all flavors -> releases/v<version>/ (legacy local flow)
+    push-to-qa.sh                      # kubectl cp the APKs to the QA live-server pod
+  releases/v<version>/*.apk            # committed pre-built APKs (historical)
+ios/                                   # the iOS (SwiftUI/XcodeGen) fixture — see ios/README.md
+  project.yml                          # XcodeGen: one target per rule (the important file)
+  Sources/App/…                        # one SwiftUI view per rule + Rule.swift catalog
+.github/workflows/release.yml          # builds BOTH platforms + publishes a GitHub Release
 ```
+
+> Commands below run from **`android/`** unless noted (the Gradle project lives there now).
 
 ## Flavors (the core mechanism)
 
@@ -74,14 +85,19 @@ How a single-issue APK is produced:
 
 ### Adding a new rule/flavor
 
-1. Add `<Rule>Activity.java` (extend `BaseChildActivity`) and `activity_<rule>.xml` in `src/main/`.
-2. Declare the activity in `src/main/AndroidManifest.xml`.
-3. Add a `productFlavors { <rule> { ... } }` block in `app/build.gradle` with a unique
+All Android paths below are under `android/`.
+
+1. Add `<Rule>Activity.java` (extend `BaseChildActivity`) and `activity_<rule>.xml` in `app/src/main/`.
+2. Declare the activity in `app/src/main/AndroidManifest.xml`.
+3. Add a `productFlavors { <rule> { ... } }` block in `android/app/build.gradle` with a unique
    `applicationIdSuffix` / `versionNameSuffix` / `app_name`.
-4. Create `src/<rule>/AndroidManifest.xml` (copy an existing one; set the new activity as
+4. Create `app/src/<rule>/AndroidManifest.xml` (copy an existing one; set the new activity as
    launcher, `tools:node="remove"` all others — and add the new activity to every *other*
    flavor's remove-list).
 5. Wire it into `MainActivity` nav and `AllViolationsActivity` if it should appear in `full`.
+6. **iOS parity** — add the rule to `ios/Sources/App/Rule.swift` (enum case + title/desc/screen),
+   a `Screens/<Rule>View.swift`, and a matching target in `ios/project.yml`. Keep the two ports
+   in lockstep so a scan finds the same violation on both platforms.
 
 ## Critical gotcha: what counts as the violated element
 
@@ -100,6 +116,9 @@ property/role the rule inspects — don't just restyle it.
 
 ## Building
 
+**Primary path is CI** — `.github/workflows/release.yml` builds both platforms on every push to
+`main`. iOS can only be built on CI here (no local iOS SDK). Build Android locally like so:
+
 Toolchain on this machine (no `local.properties`, env not exported globally):
 
 ```bash
@@ -109,36 +128,49 @@ export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools
 export ANDROID_SDK_ROOT="$ANDROID_HOME"
 ```
 
-(`scripts/release.sh` already defaults `ANDROID_HOME`/`ANDROID_SDK_ROOT` to that path; it
+(`android/scripts/release.sh` already defaults `ANDROID_HOME`/`ANDROID_SDK_ROOT` to that path; it
 does **not** set `JAVA_HOME`, so export that yourself if `java` isn't on PATH.)
 
 ```bash
-./gradlew assembleDebug                  # all 9 flavors
-./gradlew assembleLinkTextPurposeDebug   # one flavor
-# outputs: app/build/outputs/apk/<flavor>/debug/ai-app-a11y-detection[-<flavor>]-v<version>.apk
+cd android
+./gradlew assembleDebug                   # all 10 flavors
+./gradlew assembleLinkTextPurposeDebug    # one flavor
+# override version:  -PappVersionName=1.4.0 -PappVersionCode=6
+# outputs: android/app/build/outputs/apk/<flavor>/debug/ai-app-a11y-detection[-<flavor>]-v<version>.apk
 ```
 
 ## Releasing
 
-`scripts/release.sh` builds every flavor and copies the APKs into `releases/v<version>/`.
+**Primary: the release workflow.** Any push to `main` whose head commit message does **not**
+contain `skip ci` will: bump the patch version + versionCode, build ALL Android APKs and ALL iOS
+IPAs at that version, publish a **GitHub Release `v<version>`** with every `.apk`/`.ipa` attached,
+and commit the version bump back with `[skip ci]`. Manual runs (Actions → "Build & Release" → Run
+workflow) accept an explicit version, else auto-bump. To land a commit **without** cutting a
+release, put `skip ci` in the commit message.
+
+**Legacy local flow (Android only, for QA-pod pushes):** `android/scripts/release.sh` builds every
+flavor and copies the APKs into `android/releases/v<version>/`.
 
 ```bash
+cd android
 scripts/release.sh           # rebuild at the CURRENT version (no bump)
 scripts/release.sh 1.3.0     # bump versionName to 1.3.0 + versionCode +1, then build
 ```
 
-The committed APKs under `releases/v<version>/` are the source of truth for `push-to-qa.sh`
-(it copies from there, not from `build/outputs`). If you build manually instead of via
-`release.sh`, copy the fresh APKs into `releases/v<version>/` before pushing.
+The committed APKs under `android/releases/v<version>/` are the source of truth for
+`push-to-qa.sh` (it copies from there, not from `build/outputs`). If you build manually instead of
+via `release.sh`, copy the fresh APKs into `android/releases/v<version>/` before pushing.
 
 ## Pushing to the QA live server
 
 QA serves the APKs from a Kubernetes pod (`qa-components` namespace, EKS staging cluster).
-`scripts/push-to-qa.sh` `kubectl cp`s every APK in `releases/v<version>/` into the pod's
-`.../files/apps/` dir. The version pushed is whatever `versionName` is in `app/build.gradle` —
-the filenames don't change, so existing download URLs serve the new bytes.
+`android/scripts/push-to-qa.sh` `kubectl cp`s every APK in `android/releases/v<version>/` into the
+pod's `.../files/apps/` dir. The version pushed is whatever `versionName` is in
+`android/app/build.gradle` — the filenames don't change, so existing download URLs serve the new
+bytes. (This QA-pod flow is Android-only; iOS `.ipa`s are distributed via the GitHub Release.)
 
 ```bash
+cd android
 # 1. build at the current version
 export JAVA_HOME=/opt/homebrew/opt/openjdk@17; export PATH="$JAVA_HOME/bin:$PATH"
 export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools; export ANDROID_SDK_ROOT="$ANDROID_HOME"

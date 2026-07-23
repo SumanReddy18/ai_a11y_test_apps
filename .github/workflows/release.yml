@@ -1,0 +1,193 @@
+name: Build & Release (APK + IPA)
+
+# On every push to main (unless the head commit message contains "skip ci"), this:
+#   1. bumps the patch version (versionName) and versionCode,
+#   2. builds ALL Android APK flavors and ALL iOS IPA flavors at that version,
+#   3. publishes a GitHub Release v<version> with every .apk and .ipa attached,
+#   4. commits the version bump back to the repo with "[skip ci]" (so it doesn't loop).
+#
+# Manual runs (Actions tab -> Run workflow) can pass an explicit version, else it auto-bumps.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Explicit version (e.g. 1.4.0). Leave blank to auto-bump the patch."
+        required: false
+        default: ""
+  push:
+    branches: [main]
+
+permissions:
+  contents: write        # needed to push the bump commit + create the Release
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # ---------------------------------------------------------------- compute version
+  prepare:
+    # Honour "skip ci" in the triggering commit message. workflow_dispatch has no
+    # head_commit, so contains() is false there and the job runs.
+    if: ${{ !contains(github.event.head_commit.message, 'skip ci') }}
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.calc.outputs.version }}
+      code: ${{ steps.calc.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compute next version
+        id: calc
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+        run: |
+          set -euo pipefail
+          GRADLE=android/app/build.gradle
+          CUR_VER=$(grep -oE '\?:[[:space:]]*"[0-9]+\.[0-9]+\.[0-9]+"' "$GRADLE" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+          CUR_CODE=$(grep -oE "appVersionCode'\)\?\.toInteger\(\) \?: [0-9]+" "$GRADLE" | grep -oE '[0-9]+$' | head -1)
+          if [ -n "${INPUT_VERSION}" ]; then
+            if ! printf '%s' "$INPUT_VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+              echo "Invalid version '$INPUT_VERSION'"; exit 1
+            fi
+            NEW_VER="$INPUT_VERSION"
+          else
+            IFS=. read -r MA MI PA <<< "$CUR_VER"
+            NEW_VER="$MA.$MI.$((PA + 1))"
+          fi
+          NEW_CODE=$((CUR_CODE + 1))
+          echo "current: $CUR_VER ($CUR_CODE) -> new: $NEW_VER ($NEW_CODE)"
+          echo "version=$NEW_VER" >> "$GITHUB_OUTPUT"
+          echo "code=$NEW_CODE"   >> "$GITHUB_OUTPUT"
+
+  # ---------------------------------------------------------------- Android APKs
+  android:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: android-actions/setup-android@v3
+      - name: Build all APK flavors
+        working-directory: android
+        env:
+          VERSION: ${{ needs.prepare.outputs.version }}
+          CODE: ${{ needs.prepare.outputs.code }}
+        run: |
+          ./gradlew assembleDebug \
+            -PappVersionName="$VERSION" \
+            -PappVersionCode="$CODE"
+          mkdir -p ../out
+          find app/build/outputs/apk -name '*.apk' -exec cp {} ../out/ \;
+          ls -lh ../out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apks
+          path: out/*.apk
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------- iOS IPAs
+  ios:
+    needs: prepare
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        working-directory: ios
+        run: xcodegen generate
+      - name: Build unsigned .ipa for every flavor
+        working-directory: ios
+        env:
+          VERSION: ${{ needs.prepare.outputs.version }}
+          CODE: ${{ needs.prepare.outputs.code }}
+        run: |
+          set -euo pipefail
+          MAP=(
+            "A11yDemo:"
+            "A11yDemo-AllViolations:allviolations"
+            "A11yDemo-ImagesText:imagestext"
+            "A11yDemo-ImageViewLabel:imageviewlabel"
+            "A11yDemo-InteractiveLabel:interactivelabel"
+            "A11yDemo-ReadingOrder:readingorder"
+            "A11yDemo-VisualOrder:visualorder"
+            "A11yDemo-MissingHeading:missingheading"
+            "A11yDemo-IncorrectHeading:incorrectheading"
+            "A11yDemo-LinkTextPurpose:linktextpurpose"
+          )
+          mkdir -p ../out
+          for ENTRY in "${MAP[@]}"; do
+            SCHEME="${ENTRY%%:*}"; SUFFIX="${ENTRY#*:}"
+            if [ -z "$SUFFIX" ]; then OUT="ai-app-a11y-detection-v${VERSION}.ipa"
+            else OUT="ai-app-a11y-detection-${SUFFIX}-v${VERSION}.ipa"; fi
+            echo "::group::$SCHEME -> $OUT"
+            rm -rf dd Payload
+            xcodebuild build -project A11yDemo.xcodeproj -scheme "$SCHEME" \
+              -configuration Release -sdk iphoneos -derivedDataPath dd \
+              MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="$CODE" \
+              CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=""
+            APP=$(find dd/Build/Products/Release-iphoneos -maxdepth 1 -name '*.app' | head -1)
+            [ -n "$APP" ] || { echo "No .app for $SCHEME"; exit 1; }
+            mkdir -p Payload && cp -R "$APP" Payload/
+            zip -qry "../out/${OUT}" Payload && rm -rf Payload
+            echo "::endgroup::"
+          done
+          ls -lh ../out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ipas
+          path: out/*.ipa
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------- publish + bump
+  release:
+    needs: [prepare, android, ios]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: apks
+          path: dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: ipas
+          path: dist
+      - name: Bump version in source & commit with [skip ci]
+        env:
+          VERSION: ${{ needs.prepare.outputs.version }}
+          CODE: ${{ needs.prepare.outputs.code }}
+        run: |
+          set -euo pipefail
+          # Android defaults
+          sed -i -E "s/(appVersionCode'\)\?\.toInteger\(\) \?: )[0-9]+/\1${CODE}/" android/app/build.gradle
+          sed -i -E "s/(appVersionName'\) \?: \")[0-9]+\.[0-9]+\.[0-9]+/\1${VERSION}/" android/app/build.gradle
+          # iOS
+          sed -i -E "s/(MARKETING_VERSION: )\"[0-9]+\.[0-9]+\.[0-9]+\"/\1\"${VERSION}\"/" ios/project.yml
+          sed -i -E "s/(CURRENT_PROJECT_VERSION: )\"[0-9]+\"/\1\"${CODE}\"/" ios/project.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add android/app/build.gradle ios/project.yml
+          if git diff --cached --quiet; then
+            echo "No version change to commit"
+          else
+            git commit -m "chore: release v${VERSION} (build ${CODE}) [skip ci]"
+            git push origin HEAD:main
+          fi
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          set -euo pipefail
+          ls -lh dist
+          gh release create "v${VERSION}" dist/*.apk dist/*.ipa \
+            --title "v${VERSION}" \
+            --notes "Automated release. Android APKs + iOS IPAs for all flavors (full, allViolations, and one per rule). iOS builds are unsigned (BrowserStack re-signs on upload)." \
+            --target main
