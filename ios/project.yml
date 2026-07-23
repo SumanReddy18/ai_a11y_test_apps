@@ -1,0 +1,75 @@
+# XcodeGen project definition — run `xcodegen generate` in this dir to produce A11yDemo.xcodeproj.
+# (Install once with: brew install xcodegen)
+#
+# Mirrors the Android app's flavor model: one app target per rule, all sharing the same
+# Swift sources under Sources/. Each target bakes a different A11Y_RULE value into its
+# Info.plist and gets a distinct bundle id, so — exactly like the APK flavors — every
+# single-issue build can be installed side by side and scans exactly one rule.
+
+name: A11yDemo
+
+options:
+  bundleIdPrefix: com.browserstack.a11ydemo
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    MARKETING_VERSION: "1.3.0"          # matches Android versionName
+    CURRENT_PROJECT_VERSION: "4"        # matches Android versionCode
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    INFOPLIST_FILE: App/Info.plist
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    # Leave signing to the builder: unsigned/simulator builds need nothing; a device
+    # .ipa needs a team + `-allowProvisioningUpdates` (see README).
+
+targetTemplates:
+  RuleApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.browserstack.a11ydemo${bundleSuffix}
+        PRODUCT_NAME: ${productName}
+        A11Y_RULE: ${rule}
+
+targets:
+  # full — home nav + every rule reachable (the default, like the `full` flavor)
+  A11yDemo:
+    templates: [RuleApp]
+    templateAttributes: { rule: "full", bundleSuffix: "", productName: "A11yDemo" }
+
+  # allViolations — launches straight into the combined screen
+  A11yDemo-AllViolations:
+    templates: [RuleApp]
+    templateAttributes: { rule: "all", bundleSuffix: ".allviolations", productName: "A11yDemo AllViolations" }
+
+  # one single-issue target per rule (id = Android flavor name)
+  A11yDemo-ImagesText:
+    templates: [RuleApp]
+    templateAttributes: { rule: "imagesText", bundleSuffix: ".imagestext", productName: "A11y ImagesText" }
+  A11yDemo-ImageViewLabel:
+    templates: [RuleApp]
+    templateAttributes: { rule: "imageviewLabel", bundleSuffix: ".imageviewlabel", productName: "A11y ImageViewLabel" }
+  A11yDemo-InteractiveLabel:
+    templates: [RuleApp]
+    templateAttributes: { rule: "interactiveLabel", bundleSuffix: ".interactivelabel", productName: "A11y InteractiveLabel" }
+  A11yDemo-ReadingOrder:
+    templates: [RuleApp]
+    templateAttributes: { rule: "readingOrder", bundleSuffix: ".readingorder", productName: "A11y ReadingOrder" }
+  A11yDemo-VisualOrder:
+    templates: [RuleApp]
+    templateAttributes: { rule: "visualOrder", bundleSuffix: ".visualorder", productName: "A11y VisualOrder" }
+  A11yDemo-MissingHeading:
+    templates: [RuleApp]
+    templateAttributes: { rule: "missingHeading", bundleSuffix: ".missingheading", productName: "A11y MissingHeading" }
+  A11yDemo-IncorrectHeading:
+    templates: [RuleApp]
+    templateAttributes: { rule: "incorrectHeading", bundleSuffix: ".incorrectheading", productName: "A11y IncorrectHeading" }
+  A11yDemo-LinkTextPurpose:
+    templates: [RuleApp]
+    templateAttributes: { rule: "linkTextPurpose", bundleSuffix: ".linktextpurpose", productName: "A11y LinkTextPurpose" }
