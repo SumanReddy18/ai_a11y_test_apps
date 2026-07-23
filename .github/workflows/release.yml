@@ -160,6 +160,9 @@ jobs:
           name: ipas
           path: dist
       - name: Bump version in source & commit with [skip ci]
+        # Only on the auto path (plain push). An explicit-version manual run is a fixed
+        # re-release (e.g. keep serving the same v1.2.0 URLs) — it must NOT rewrite source.
+        if: ${{ github.event.inputs.version == '' }}
         env:
           VERSION: ${{ needs.prepare.outputs.version }}
           CODE: ${{ needs.prepare.outputs.code }}
@@ -187,7 +190,9 @@ jobs:
         run: |
           set -euo pipefail
           ls -lh dist
+          # Idempotent: if a release for this version already exists, replace it so the
+          # same v<version> assets/URLs refresh with the new bytes (existing git tag reused).
+          gh release delete "v${VERSION}" --yes 2>/dev/null || true
           gh release create "v${VERSION}" dist/*.apk dist/*.ipa \
             --title "v${VERSION}" \
-            --notes "Automated release. Android APKs + iOS IPAs for all flavors (full, allViolations, and one per rule). iOS builds are unsigned (BrowserStack re-signs on upload)." \
-            --target main
+            --notes "Android APKs + iOS IPAs for all flavors (full, allViolations, and one per rule). iOS builds are unsigned (BrowserStack re-signs on upload)."
