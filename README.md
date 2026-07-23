@@ -40,7 +40,7 @@ ai-app-a11y-detection-<flavor>-v<version>.apk   ai-app-a11y-detection-<flavor>-v
 Direct download pattern:
 
 ```
-https://github.com/SumanReddy18/app_apk/releases/download/v<version>/ai-app-a11y-detection[-<flavor>]-v<version>.{apk,ipa}
+https://github.com/SumanReddy18/ai_a11y_test_apps/releases/download/v<version>/ai-app-a11y-detection[-<flavor>]-v<version>.{apk,ipa}
 ```
 
 > iOS `.ipa`s are **unsigned** — fine for BrowserStack (it re-signs on upload); they won't sideload
