@@ -22,7 +22,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14       # ships a working Xcode + iOS SDK out of the box
+    runs-on: macos-15       # Xcode 16 — reads XcodeGen's current project format; iOS 18 SDK builds our iOS 16 target
     defaults:
       run:
         working-directory: ios
