@@ -1,67 +1,83 @@
 # app_apk — BrowserStack Issue Detection Agent demo
 
-A native Android app that deliberately violates each of the 5 AI-enhanced
-accessibility rules from the [BrowserStack App Accessibility Issue Detection Agent](https://www.browserstack.com/docs/app-accessibility/ai-powered-testing/issue-detection-agent).
+Test fixtures that **deliberately violate** the 8 AI-enhanced accessibility rules from the
+[BrowserStack App Accessibility Issue Detection Agent](https://www.browserstack.com/docs/app-accessibility/ai-powered-testing/issue-detection-agent).
+Upload a build, run the scan, and it should report the violation that build was made to demonstrate.
 
-Every release produces **6 APKs**:
+Two native ports, kept in lockstep so a scan finds the same violations on both platforms:
 
-| Variant | Purpose | Application ID |
-|---|---|---|
-| **full** | All 5 violations + home, quick-jump nav, and a combined "all on one page" screen | `com.browserstack.a11ydemo` |
-| **imagestext** | Only the "Images with text" violation screen | `com.browserstack.a11ydemo.imagestext` |
-| **imageviewlabel** | Only the "ImageView accessibility label" violation screen | `com.browserstack.a11ydemo.imageviewlabel` |
-| **interactivelabel** | Only the "Interactive element accessibility label" violation screen | `com.browserstack.a11ydemo.interactivelabel` |
-| **readingorder** | Only the "Meaningful reading order" violation screen | `com.browserstack.a11ydemo.readingorder` |
-| **visualorder** | Only the "Meaningful visual order" violation screen | `com.browserstack.a11ydemo.visualorder` |
+- **`android/`** — native **Java** app, Gradle product flavors → **APK** (the original fixture).
+- **`ios/`** — native **SwiftUI** app, XcodeGen targets → **IPA** (see [`ios/README.md`](ios/README.md)).
 
-Each single-issue APK strips the other activities from its manifest, so a
-BrowserStack scan can target one rule at a time. Distinct application IDs
-mean all six can install side-by-side on a single device.
+## The 8 rules × 10 builds
+
+Each rule ships as its own single-issue build (strips the other screens, distinct bundle id, so all
+install side-by-side and a scan targets one rule), plus `full` and `allViolations`:
+
+| Build (flavor / scheme) | Demonstrates |
+|---|---|
+| **full** | All 8 rules + home nav + quick-jump + combined screen |
+| **allViolations** | All 8 rules, one auto-scrolling screen (one violation per step) |
+| imagesText | Images with text |
+| imageviewLabel | Meaningful a11y label for image |
+| interactiveLabel | Interactive element a11y label |
+| readingOrder | Meaningful reading order |
+| visualOrder | Meaningful visual order |
+| missingHeading | Missing heading |
+| incorrectHeading | Incorrect heading |
+| linkTextPurpose | Link text purpose |
 
 ## Download
 
-Pre-built APKs are committed under `releases/v<version>/`. Latest:
+Every release is published on the **[GitHub Releases](../../releases)** page with all 20 artifacts
+attached (each build as both `.apk` and `.ipa`). Filenames:
 
-- **v1.1.0** — [`releases/v1.1.0/`](releases/v1.1.0/)
-- **v1.0.0** — [`releases/v1.0.0/`](releases/v1.0.0/)
-
-See [`releases/CHANGELOG.md`](releases/CHANGELOG.md) for release notes.
-
-## Cutting a new release
-
-```bash
-# Bump versionName + versionCode, build all 6 flavors, copy each APK,
-# and stub a changelog entry:
-scripts/release.sh 1.2.0
-
-# Then edit releases/CHANGELOG.md and commit:
-git add releases/v1.2.0 releases/CHANGELOG.md app/build.gradle
-git commit -m "Release v1.2.0"
-git tag v1.2.0
-git push --follow-tags
+```
+ai-app-a11y-detection-v<version>.apk            ai-app-a11y-detection-v<version>.ipa            (full)
+ai-app-a11y-detection-<flavor>-v<version>.apk   ai-app-a11y-detection-<flavor>-v<version>.ipa   (single-issue)
 ```
 
-To rebuild without bumping the version, run `scripts/release.sh` with no arguments.
+Direct download pattern:
 
-## Build manually
-
-```bash
-./gradlew assembleDebug
-# -> app/build/outputs/apk/<flavor>/debug/ai-app-a11y-detection[-<flavor>]-v<version>.apk
+```
+https://github.com/SumanReddy18/app_apk/releases/download/v<version>/ai-app-a11y-detection[-<flavor>]-v<version>.{apk,ipa}
 ```
 
-To build a single flavor only, e.g. just the "Images with text" APK:
+> iOS `.ipa`s are **unsigned** — fine for BrowserStack (it re-signs on upload); they won't sideload
+> directly onto a physical iPhone without your own signing.
+
+## Cutting a release (CI)
+
+Both platforms build on GitHub Actions — [`.github/workflows/release.yml`](.github/workflows/release.yml).
+
+- **Auto (patch bump):** push to `main`. It bumps the version, builds all APKs + IPAs, publishes a
+  GitHub Release, and commits the bump back with `[skip ci]`. Put `skip ci` in a commit message to
+  land it without releasing.
+- **Fixed version / refresh:** Actions tab → **Build & Release** → *Run workflow* → set `version`
+  (e.g. `1.2.0`). A fixed-version run replaces that release in place and does **not** rewrite the
+  source version — used to keep serving the same `v1.2.0` URLs with refreshed bytes.
+  CLI: `gh workflow run release.yml -f version=1.2.0`.
+
+## Build locally
+
+**Android** (needs JDK 17 + Android SDK — see [`CLAUDE.md`](CLAUDE.md) for the toolchain env):
 
 ```bash
-./gradlew assembleImagesTextDebug
+cd android
+./gradlew assembleDebug                    # all 10 flavors
+./gradlew assembleImagesTextDebug          # one flavor
+# override version: -PappVersionName=1.4.0 -PappVersionCode=6
+# -> android/app/build/outputs/apk/<flavor>/debug/ai-app-a11y-detection[-<flavor>]-v<version>.apk
 ```
 
-## Install
+**iOS** — built on CI only (no local iOS SDK here). To build on a Mac with Xcode, see
+[`ios/README.md`](ios/README.md) (`xcodegen generate` + `xcodebuild`).
+
+## Install (Android)
 
 ```bash
-# Full bundle:
-adb install -r releases/v1.1.0/ai-app-a11y-detection-v1.1.0.apk
-
-# Just the "Images with text" violation:
-adb install -r releases/v1.1.0/ai-app-a11y-detection-imagestext-v1.1.0.apk
+adb install -r ai-app-a11y-detection-v<version>.apk                 # full
+adb install -r ai-app-a11y-detection-linktextpurpose-v<version>.apk  # one rule
 ```
+
+Distinct application IDs mean each flavor installs alongside the others.
