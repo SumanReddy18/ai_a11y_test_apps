@@ -23,6 +23,9 @@ struct ReadingOrderView: View {
                             size: 14, bold: false, color: Theme.textSecondary, priority: 2, top: 10)
                 cta("Buy now", priority: 4)
             }
+            // Explicit container so VoiceOver orders the contained elements strictly by
+            // sortPriority — making the traversal-vs-visual mismatch a detectable violation.
+            .accessibilityElement(children: .contain)
 
             SectionBadge(text: "VIOLATION 2: news article card").padding(.top, 22)
             note("Visual: Headline → Byline → Body → Read more. VoiceOver: Read more → Headline → Body → Byline.")
@@ -35,6 +38,7 @@ struct ReadingOrderView: View {
                             size: 14, bold: false, color: Theme.textPrimary, priority: 2, top: 10)
                 cta("Read more", priority: 4)
             }
+            .accessibilityElement(children: .contain)
 
             SectionBadge(text: "VIOLATION 3: invoice summary").padding(.top, 22)
             note("Visual: Invoice # → Customer → Total → Pay now. VoiceOver: Pay now → Invoice # → Total → Customer.")
@@ -47,6 +51,7 @@ struct ReadingOrderView: View {
                             color: Theme.violationRed, priority: 2, top: 10)
                 cta("Pay now", priority: 4)
             }
+            .accessibilityElement(children: .contain)
         }
     }
 
