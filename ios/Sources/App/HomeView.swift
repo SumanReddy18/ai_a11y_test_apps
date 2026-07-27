@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Home / quick-jump nav — the iOS analogue of MainActivity in the `full` flavor.
-/// Includes the numbered quick-jump grid (1–8) that mirrors the Android NumBtn row.
+/// Includes the numbered quick-jump grid (one per rule) that mirrors the Android NumBtn rows.
 struct HomeView: View {
     private let numberCols = Array(repeating: GridItem(.flexible(), spacing: 10), count: 4)
 
@@ -13,7 +13,7 @@ struct HomeView: View {
                     .foregroundColor(Theme.textPrimary)
                     .accessibilityAddTraits(.isHeader)
 
-                Text("8 AI-enhanced accessibility rules — each violated on its own screen.")
+                Text("\(Rule.allCases.count) AI-enhanced accessibility rules — each violated on its own screen.")
                     .font(.system(size: 13))
                     .foregroundColor(Theme.textSecondary)
 
@@ -43,7 +43,7 @@ struct HomeView: View {
                     AllViolationsView()
                 } label: {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("See all 8 violations on one page →")
+                        Text("See all \(Rule.allCases.count) violations on one page →")
                             .font(.system(size: 16, weight: .bold))
                             .foregroundColor(.white)
                         Text("One scan, all rules fire.")

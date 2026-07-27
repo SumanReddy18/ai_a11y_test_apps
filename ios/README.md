@@ -1,7 +1,7 @@
 # iOS fixture (`ios/`) — the `.ipa` counterpart of the Android app
 
 Native **SwiftUI** port of the Android accessibility demo in this repo. It deliberately
-violates the **same 8 BrowserStack App Accessibility rules**, so the iOS
+violates the **same 9 BrowserStack App Accessibility rules**, so the iOS
 [Issue Detection Agent](https://www.browserstack.com/docs/app-accessibility/ai-powered-testing/issue-detection-agent)
 can be validated the same way the APK validates the Android agent.
 
@@ -77,6 +77,7 @@ each with its own bundle id and an `A11Y_RULE` value baked into `Info.plist`:
 | `missingHeading` | `A11yDemo-MissingHeading` | `…missingheading` | Rule 6 only |
 | `incorrectHeading` | `A11yDemo-IncorrectHeading` | `…incorrectheading` | Rule 7 only |
 | `linkTextPurpose` | `A11yDemo-LinkTextPurpose` | `…linktextpurpose` | Rule 8 only |
+| `inputFieldLabels` | `A11yDemo-InputFieldLabels` | `…inputfieldlabels` | Rule 9 only |
 
 Build a single-issue one by naming its scheme, e.g. `-scheme A11yDemo-LinkTextPurpose`.
 For a quick local run you can also override the selection without a per-target build by
@@ -97,7 +98,8 @@ iOS equivalents used here:
 | 5 | Visual order | scrambled layout order | scrambled `VStack` order (layout only) |
 | 6 | Missing heading | no `accessibilityHeading="true"` | plain `Text`, **no** `.isHeader` trait |
 | 7 | Incorrect heading | `accessibilityHeading="true"` on body/error/button | `.accessibilityAddTraits(.isHeader)` on the wrong elements |
-| 8 | Link text purpose | `ClickableSpan` w/ vague text | `AttributedString` `.link` run w/ vague text |
+| 8 | Link text purpose | `ClickableSpan` w/ vague text | own element w/ the `.isLink` trait + vague text |
+| 9 | Input field labels | missing `labelFor`/`hint`, wrong `inputType` | empty-placeholder `TextField` (no name), wrong `keyboardType`/`textContentType`, plain `TextField` for passwords |
 
 ## Layout
 
@@ -107,7 +109,7 @@ ios/
   App/Info.plist              # shared; A11Y_RULE=$(A11Y_RULE) selects the launch screen
   Sources/App/
     A11yDemoApp.swift         # @main + RootView (reads A11yRuleSelection)
-    Rule.swift                # 8-rule catalog + flavor-equivalent selection logic
+    Rule.swift                # 9-rule catalog + flavor-equivalent selection logic
     Theme.swift               # colours mirrored from Android colors.xml
     Components.swift          # RuleScreen / Card / SectionBadge / TextTile + a11y helpers
     HomeView.swift            # home nav (≈ MainActivity)
@@ -117,7 +119,8 @@ ios/
 
 ## Status
 
-All Swift type-checks cleanly against the macOS SDK (the only iOS-specific APIs it flags —
-`keyboardType`, `navigationBarTitleDisplayMode` — are valid on iOS). It has **not** been
+All Swift type-checks cleanly against the macOS SDK (the only APIs it flags are iOS-only and
+valid on iOS 16: `keyboardType`, `textContentType`, `textInputAutocapitalization`,
+`navigationBarTitleDisplayMode`, `tabViewStyle`/`indexViewStyle`). It has **not** been
 compiled or run on a real iOS SDK/simulator on this machine because full Xcode isn't
 installed here — do a first build in Xcode and sanity-check the screens.

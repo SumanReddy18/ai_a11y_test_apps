@@ -10,7 +10,7 @@ A test fixture for the
 that *deliberately* violates accessibility rules, one rule per build "flavor". You upload the
 app, the scanner runs, and it should report the violation the build was made to demonstrate.
 
-The repo is a **monorepo with two platform ports** that reproduce the SAME 8 violations:
+The repo is a **monorepo with two platform ports** that reproduce the SAME 9 violations:
 
 - **`android/`** — native **Java** app, **Gradle** flavors. `minSdk 24`, `compileSdk`/`targetSdk 34`,
   Java 17, package `com.browserstack.a11ydemo`. This is the original / source-of-truth fixture.
@@ -54,7 +54,7 @@ ios/                                   # the iOS (SwiftUI/XcodeGen) fixture — 
 ## Flavors (the core mechanism)
 
 Each accessibility rule is a Gradle **product flavor** on the `issue` dimension,
-defined in `app/build.gradle`. There are **10 flavors**: `full` + 8 single-issue +
+defined in `app/build.gradle`. There are **11 flavors**: `full` + 9 single-issue +
 `allViolations`.
 
 | Flavor | applicationIdSuffix | Demonstrates |
@@ -68,6 +68,7 @@ defined in `app/build.gradle`. There are **10 flavors**: `full` + 8 single-issue
 | `missingHeading` | `.missingheading` | Missing heading |
 | `incorrectHeading` | `.incorrectheading` | Incorrect heading |
 | `linkTextPurpose` | `.linktextpurpose` | Link text purpose |
+| `inputFieldLabels` | `.inputfieldlabels` | Input field labels (accessible labels + input type) |
 | `allViolations` | `.allviolations` | all rules on one screen — launches straight into `AllViolationsActivity` (no home/install screen) |
 
 How a single-issue APK is produced:
@@ -79,7 +80,7 @@ How a single-issue APK is produced:
    strip every other activity (including `MainActivity` and `AllViolationsActivity`) from the
    built APK. So a scan targets exactly one rule.
 3. **Distinct application IDs** — `applicationIdSuffix` gives each APK a unique package, so all
-   9 can be installed side-by-side on one device.
+   11 can be installed side-by-side on one device.
 4. **APK naming** — the `applicationVariants` block renames outputs to
    `ai-app-a11y-detection[-<flavor>]-v<base-version>.apk` (the `full` flavor has no suffix).
 
@@ -110,6 +111,12 @@ element isn't the right *type*. Concrete examples that have bitten us:
   (set a `SpannableString` + `LinkMovementMethod` in the Activity — see
   `LinkTextPurposeActivity.java`). Only then is the element a "link" whose text is evaluated.
 - **Headings** — heading rules key off `android:accessibilityHeading="true"`, not bold/large text.
+- **Input fields** — the two input-purpose checks read different attributes. "Accessible input
+  field labels" looks for a programmatic name (`android:labelFor` on the caption, `hint`,
+  `contentDescription`) — a caption `TextView` that merely sits above an `EditText` is not a
+  label. "Input type for input fields" compares that detected label against `android:inputType`,
+  so a field must *be labelled* for a type mismatch to fire at all. On iOS a `TextField`'s
+  placeholder becomes its accessibility label, so an unnamed field needs `TextField("", …)`.
 
 When a violation "isn't detected", first check the element actually has the accessibility
 property/role the rule inspects — don't just restyle it.
@@ -133,7 +140,7 @@ does **not** set `JAVA_HOME`, so export that yourself if `java` isn't on PATH.)
 
 ```bash
 cd android
-./gradlew assembleDebug                   # all 10 flavors
+./gradlew assembleDebug                   # all 11 flavors
 ./gradlew assembleLinkTextPurposeDebug    # one flavor
 # override version:  -PappVersionName=1.4.0 -PappVersionCode=6
 # outputs: android/app/build/outputs/apk/<flavor>/debug/ai-app-a11y-detection[-<flavor>]-v<version>.apk

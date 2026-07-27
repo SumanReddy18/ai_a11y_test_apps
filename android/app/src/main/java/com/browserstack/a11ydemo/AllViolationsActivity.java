@@ -20,7 +20,8 @@ public class AllViolationsActivity extends BaseChildActivity {
     // jumps to the next one below the current scroll position.
     private static final int[] SECTION_ANCHORS = {
             R.id.sec1, R.id.sec2, R.id.sec3, R.id.sec4,
-            R.id.sec5, R.id.sec6, R.id.sec7, R.id.sec8
+            R.id.sec5, R.id.sec6, R.id.sec7, R.id.sec8,
+            R.id.sec9
     };
 
     // Auto-scroll: the screen walks itself through every section, on a loop, so a

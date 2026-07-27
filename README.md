@@ -1,6 +1,6 @@
 # app_apk — BrowserStack Issue Detection Agent demo
 
-Test fixtures that **deliberately violate** the 8 AI-enhanced accessibility rules from the
+Test fixtures that **deliberately violate** the 9 AI-enhanced accessibility rules from the
 [BrowserStack App Accessibility Issue Detection Agent](https://www.browserstack.com/docs/app-accessibility/ai-powered-testing/issue-detection-agent).
 Upload a build, run the scan, and it should report the violation that build was made to demonstrate.
 
@@ -9,15 +9,15 @@ Two native ports, kept in lockstep so a scan finds the same violations on both p
 - **`android/`** — native **Java** app, Gradle product flavors → **APK** (the original fixture).
 - **`ios/`** — native **SwiftUI** app, XcodeGen targets → **IPA** (see [`ios/README.md`](ios/README.md)).
 
-## The 8 rules × 10 builds
+## The 9 rules × 11 builds
 
 Each rule ships as its own single-issue build (strips the other screens, distinct bundle id, so all
 install side-by-side and a scan targets one rule), plus `full` and `allViolations`:
 
 | Build (flavor / scheme) | Demonstrates |
 |---|---|
-| **full** | All 8 rules + home nav + quick-jump + combined screen |
-| **allViolations** | All 8 rules, one auto-scrolling screen (one violation per step) |
+| **full** | All 9 rules + home nav + quick-jump + combined screen |
+| **allViolations** | All 9 rules, one auto-scrolling screen (one violation per step) |
 | imagesText | Images with text |
 | imageviewLabel | Meaningful a11y label for image |
 | interactiveLabel | Interactive element a11y label |
@@ -26,10 +26,11 @@ install side-by-side and a scan targets one rule), plus `full` and `allViolation
 | missingHeading | Missing heading |
 | incorrectHeading | Incorrect heading |
 | linkTextPurpose | Link text purpose |
+| inputFieldLabels | Input field labels — accessible labels + input type |
 
 ## Download
 
-Every release is published on the **[GitHub Releases](../../releases)** page with all 20 artifacts
+Every release is published on the **[GitHub Releases](../../releases)** page with all 22 artifacts
 attached (each build as both `.apk` and `.ipa`). Filenames:
 
 ```
@@ -64,7 +65,7 @@ Both platforms build on GitHub Actions — [`.github/workflows/release.yml`](.gi
 
 ```bash
 cd android
-./gradlew assembleDebug                    # all 10 flavors
+./gradlew assembleDebug                    # all 11 flavors
 ./gradlew assembleImagesTextDebug          # one flavor
 # override version: -PappVersionName=1.4.0 -PappVersionCode=6
 # -> android/app/build/outputs/apk/<flavor>/debug/ai-app-a11y-detection[-<flavor>]-v<version>.apk

@@ -118,6 +118,7 @@ jobs:
             "A11yDemo-MissingHeading:missingheading"
             "A11yDemo-IncorrectHeading:incorrectheading"
             "A11yDemo-LinkTextPurpose:linktextpurpose"
+            "A11yDemo-InputFieldLabels:inputfieldlabels"
           )
           mkdir -p ../out
           for ENTRY in "${MAP[@]}"; do

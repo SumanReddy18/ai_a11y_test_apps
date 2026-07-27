@@ -73,3 +73,6 @@ targets:
   A11yDemo-LinkTextPurpose:
     templates: [RuleApp]
     templateAttributes: { rule: "linkTextPurpose", bundleSuffix: ".linktextpurpose", productName: "A11y LinkTextPurpose" }
+  A11yDemo-InputFieldLabels:
+    templates: [RuleApp]
+    templateAttributes: { rule: "inputFieldLabels", bundleSuffix: ".inputfieldlabels", productName: "A11y InputFieldLabels" }

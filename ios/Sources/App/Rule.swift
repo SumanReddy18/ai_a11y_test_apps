@@ -14,6 +14,7 @@ enum Rule: String, CaseIterable, Identifiable {
     case missingHeading
     case incorrectHeading
     case linkTextPurpose
+    case inputFieldLabels
 
     var id: String { rawValue }
 
@@ -28,6 +29,7 @@ enum Rule: String, CaseIterable, Identifiable {
         case .missingHeading:   return "6. Missing heading"
         case .incorrectHeading: return "7. Incorrect heading"
         case .linkTextPurpose:  return "8. Link text purpose"
+        case .inputFieldLabels: return "9. Input field labels"
         }
     }
 
@@ -50,6 +52,8 @@ enum Rule: String, CaseIterable, Identifiable {
             return "Body copy, ads, or error states are marked as headers — heading rotor lands on noise instead of real sections."
         case .linkTextPurpose:
             return "Links labelled \"click here\", \"read more\", or a raw URL don't convey their destination out of context."
+        case .inputFieldLabels:
+            return "Text inputs whose purpose isn't exposed to accessibility services. Covers both input-purpose checks: fields with no accessible label or only a placeholder, and fields whose keyboard/content type contradicts the label — including passwords entered through a plain TextField."
         }
     }
 
@@ -64,6 +68,7 @@ enum Rule: String, CaseIterable, Identifiable {
         case .missingHeading:   MissingHeadingView()
         case .incorrectHeading: IncorrectHeadingView()
         case .linkTextPurpose:  LinkTextPurposeView()
+        case .inputFieldLabels: InputFieldLabelsView()
         }
     }
 }

@@ -29,6 +29,11 @@
             android:label="7. Incorrect heading" android:theme="@style/Theme.Child" />
         <activity android:name=".LinkTextPurposeActivity" android:exported="true"
             android:label="8. Link text purpose" android:theme="@style/Theme.Child" />
+        <!-- windowSoftInputMode=stateHidden: the screen is full of EditTexts; keep the
+             soft keyboard down so a scan sees the whole form. -->
+        <activity android:name=".InputFieldLabelsActivity" android:exported="true"
+            android:label="9. Input field labels" android:theme="@style/Theme.Child"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".AllViolationsActivity" android:exported="false"
             android:label="All violations" android:theme="@style/Theme.Child" />
     </application>

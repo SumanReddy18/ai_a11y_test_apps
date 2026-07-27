@@ -23,6 +23,7 @@
         <activity android:name=".MissingHeadingActivity" tools:node="remove" />
         <activity android:name=".IncorrectHeadingActivity" tools:node="remove" />
         <activity android:name=".LinkTextPurposeActivity" tools:node="remove" />
+        <activity android:name=".InputFieldLabelsActivity" tools:node="remove" />
     </application>
 
 </manifest>

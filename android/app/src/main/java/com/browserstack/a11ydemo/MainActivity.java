@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         wire(R.id.btn6, MissingHeadingActivity.class);
         wire(R.id.btn7, IncorrectHeadingActivity.class);
         wire(R.id.btn8, LinkTextPurposeActivity.class);
+        wire(R.id.btn9, InputFieldLabelsActivity.class);
 
         wire(R.id.btnAll, AllViolationsActivity.class);
 
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         wire(R.id.num6, MissingHeadingActivity.class);
         wire(R.id.num7, IncorrectHeadingActivity.class);
         wire(R.id.num8, LinkTextPurposeActivity.class);
+        wire(R.id.num9, InputFieldLabelsActivity.class);
     }
 
     private void wire(int id, Class<?> target) {
