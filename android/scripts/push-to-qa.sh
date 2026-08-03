@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
-# Push the current release's 8 APKs to the qa-components live-server pod.
+# Push every APK in releases/v<version>/ to the qa-components live-server pod.
 #
 # Usage:
 #   scripts/push-to-qa.sh                                  # auto-discover pod, use defaults below
 #   scripts/push-to-qa.sh --build                          # rebuild APKs first (no version bump)
 #   scripts/push-to-qa.sh --pod qa-live-server-xxxx-yyyy   # override pod name (skip auto-discovery)
 #   POD=... NAMESPACE=... DEST=... scripts/push-to-qa.sh   # override via env
+#   VERSION=1.3.1 scripts/push-to-qa.sh                    # push a specific release dir
 #
-# The version pushed is whatever versionName is currently set in app/build.gradle.
+# The version pushed defaults to the versionName currently set in app/build.gradle.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -32,7 +33,15 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-VERSION_NAME="$(grep -oE 'versionName "[^"]+"' app/build.gradle | head -1 | sed -E 's/versionName "([^"]+)"/\1/')"
+# versionName is CI-overridable — it reads
+#   versionName (project.findProperty('appVersionName') ?: "1.3.1")
+# so pick the default out of the elvis operator (same expression release.yml uses).
+VERSION_NAME="${VERSION:-$(grep -oE '\?:[[:space:]]*"[0-9]+\.[0-9]+\.[0-9]+"' app/build.gradle \
+    | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)}"
+if [[ -z "$VERSION_NAME" ]]; then
+    echo "ERROR: could not read versionName from app/build.gradle. Pass VERSION=<x.y.z>." >&2
+    exit 1
+fi
 RELEASE_DIR="releases/v${VERSION_NAME}"
 
 if [[ "$DO_BUILD" -eq 1 ]]; then
