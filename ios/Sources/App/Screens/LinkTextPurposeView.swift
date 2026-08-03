@@ -2,63 +2,115 @@ import SwiftUI
 
 /// Rule 8 — Link text purpose.
 ///
-/// Each coloured phrase is a distinct accessibility element carrying the `.isLink` trait, whose
-/// accessible name — "click here", "Read more", "here", three identical "Learn more", a raw URL,
-/// "tap here", "this", "More" — fails to convey its destination. Mirrors
-/// activity_link_text_purpose.xml + LinkTextPurposeActivity.java, where Android wrapped each
-/// phrase in a ClickableSpan.
+/// Every coloured phrase is a real link element whose accessible name — "click here", "Read more",
+/// "here", three identical "Learn more", a raw URL, a filename, "#", an arrow — fails to convey its
+/// destination. Mirrors activity_link_text_purpose.xml + LinkTextPurposeActivity.java, where
+/// Android wraps each phrase in a ClickableSpan.
 ///
-/// NOTE (the gotcha): an inline `AttributedString.link` inside a larger `Text` is NOT exposed as a
-/// separate link element to iOS accessibility — the whole sentence becomes one text element and the
-/// rule never fires. So each link must be its OWN view with `.accessibilityAddTraits(.isLink)`.
+/// NOTE (the gotcha, twice over):
+///  1. An inline `AttributedString.link` inside a larger `Text` is NOT exposed as a separate link
+///     element — the whole sentence becomes one text element and the rule never fires. Each link
+///     must be its own view.
+///  2. `Text(phrase).accessibilityAddTraits(.isLink)` is not enough either: that is static text
+///     merely *claiming* the trait, with no activation behind it, so a scanner looking for real
+///     link elements skips it. This screen uses SwiftUI's native `Link` — a genuine link element
+///     with a destination — and, in the last section, `Button`/`Image` carrying `.isLink`, so the
+///     fixture offers several element shapes rather than betting on one.
+///
+/// The destination uses an unregistered custom scheme: the links are real to accessibility, but a
+/// crawler that taps one cannot navigate away from the app under scan.
 struct LinkTextPurposeView: View {
+    private static let dest = URL(string: "a11ydemo://destination")!
+
     var body: some View {
         RuleScreen(
             title: Rule.linkTextPurpose.title,
             subtitle: Rule.linkTextPurpose.desc,
-            footer: "Every coloured phrase above is a real link (an element with the Link trait), but its label (\"click here\", \"Read more\", \"here\", three identical \"Learn more\", a raw URL, \"tap here\", \"this\", \"More\") fails to describe its destination out of context."
+            footer: "Four different flavours of the same failure: vague action phrases, three identical \"Learn more\" links pointing at different pages, machine text (a raw URL, a filename, \"#\") used as the label, and links whose name is a symbol or the word \"link\". Read out of context by a screen reader, not one of them says where it goes."
         ) {
-            SectionBadge(text: "VIOLATION 1: article footer links")
+            SectionBadge(text: "VIOLATION 1: vague action phrases")
             Card {
                 link("To view our refund policy,", "click here")
                 link("New pricing is now live.", "Read more", top: 14)
                 link("Full release notes are available", "here", top: 14)
+                link("To update your billing details,", "tap here", top: 14)
             }
 
-            SectionBadge(text: "VIOLATION 2: repeated 'Learn more' links").padding(.top, 18)
+            SectionBadge(text: "VIOLATION 2: identical text, different destinations").padding(.top, 18)
             Card {
                 link("Automate tests on real devices.", "Learn more")
                 link("Catch accessibility issues early.", "Learn more", top: 14)
                 link("Scale your CI pipeline.", "Learn more", top: 14)
             }
 
-            SectionBadge(text: "VIOLATION 3: raw URL as link text").padding(.top, 18)
+            SectionBadge(text: "VIOLATION 3: machine text as the link label").padding(.top, 18)
             Card {
                 link("Documentation:",
                      "https://www.browserstack.com/docs/app-accessibility/overview?ref=demo&src=apk")
+                link("Signed agreement:", "policy_v2_final.pdf", top: 14)
+                link("Skip to the pricing table:", "#", top: 14)
             }
 
-            SectionBadge(text: "VIOLATION 4: more ambiguous links").padding(.top, 18)
+            SectionBadge(text: "VIOLATION 4: links with no text at all").padding(.top, 18)
             Card {
-                link("To update your billing details,", "tap here")
-                link("For onboarding steps, see", "this", top: 14)
-                link("Integrations are expanding every week.", "More", top: 14)
+                // Same violation via other element shapes: a Button and an Image wearing .isLink.
+                buttonLink("Continue to the next chapter", "→")
+                buttonLink("Manage your subscription", "Click", top: 14)
+                imageLink("Open the help centre", top: 14)
             }
         }
     }
 
-    /// A context line (plain text) plus the vague phrase as its OWN accessibility element with the
-    /// `.isLink` trait, so the scanner sees a link whose accessible name is exactly `phrase`.
+    // MARK: - Link shapes
+
+    /// A context line plus a native `Link` — a genuine link element whose accessible name is
+    /// exactly `phrase`.
     private func link(_ context: String, _ phrase: String, top: CGFloat = 0) -> some View {
+        row(context, top: top) {
+            Link(destination: Self.dest) {
+                Text(phrase)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(Theme.brandPrimary)
+                    .underline()
+            }
+        }
+    }
+
+    /// A tappable control carrying the link trait — the shape a scanner filtering on interactive
+    /// elements will pick up.
+    private func buttonLink(_ context: String, _ phrase: String, top: CGFloat = 0) -> some View {
+        row(context, top: top) {
+            Button(action: {}) {
+                Text(phrase)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(Theme.brandPrimary)
+                    .underline()
+            }
+            .accessibilityAddTraits(.isLink)
+        }
+    }
+
+    /// A link whose only label is the word "link" on an icon — no destination information at all.
+    private func imageLink(_ context: String, top: CGFloat = 0) -> some View {
+        row(context, top: top) {
+            Image(systemName: "arrow.up.forward.square.fill")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 26, height: 26)
+                .foregroundColor(Theme.brandPrimary)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("link")
+                .accessibilityAddTraits(.isLink)
+        }
+    }
+
+    private func row<Content: View>(_ context: String, top: CGFloat,
+                                    @ViewBuilder _ content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(context)
                 .font(.system(size: 14))
                 .foregroundColor(Theme.textPrimary)
-            Text(phrase)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(Theme.brandPrimary)
-                .underline()
-                .accessibilityAddTraits(.isLink)   // <- this is what makes it a "link" to the scanner
+            content()
         }
         .padding(.top, top)
         .frame(maxWidth: .infinity, alignment: .leading)

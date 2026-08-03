@@ -110,6 +110,19 @@ element isn't the right *type*. Concrete examples that have bitten us:
   accessibility services, so the rule never fires. Links must carry a `ClickableSpan`/`URLSpan`
   (set a `SpannableString` + `LinkMovementMethod` in the Activity — see
   `LinkTextPurposeActivity.java`). Only then is the element a "link" whose text is evaluated.
+  On iOS an inline `AttributedString.link` inside a larger `Text` is not a separate element either
+  — and `Text(…).accessibilityAddTraits(.isLink)` is *still* not enough: that is static text merely
+  claiming the trait, with no activation behind it, and the scan skips it. Use SwiftUI's native
+  `Link` (real link element + destination); `LinkTextPurposeView` also offers `Button`/`Image`
+  variants carrying `.isLink` so detection doesn't hinge on one element shape.
+- **Images with text** — the rule needs an element that really is an image *and* pixels a scanner
+  can read words out of. Two ways this silently fails: a photo that merely happens to contain text
+  (graffiti, a page of a book) reads as an ordinary photo and is illegible once scaled into a grid
+  cell; and on iOS, a coloured `ZStack` holding a SwiftUI `Text` tagged `.isImage` is not an image
+  at all — the words are live text in the render tree, so there is nothing to find text *inside*.
+  Android uses real bitmaps; iOS rasterises its own with `UIGraphicsImageRenderer` (see
+  `TextArtwork` in `Components.swift`). Prefer several *kinds* of text-bearing graphic — banner,
+  chart, screenshot of a paragraph, table, wordmark — over N variations of one.
 - **Headings** — heading rules key off `android:accessibilityHeading="true"`, not bold/large text.
 - **Input fields** — the two input-purpose checks read different attributes. "Accessible input
   field labels" looks for a programmatic name (`android:labelFor` on the caption, `hint`,
