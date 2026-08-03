@@ -183,11 +183,15 @@ via `release.sh`, copy the fresh APKs into `android/releases/v<version>/` before
 
 ## Pushing to the QA live server
 
-QA serves the APKs from a Kubernetes pod (`qa-components` namespace, EKS staging cluster).
-`android/scripts/push-to-qa.sh` `kubectl cp`s every APK in `android/releases/v<version>/` into the
-pod's `.../files/apps/` dir. The version pushed is whatever `versionName` is in
-`android/app/build.gradle` — the filenames don't change, so existing download URLs serve the new
-bytes. (This QA-pod flow is Android-only; iOS `.ipa`s are distributed via the GitHub Release.)
+QA serves the builds from a Kubernetes pod (`qa-components` namespace, EKS staging cluster).
+`android/scripts/push-to-qa.sh` `kubectl cp`s every `.apk` **and `.ipa`** in
+`android/releases/v<version>/` into the pod's `.../files/apps/` dir. The version pushed is whatever
+`versionName` is in `android/app/build.gradle` (override with `VERSION=`) — the filenames don't
+change, so existing download URLs serve the new bytes.
+
+The pod is a plain file server, so it serves both platforms. Only the *build* half is
+Android-only: `--build`/`release.sh` is Gradle, and iOS can only be built on CI — so fetch the
+`.ipa`s from the GitHub Release into the same dir before pushing (step 2 below).
 
 ```bash
 cd android
@@ -198,6 +202,10 @@ export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools; export ANDROID
 
 # 2. sync fresh APKs into the release dir (release.sh does this for you; manual builds need it)
 for apk in app/build/outputs/apk/*/debug/*.apk; do cp -f "$apk" releases/v1.2.0/; done
+
+# 2b. to serve the iOS builds too, pull the IPAs from the GitHub Release into the same dir
+gh release download v1.3.1 --pattern '*.ipa' --dir releases/v1.3.1 --clobber
+# (same trick works for the APKs if you'd rather serve CI's exact bytes than a local build)
 
 # 3. push (auto-discovers the Running pod via label browserstack.com/application=qa-live-server)
 scripts/push-to-qa.sh

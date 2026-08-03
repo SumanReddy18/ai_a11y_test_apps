@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Push every APK in releases/v<version>/ to the qa-components live-server pod.
+# Push every APK and IPA in releases/v<version>/ to the qa-components live-server pod.
 #
 # Usage:
 #   scripts/push-to-qa.sh                                  # auto-discover pod, use defaults below
@@ -9,6 +9,10 @@
 #   VERSION=1.3.1 scripts/push-to-qa.sh                    # push a specific release dir
 #
 # The version pushed defaults to the versionName currently set in app/build.gradle.
+#
+# --build only rebuilds the Android APKs (release.sh is Gradle-only; iOS needs CI). To serve the
+# iOS builds too, drop the .ipa files into the release dir first:
+#   gh release download v<version> --pattern '*.ipa' --dir releases/v<version> --clobber
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -55,11 +59,11 @@ if [[ ! -d "$RELEASE_DIR" ]]; then
 fi
 
 shopt -s nullglob
-APKS=( "$RELEASE_DIR"/*.apk )
+BUILDS=( "$RELEASE_DIR"/*.apk "$RELEASE_DIR"/*.ipa )
 shopt -u nullglob
 
-if [[ ${#APKS[@]} -eq 0 ]]; then
-    echo "ERROR: no APKs in $RELEASE_DIR" >&2
+if [[ ${#BUILDS[@]} -eq 0 ]]; then
+    echo "ERROR: no .apk or .ipa in $RELEASE_DIR" >&2
     exit 1
 fi
 
@@ -90,18 +94,18 @@ if [[ -z "$POD" ]]; then
     echo "  -> resolved pod: $POD"
 fi
 
-echo "Pushing ${#APKS[@]} APK(s) from $RELEASE_DIR"
+echo "Pushing ${#BUILDS[@]} build(s) from $RELEASE_DIR"
 echo "  -> pod:       $POD"
 echo "  -> namespace: $NAMESPACE"
 echo "  -> dest:      $DEST"
 echo
 
-for apk in "${APKS[@]}"; do
-    name="$(basename "$apk")"
-    echo "kubectl cp $apk $POD:$DEST -n $NAMESPACE"
-    kubectl cp "$apk" "$POD:$DEST" -n "$NAMESPACE"
+for build in "${BUILDS[@]}"; do
+    name="$(basename "$build")"
+    echo "kubectl cp $build $POD:$DEST -n $NAMESPACE"
+    kubectl cp "$build" "$POD:$DEST" -n "$NAMESPACE"
     echo "  done: $name"
 done
 
 echo
-echo "Pushed ${#APKS[@]} APK(s) to $POD:$DEST"
+echo "Pushed ${#BUILDS[@]} build(s) to $POD:$DEST"
