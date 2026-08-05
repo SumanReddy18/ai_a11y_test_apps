@@ -2,10 +2,14 @@ import SwiftUI
 
 /// Every violation, one full screen at a time — the iOS analogue of AllViolationsActivity.
 ///
-/// Uses a paged `TabView`: each page is ONE rule's complete screen. Auto-scroll advances to the
-/// next page on a loop so a continuous accessibility scan captures each violation in full, one at
-/// a time (rather than a scrambled merge of half-screens). A manual "Next" button also advances.
-/// It loops because the scan starts well after launch — any full cycle covers every rule.
+/// Renders ONLY the current rule's screen. Auto-scroll advances to the next one on a loop so a
+/// continuous accessibility scan captures each violation in full, one at a time (rather than a
+/// scrambled merge of half-screens). A manual "Next" button also advances. It loops because the
+/// scan starts well after launch — any full cycle covers every rule.
+///
+/// Deliberately NOT a paged `TabView`: that builds all 9 screens up front (~27 UIKit-backed
+/// TextFields/Toggles + 10 images), which is what made this screen slow to open and janky to
+/// advance. Trade-off: no swipe gesture and no page dots — use "Next", or wait for the timer.
 struct AllViolationsView: View {
     private static let initialDelay: Double = 5    // settle before the first hop (matches Android)
     private static let dwell: Double = 14          // seconds held per screen for the scan
@@ -24,14 +28,10 @@ struct AllViolationsView: View {
                 .background(Theme.bg)
                 .accessibilityHidden(true)
 
-            TabView(selection: $index) {
-                ForEach(Array(rules.enumerated()), id: \.offset) { i, rule in
-                    rule.screen
-                        .tag(i)
-                }
-            }
-            .tabViewStyle(.page(indexDisplayMode: .always))
-            .indexViewStyle(.page(backgroundDisplayMode: .always))
+            // .id() gives each rule a fresh identity, so its @State starts clean on every pass.
+            rules[index].screen
+                .id(index)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .background(Theme.bg)
         .navigationTitle("All violations")
@@ -51,7 +51,8 @@ struct AllViolationsView: View {
         }
     }
 
+    // Hard cut, no cross-fade: a scan firing mid-transition would capture a blend of two screens.
     private func advance() {
-        withAnimation(.easeInOut) { index = (index + 1) % rules.count }
+        index = (index + 1) % rules.count
     }
 }

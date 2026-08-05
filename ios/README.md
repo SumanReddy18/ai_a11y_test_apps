@@ -121,6 +121,6 @@ ios/
 
 All Swift type-checks cleanly against the macOS SDK (the only APIs it flags are iOS-only and
 valid on iOS 16: `keyboardType`, `textContentType`, `textInputAutocapitalization`,
-`navigationBarTitleDisplayMode`, `tabViewStyle`/`indexViewStyle`). It has **not** been
+`navigationBarTitleDisplayMode`, `navigationDestination`). It has **not** been
 compiled or run on a real iOS SDK/simulator on this machine because full Xcode isn't
 installed here — do a first build in Xcode and sanity-check the screens.

@@ -25,9 +25,7 @@ struct HomeView: View {
 
                 LazyVGrid(columns: numberCols, spacing: 10) {
                     ForEach(Array(Rule.allCases.enumerated()), id: \.offset) { i, rule in
-                        NavigationLink {
-                            rule.screen.navigationTitle(rule.title)
-                        } label: {
+                        NavigationLink(value: rule) {
                             Text("\(i + 1)")
                                 .font(.system(size: 20, weight: .bold))
                                 .foregroundColor(.white)
@@ -57,9 +55,7 @@ struct HomeView: View {
                 }
 
                 ForEach(Rule.allCases) { rule in
-                    NavigationLink {
-                        rule.screen.navigationTitle(rule.title)
-                    } label: {
+                    NavigationLink(value: rule) {
                         Card {
                             Text(rule.title)
                                 .font(.system(size: 17, weight: .bold))
@@ -75,6 +71,11 @@ struct HomeView: View {
                 }
             }
             .padding(20)
+        }
+        // One destination for all 18 rule links. The closure form — NavigationLink { screen } —
+        // builds every destination as the row appears; here a screen is built only when pushed.
+        .navigationDestination(for: Rule.self) { rule in
+            rule.screen.navigationTitle(rule.title)
         }
         .background(Theme.bg)
         .navigationTitle("Home")
