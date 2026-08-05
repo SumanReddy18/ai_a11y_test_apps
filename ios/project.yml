@@ -31,6 +31,11 @@ targetTemplates:
     platform: iOS
     sources:
       - path: Sources
+      # Rule 1 uses the SAME JPEGs as the Android fixture — one copy, referenced from the
+      # Android drawable dir so the two ports can never drift apart.
+      - path: ../android/app/src/main/res/drawable
+        includes: ["unsplash_text_*.jpg"]
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.browserstack.a11ydemo${bundleSuffix}
