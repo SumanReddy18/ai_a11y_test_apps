@@ -122,8 +122,14 @@ private struct OptionalLabel: ViewModifier {
 
 /// Names the AI task a screen is for, the on-device rules that feed it, and any other task
 /// that is expected to appear anyway — so the expected result can be read off a screenshot
-/// instead of the source. Hidden from VoiceOver: this is fixture scaffolding, not part of
-/// the surface under test.
+/// instead of the source.
+///
+/// NOT hidden from VoiceOver. missing-heading has no isAccessible guard — it fires on any
+/// visible static-text leaf carrying text — so `.accessibilityHidden(true)` did not keep these
+/// out of its candidate set. It only made them hidden text that the AI then judged "should be a
+/// heading", producing a junk missing-heading violation at the top of every screen. The title
+/// line is a real heading instead, which is what it visually is; the detail line stays plain
+/// body text, small and clearly subordinate, so it should pass on its own merits.
 struct AiCaption: View {
     let task: String
     let rules: String
@@ -134,6 +140,7 @@ struct AiCaption: View {
             Text(task)
                 .font(.system(size: 11, weight: .semibold, design: .monospaced))
                 .foregroundColor(Theme.brandPrimary)
+                .accessibilityAddTraits(.isHeader)
             Text(rules)
                 .font(.system(size: 10, design: .monospaced))
                 .foregroundColor(Theme.textSecondary)
@@ -144,6 +151,5 @@ struct AiCaption: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityHidden(true)
     }
 }
