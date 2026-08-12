@@ -26,6 +26,16 @@ enum RulePaging {
 }
 
 struct RuleScreen<Content: View>: View {
+    /// Set `false` for screens whose rule reads POSITION or FOCUS ORDER.
+    ///
+    /// Paging is a net win on most screens (it drags below-the-fold violations into a captured
+    /// viewport), but meaningful-reading-order and meaningful-visual-order are whole-tree rules
+    /// evaluated against one snapshot: reading order intersects the focus caption with elements
+    /// that have non-zero bounds, and visual order sorts by y/x. If the screen moves between the
+    /// caption capture and the tree capture, elements scroll out of bounds and drop from the
+    /// sequence — and reading order bails outright when the surviving uid list contains a
+    /// duplicate. A still screen that fits one viewport is what makes those two fire every run.
+    var paged: Bool = true
     @ViewBuilder var content: () -> Content
     @State private var page = 0
 
@@ -47,6 +57,7 @@ struct RuleScreen<Content: View>: View {
             // reported while the label violations at the top always were. Page down on a loop;
             // it loops because the scan starts well after launch.
             .task {
+                guard paged else { return }
                 try? await Task.sleep(nanoseconds: UInt64(RulePaging.initialDelay * 1_000_000_000))
                 while !Task.isCancelled {
                     page = (page + 1) % RulePaging.pages

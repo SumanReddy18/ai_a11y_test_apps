@@ -8,7 +8,7 @@ import SwiftUI
 struct VisualOrderView: View {
 
     var body: some View {
-        RuleScreen {
+        RuleScreen(paged: false) {
             AiCaption(task: "AI: check_visual_order  ·  meaningful-visual-order",
                       rules: "Every screen also raises reading/visual order + missing/incorrect heading")
 
