@@ -115,6 +115,15 @@ element isn't the right *type*. Concrete examples that have bitten us:
   claiming the trait, with no activation behind it, and the scan skips it. Use SwiftUI's native
   `Link` (real link element + destination); `LinkTextPurposeView` also offers `Button`/`Image`
   variants carrying `.isLink` so detection doesn't hinge on one element shape.
+  **And the span must cover the whole element.** `link_text_purpose.rb` judges the element's
+  *speakable text*, not the span's substring: a `ClickableSpan` over "click here" inside "To view
+  our refund policy, click here" produced `detectedLabel: "To view our refund policy, click here"`,
+  which does convey a purpose, so it passed. Only the line whose sentence contained a raw URL was
+  ever reported. Each link therefore gets its own `TextView` holding nothing but the phrase, spanned
+  end-to-end (`LinkTextPurposeActivity.linkifyWholeText`). Then the phrase is an exact match against
+  the rule's stop-word list — `click here`, `read more`, `here`, `learn more`, `tap here`, `this`,
+  `more`, `continue`, `details`, `submit`, `open`, `download`, … — which is a deterministic FAIL, no
+  AI review involved. Non-stop-words (a raw URL, a filename, `#`) still go to AI with just the phrase.
 - **Images with text** — the rule needs an element that really is an image *and* pixels a scanner
   can read words out of. Two ways this silently fails: a photo that merely happens to contain text
   (graffiti, a page of a book) reads as an ordinary photo and is illegible once scaled into a grid
@@ -124,15 +133,44 @@ element isn't the right *type*. Concrete examples that have bitten us:
   `TextArtwork` in `Components.swift`). Prefer several *kinds* of text-bearing graphic — banner,
   chart, screenshot of a paragraph, table, wordmark — over N variations of one.
 - **Headings** — heading rules key off `android:accessibilityHeading="true"`, not bold/large text.
+  But `missing-heading` needs *both*: it collects every visible simple-text leaf with its
+  `isHeading` flag and an AI pass decides which ones **visually function** as headings. Pseudo-
+  headings at 14sp regular over 13sp body read as body text, so the only thing reported on the
+  Android screen was the ActionBar title (`text: "6. Missing heading", isHeading: false`) — our
+  twelve fake section titles were all judged body copy. They are now 20sp bold over 13sp
+  secondary. Keep that gap when editing these screens; and note the ActionBar title is itself a
+  standing candidate on every screen.
+- **Meaningful reading order** — the rule does *not* read `android:accessibilityTraversalAfter`
+  off the view. It needs `snapshot['focusOrder']` (a captured TalkBack traversal) in
+  `common_info.android_focus_order_caption_data`; with that missing the focus sequence is empty and
+  the rule returns NOT_APPLICABLE without looking at the app at all. It also processes only the
+  *first* element of a snapshot, so at most one finding per screen. If the traversal attributes are
+  right and nothing is reported, the gap is scan-side focus-order capture, not the fixture.
 - **Input fields** — the two input-purpose checks read different attributes. "Accessible input
   field labels" looks for a programmatic name (`android:labelFor` on the caption, `hint`,
   `contentDescription`) — a caption `TextView` that merely sits above an `EditText` is not a
   label. "Input type for input fields" compares that detected label against `android:inputType`,
   so a field must *be labelled* for a type mismatch to fire at all. On iOS a `TextField`'s
   placeholder becomes its accessibility label, so an unnamed field needs `TextField("", …)`.
+  Two more things that silently killed "Input type for input fields":
+  `android:importantForAutofill="no"` (it was on every field) strips the *autofill metadata* the
+  rule inspects alongside the type, so the type-violation fields now carry a deliberately
+  contradicting `android:autofillHints` instead; and on iOS `keyboardType`/`textContentType` are
+  not accessibility attributes at all, so the only half of this rule iOS reliably exposes is
+  secure entry — a plain `TextField` where a `SecureField` belongs shows up as a different
+  element type.
+- **Below the fold is invisible** — the scan captures the viewport and does not scroll, so a
+  violation on the second screenful is simply never seen. This is why the input-type violations
+  (~960dp down a 1700dp screen) were rarely reported while the label violations at the top always
+  were. Every scrollable rule screen therefore pages itself down on a loop:
+  `BaseChildActivity.onContentChanged` on Android (`AllViolationsActivity` opts out via
+  `autoScrollsContent()`, it walks its own section anchors), `RuleScreen` + `RulePaging` on iOS.
+  Keep `AllViolationsView`'s per-rule dwell at `RulePaging.fullPassSeconds` or that build only
+  ever shows each rule's top viewport.
 
 When a violation "isn't detected", first check the element actually has the accessibility
-property/role the rule inspects — don't just restyle it.
+property/role the rule inspects — don't just restyle it. Then check it is on the first screenful,
+or that the screen pages itself.
 
 ## Building
 
@@ -243,8 +281,20 @@ flavor installs alongside the others.
 
 ## Conventions
 
-- One Activity + one layout per rule; keep violation screens self-explanatory (section labels,
-  red "VIOLATION" badges, an explanatory footer describing what should be flagged).
+- One Activity + one layout per rule.
+- **Violation screens carry NO chrome, on both platforms.** No screen title, no subtitle, no red
+  "VIOLATION N" badge, no per-section note, no explanatory footer. Every one of those is a real
+  element in the accessibility tree, so a scanned screen was mostly text that *isn't* a violation
+  — and on iOS the old `RuleScreen` title even carried `.isHeader`, handing the `missingHeading`
+  build a perfectly correct heading. The upstream fixtures
+  ([iOS](https://github.com/browserstack/app-accessibility-ios-app/tree/app-for-issue-details),
+  [Android](https://github.com/browserstack/app-accessibility-android-app/tree/multi-page-regression-app))
+  ship violating elements and little else; the iOS one gets every violation off a single screen.
+  Put the explanation in an XML comment or the SwiftUI view's doc comment — somewhere the scanner
+  cannot see it. A caption that is *part* of a violation (an unassociated "Email" label above an
+  unnamed field) is not chrome; keep it.
+- `AllViolationsActivity`'s auto-scroll anchors (`sec1…sec9`) therefore sit on layout containers
+  and 1dp dividers, never on a heading TextView.
 - Don't bump the version just to refresh a screen's content — rebuild at the same version and
   re-push (the user often wants the same URL to serve corrected bytes).
 - Commit the rebuilt `releases/v<version>/*.apk` alongside the source change so the committed

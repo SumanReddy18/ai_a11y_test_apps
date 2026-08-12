@@ -23,12 +23,8 @@ struct LinkTextPurposeView: View {
     private static let dest = URL(string: "a11ydemo://destination")!
 
     var body: some View {
-        RuleScreen(
-            title: Rule.linkTextPurpose.title,
-            subtitle: Rule.linkTextPurpose.desc,
-            footer: "Four different flavours of the same failure: vague action phrases, three identical \"Learn more\" links pointing at different pages, machine text (a raw URL, a filename, \"#\") used as the label, and links whose name is a symbol or the word \"link\". Read out of context by a screen reader, not one of them says where it goes."
-        ) {
-            SectionBadge(text: "VIOLATION 1: vague action phrases")
+        RuleScreen {
+            // Vague action phrases.
             Card {
                 link("To view our refund policy,", "click here")
                 link("New pricing is now live.", "Read more", top: 14)
@@ -36,14 +32,14 @@ struct LinkTextPurposeView: View {
                 link("To update your billing details,", "tap here", top: 14)
             }
 
-            SectionBadge(text: "VIOLATION 2: identical text, different destinations").padding(.top, 18)
+            // Identical text, different destinations.
             Card {
                 link("Automate tests on real devices.", "Learn more")
                 link("Catch accessibility issues early.", "Learn more", top: 14)
                 link("Scale your CI pipeline.", "Learn more", top: 14)
             }
 
-            SectionBadge(text: "VIOLATION 3: machine text as the link label").padding(.top, 18)
+            // Machine text as the link label.
             Card {
                 link("Documentation:",
                      "https://www.browserstack.com/docs/app-accessibility/overview?ref=demo&src=apk")
@@ -51,7 +47,7 @@ struct LinkTextPurposeView: View {
                 link("Skip to the pricing table:", "#", top: 14)
             }
 
-            SectionBadge(text: "VIOLATION 4: links with no text at all").padding(.top, 18)
+            // Links with no useful text at all.
             Card {
                 // Same violation via other element shapes: a Button and an Image wearing .isLink.
                 buttonLink("Continue to the next chapter", "→")

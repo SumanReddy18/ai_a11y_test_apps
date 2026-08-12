@@ -29,11 +29,7 @@ struct ImagesWithTextView: View {
     ]
 
     var body: some View {
-        RuleScreen(
-            title: Rule.imagesText.title,
-            subtitle: Rule.imagesText.desc,
-            footer: "Each image visibly contains text. VoiceOver gets nothing, \"image\", \"photo\", \"graphic\", an empty string, a filename, or unrelated copy — Issue Detection Agent should flag every one."
-        ) {
+        RuleScreen {
             LazyVGrid(columns: columns, spacing: 6) {
                 ForEach(Array(tiles.enumerated()), id: \.offset) { _, t in
                     Image(uiImage: Self.artwork(t.image))

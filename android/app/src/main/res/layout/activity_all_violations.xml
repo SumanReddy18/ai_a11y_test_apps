@@ -16,30 +16,12 @@
         android:padding="20dp"
         android:paddingBottom="96dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="All 9 violation types on one page"
-            android:textColor="@color/text_primary"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Every BrowserStack Issue Detection Agent rule is violated multiple times below. This screen mirrors the nine single-issue screens. Scan it to fire dozens of violations at once."
-            android:textColor="@color/text_secondary"
-            android:textSize="13sp"
-            android:paddingTop="6dp"
-            android:paddingBottom="20dp"/>
-
         <!-- ============== 1. Images with text ============== -->
-        <TextView android:id="@+id/sec1" style="@style/ScreenH1" android:text="@string/rule1_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule1_desc"/>
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION: 10 images containing text, none described properly"/>
-
+        <!-- sec1…sec9 are the auto-scroll anchors (AllViolationsActivity). They sit on layout
+             containers and 1dp dividers, never on a TextView: an anchor must not add an element
+             of its own to the accessibility tree. -->
         <GridLayout
+            android:id="@+id/sec1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -137,18 +119,10 @@
                 android:contentDescription="picture"/>
         </GridLayout>
 
-        <TextView style="@style/ScreenSub"
-            android:text="Each image visibly contains text. Screen readers get nothing, &quot;image&quot;, &quot;photo&quot;, &quot;graphic&quot;, an empty string, a filename, or unrelated copy."/>
-
-        <View android:layout_width="match_parent" android:layout_height="1dp"
+        <View android:id="@+id/sec2" android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 2. ImageView label ============== -->
-        <TextView android:id="@+id/sec2" style="@style/ScreenH1" android:text="@string/rule2_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule2_desc"/>
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION: 10 meaningful images, none with an adequate label"/>
-
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -248,18 +222,10 @@
                 android:contentDescription="picture"/>
         </GridLayout>
 
-        <TextView style="@style/ScreenSub"
-            android:text="Missing/empty labels, generic words, a filename, a mismatched marketing label, and one image hidden from assistive tech via importantForAccessibility=&quot;no&quot;."/>
-
-        <View android:layout_width="match_parent" android:layout_height="1dp"
+        <View android:id="@+id/sec3" android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 3. Interactive label ============== -->
-        <TextView android:id="@+id/sec3" style="@style/ScreenH1" android:text="@string/rule3_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule3_desc"/>
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION: interactable, Switch, Checkbox &amp; Editable controls, none with a usable label"/>
-
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -373,13 +339,7 @@
                 android:focusable="true"/>
         </GridLayout>
 
-        <TextView style="@style/ScreenSub"
-            android:text="Missing/empty labels, generic words (&quot;button&quot;, &quot;icon&quot;, &quot;banner&quot;), a filename, a label that contradicts the action, and two custom clickable Views with no label at all."/>
-
         <!-- Switch elements — Switch element content label -->
-        <TextView android:id="@+id/sec3_switch" style="@style/RuleTitle"
-            android:layout_marginTop="4dp"
-            android:text="Switch elements — Switch element content label"/>
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -391,9 +351,6 @@
             android:contentDescription="switch"/>
 
         <!-- Checkbox elements — Checkbox element content label -->
-        <TextView style="@style/RuleTitle"
-            android:layout_marginTop="16dp"
-            android:text="Checkbox elements — Checkbox element content label"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -405,36 +362,32 @@
             android:contentDescription="checkbox"/>
 
         <!-- Editable elements — Editable element content label -->
-        <TextView style="@style/RuleTitle"
-            android:layout_marginTop="16dp"
-            android:text="Editable elements — Editable element content label"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:inputType="text"
             android:importantForAutofill="no"/>
-        <TextView style="@style/ScreenSub"
-            android:paddingTop="12dp" android:paddingBottom="0dp"
-            android:text="Email"/>
+
+        <!-- Part of the violation, not chrome: a visible caption that is NOT linked to the
+             field below it with android:labelFor, so the EditText still has no name. -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Email"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:importantForAutofill="no"/>
 
-        <TextView style="@style/ScreenSub" android:paddingTop="12dp"
-            android:text="Switch &amp; Checkbox: no android:text and no contentDescription (or a generic one). Editable: EditText with no hint, no contentDescription, and a visible &quot;Email&quot; caption not linked via labelFor."/>
-
-        <View android:layout_width="match_parent" android:layout_height="1dp"
+        <View android:id="@+id/sec4" android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 4. Reading order ============== -->
-        <TextView android:id="@+id/sec4" style="@style/ScreenH1" android:text="@string/rule4_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule4_desc"/>
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: product card"/>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -495,10 +448,6 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: news article card"
-            android:layout_marginTop="14dp"/>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -557,10 +506,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: invoice summary"
-            android:layout_marginTop="14dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -622,15 +567,10 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View android:layout_width="match_parent" android:layout_height="1dp"
+        <View android:id="@+id/sec5" android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 5. Visual order ============== -->
-        <TextView android:id="@+id/sec5" style="@style/ScreenH1" android:text="@string/rule5_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule5_desc"/>
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: sign-up form"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -702,10 +642,6 @@
                 android:textSize="12sp"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: checkout form"
-            android:layout_marginTop="14dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -767,10 +703,6 @@
                 android:inputType="datetime"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: onboarding wizard"
-            android:layout_marginTop="14dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -821,10 +753,6 @@
                 android:paddingTop="6dp"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: receipt list"
-            android:layout_marginTop="14dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -870,16 +798,10 @@
                 android:paddingTop="6dp"/>
         </LinearLayout>
 
-        <View android:layout_width="match_parent" android:layout_height="1dp"
+        <View android:id="@+id/sec6" android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 6. Missing heading ============== -->
-        <TextView android:id="@+id/sec6" style="@style/ScreenH1" android:text="@string/rule6_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule6_desc"/>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: settings page sections"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -892,7 +814,8 @@
                 android:layout_height="wrap_content"
                 android:text="Account"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
+                android:textSize="20sp"
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -906,7 +829,8 @@
                 android:layout_height="wrap_content"
                 android:text="Notifications"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -921,7 +845,8 @@
                 android:layout_height="wrap_content"
                 android:text="Privacy"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -931,10 +856,6 @@
                 android:textSize="13sp"
                 android:paddingTop="2dp"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: blog article sections"
-            android:layout_marginTop="14dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -948,13 +869,14 @@
                 android:layout_height="wrap_content"
                 android:text="Why mobile accessibility matters"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
+                android:textSize="20sp"
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="More than 1 in 7 users rely on assistive tech on mobile. Apps that ignore them lock out paying customers and risk legal exposure."
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="10dp"/>
 
             <TextView
@@ -962,14 +884,15 @@
                 android:layout_height="wrap_content"
                 android:text="The business case"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="16dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Inclusive apps consistently see higher retention and stronger app-store reviews."
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="4dp"/>
 
             <TextView
@@ -977,20 +900,17 @@
                 android:layout_height="wrap_content"
                 android:text="The legal case"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="16dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Inaccessible apps have triggered ADA and EU EAA complaints in every major market."
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="4dp"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: order summary sections"
-            android:layout_marginTop="14dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1004,13 +924,14 @@
                 android:layout_height="wrap_content"
                 android:text="Items"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
+                android:textSize="20sp"
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Noise cancelling headphones · ₹4,999"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="2dp"/>
 
             <TextView
@@ -1018,14 +939,15 @@
                 android:layout_height="wrap_content"
                 android:text="Shipping"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="221B Baker Street, Mumbai · arrives Fri"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="2dp"/>
 
             <TextView
@@ -1033,20 +955,17 @@
                 android:layout_height="wrap_content"
                 android:text="Payment"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Visa ending 4242 · UPI fallback enabled"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="2dp"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: dashboard card titles"
-            android:layout_marginTop="14dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1060,13 +979,14 @@
                 android:layout_height="wrap_content"
                 android:text="Active users today"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
+                android:textSize="20sp"
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="38,402"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="2dp"/>
 
             <TextView
@@ -1074,14 +994,15 @@
                 android:layout_height="wrap_content"
                 android:text="Crash-free sessions"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="99.78%"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="2dp"/>
 
             <TextView
@@ -1089,27 +1010,22 @@
                 android:layout_height="wrap_content"
                 android:text="Revenue this week"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="₹12.4 L"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
-        <View android:layout_width="match_parent" android:layout_height="1dp"
+        <View android:id="@+id/sec7" android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 7. Incorrect heading ============== -->
-        <TextView android:id="@+id/sec7" style="@style/ScreenH1" android:text="@string/rule7_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule7_desc"/>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: body paragraph as heading"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1134,10 +1050,6 @@
                 android:accessibilityHeading="true"
                 android:text="By continuing you agree that any data captured by this demo app may be used to train internal QA models, that you understand this is a synthetic accessibility test fixture, and that you will not redistribute the bundled APKs outside your organization."/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: inline error labelled as heading"
-            android:layout_marginTop="14dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1167,10 +1079,6 @@
                 android:paddingTop="4dp"
                 android:accessibilityHeading="true"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: every list item is a heading"
-            android:layout_marginTop="14dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1221,10 +1129,6 @@
                 android:accessibilityHeading="true"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: ad / promo flagged as heading"
-            android:layout_marginTop="14dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1266,10 +1170,6 @@
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 5: button label as heading"
-            android:layout_marginTop="14dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1302,7 +1202,7 @@
                 android:accessibilityHeading="true"/>
         </LinearLayout>
 
-        <View android:layout_width="match_parent" android:layout_height="1dp"
+        <View android:id="@+id/sec8" android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 8. Link text purpose ============== -->
@@ -1310,12 +1210,6 @@
              in a ClickableSpan in AllViolationsActivity.linkify(), so the scanner
              sees a LINK element whose text fails to convey its destination. A plain
              android:clickable TextView is NOT a link and would never fire this rule. -->
-        <TextView android:id="@+id/sec8" style="@style/ScreenH1" android:text="@string/rule8_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule8_desc"/>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: article footer links"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1324,36 +1218,50 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/card_bg">
             <TextView
-                android:id="@+id/av_linkClickHere"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="To view our refund policy, click here"
+                android:text="To view our refund policy,"
                 android:textColor="@color/text_primary"
-                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"/>
             <TextView
-                android:id="@+id/av_linkReadMore"
+                android:id="@+id/av_linkClickHere"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="click here"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New pricing is now live. Read more"
+                android:text="New pricing is now live."
                 android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:id="@+id/av_linkReadMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Read more"
                 android:textColorLink="@color/brand_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Full release notes are available"
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:paddingTop="14dp"/>
             <TextView
                 android:id="@+id/av_linkHere"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Full release notes are available here"
-                android:textColor="@color/text_primary"
+                android:text="here"
                 android:textColorLink="@color/brand_primary"
-                android:textSize="14sp"
-                android:paddingTop="14dp"/>
+                android:textSize="15sp"
+                android:textStyle="bold"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: repeated 'Learn more' links"
-            android:layout_marginTop="14dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1363,36 +1271,50 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/card_bg">
             <TextView
-                android:id="@+id/av_linkLearnMore1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Automate tests on real devices. Learn more"
+                android:text="Automate tests on real devices."
                 android:textColor="@color/text_primary"
-                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"/>
             <TextView
-                android:id="@+id/av_linkLearnMore2"
+                android:id="@+id/av_linkLearnMore1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Learn more"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Catch accessibility issues early. Learn more"
+                android:text="Catch accessibility issues early."
                 android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:id="@+id/av_linkLearnMore2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Learn more"
                 android:textColorLink="@color/brand_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Scale your CI pipeline."
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:paddingTop="14dp"/>
             <TextView
                 android:id="@+id/av_linkLearnMore3"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Scale your CI pipeline. Learn more"
-                android:textColor="@color/text_primary"
+                android:text="Learn more"
                 android:textColorLink="@color/brand_primary"
-                android:textSize="14sp"
-                android:paddingTop="14dp"/>
+                android:textSize="15sp"
+                android:textStyle="bold"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: raw URL as link text"
-            android:layout_marginTop="14dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1401,19 +1323,21 @@
             android:padding="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/card_bg">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Documentation:"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"/>
             <TextView
                 android:id="@+id/av_linkRawUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Documentation: https://www.browserstack.com/docs/app-accessibility/overview?ref=demo&amp;src=apk"
-                android:textColor="@color/text_primary"
+                android:text="https://www.browserstack.com/docs/app-accessibility/overview?ref=demo&amp;src=apk"
                 android:textColorLink="@color/brand_primary"
-                android:textSize="14sp"/>
+                android:textSize="15sp"
+                android:textStyle="bold"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: more ambiguous links"
-            android:layout_marginTop="14dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1423,34 +1347,52 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/card_bg">
             <TextView
-                android:id="@+id/av_linkTapHere"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="To update your billing details, tap here"
+                android:text="To update your billing details,"
                 android:textColor="@color/text_primary"
-                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"/>
             <TextView
-                android:id="@+id/av_linkThis"
+                android:id="@+id/av_linkTapHere"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="tap here"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="For onboarding steps, see this"
+                android:text="For onboarding steps, see"
                 android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:id="@+id/av_linkThis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="this"
                 android:textColorLink="@color/brand_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Integrations are expanding every week."
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:paddingTop="14dp"/>
             <TextView
                 android:id="@+id/av_linkMore"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Integrations are expanding every week. More"
-                android:textColor="@color/text_primary"
+                android:text="More"
                 android:textColorLink="@color/brand_primary"
-                android:textSize="14sp"
-                android:paddingTop="14dp"/>
+                android:textSize="15sp"
+                android:textStyle="bold"/>
         </LinearLayout>
 
-        <View android:layout_width="match_parent" android:layout_height="1dp"
+        <View android:id="@+id/sec9" android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 9. Input field labels ============== -->
@@ -1459,12 +1401,6 @@
              and inputs whose android:inputType contradicts their label — including
              password fields left as plain text. Mirrors
              activity_input_field_labels.xml. -->
-        <TextView android:id="@+id/sec9" style="@style/ScreenH1" android:text="@string/rule9_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule9_desc"/>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: captions not linked to inputs"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1502,10 +1438,6 @@
                 android:inputType="text"
                 android:importantForAutofill="no"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: no label at all + placeholder-only fields"
-            android:layout_marginTop="14dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1545,10 +1477,6 @@
                 android:importantForAutofill="no"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: inputType contradicts the label"
-            android:layout_marginTop="14dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1572,7 +1500,7 @@
                 android:hint="you@example.com"
                 android:textColorHint="@color/text_secondary"
                 android:inputType="phone"
-                android:importantForAutofill="no"/>
+                android:autofillHints="phone"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1590,12 +1518,8 @@
                 android:hint="+91 98765 43210"
                 android:textColorHint="@color/text_secondary"
                 android:inputType="textEmailAddress"
-                android:importantForAutofill="no"/>
+                android:autofillHints="emailAddress"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: password with no secure input type"
-            android:layout_marginTop="14dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1620,7 +1544,7 @@
                 android:hint="Enter your password"
                 android:textColorHint="@color/text_secondary"
                 android:inputType="text"
-                android:importantForAutofill="no"/>
+                android:autofillHints="password"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1638,17 +1562,9 @@
                 android:hint="3 digits on the back of your card"
                 android:textColorHint="@color/text_secondary"
                 android:inputType="text"
-                android:importantForAutofill="no"/>
+                android:autofillHints="creditCardSecurityCode"/>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tap the back arrow to return home and explore each violation in isolation."
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:paddingTop="24dp"/>
     </LinearLayout>
     </ScrollView>
 

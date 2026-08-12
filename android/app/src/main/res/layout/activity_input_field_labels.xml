@@ -9,15 +9,9 @@
         android:focusableInTouchMode="true"
         android:descendantFocusability="beforeDescendants">
 
-        <TextView style="@style/ScreenH1" android:text="@string/rule9_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule9_desc"/>
-
         <!-- ============================================================
              Sub-rule A — "Accessible input field labels"
              ============================================================ -->
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: sign-up form — captions not linked to inputs"/>
 
         <!-- Each caption below is a plain TextView with NO android:labelFor, and each
              EditText has no android:hint and no contentDescription. Sighted users see a
@@ -80,10 +74,6 @@
                 android:inputType="text"
                 android:importantForAutofill="no"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: no label at all — bare inputs"
-            android:layout_marginTop="18dp"/>
 
         <!-- Verification-code boxes and an address row with no caption, no hint and no
              contentDescription: nothing at all identifies these fields. -->
@@ -156,10 +146,6 @@
                 android:importantForAutofill="no"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: placeholder used instead of a label"
-            android:layout_marginTop="18dp"/>
-
         <!-- Hint-only fields. The hint is the ONLY thing naming the field, and it
              disappears as soon as the user types — the label is not persistent. -->
         <LinearLayout
@@ -204,14 +190,16 @@
              Sub-rule B — "Input type for input fields"
              ============================================================ -->
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: inputType contradicts the label"
-            android:layout_marginTop="18dp"/>
-
         <!-- These fields ARE labelled properly (visible caption + android:labelFor +
              hint), so the label sub-rule passes. What fails is the TYPE: each
              android:inputType is wrong for the data the label asks for, so the user
-             gets the wrong keyboard and no useful autofill. -->
+             gets the wrong keyboard and no useful autofill.
+
+             android:autofillHints deliberately contradicts the label as well, and these
+             fields do NOT carry importantForAutofill="no" the way the rest of the screen
+             does. The rule inspects "declared type, keyboard type, and autofill metadata";
+             opting a field out of autofill removed the metadata it wants to compare, so
+             there was nothing left to disagree with. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -237,7 +225,7 @@
                 android:hint="you@example.com"
                 android:textColorHint="@color/text_secondary"
                 android:inputType="phone"
-                android:importantForAutofill="no"/>
+                android:autofillHints="phone"/>
 
             <!-- Phone field typed as an email address. -->
             <TextView
@@ -257,7 +245,7 @@
                 android:hint="+91 98765 43210"
                 android:textColorHint="@color/text_secondary"
                 android:inputType="textEmailAddress"
-                android:importantForAutofill="no"/>
+                android:autofillHints="emailAddress"/>
 
             <!-- Numeric amount typed as a person's name. -->
             <TextView
@@ -277,7 +265,7 @@
                 android:hint="0.00"
                 android:textColorHint="@color/text_secondary"
                 android:inputType="textPersonName"
-                android:importantForAutofill="no"/>
+                android:autofillHints="name"/>
 
             <!-- Website URL typed as a decimal number. -->
             <TextView
@@ -297,12 +285,8 @@
                 android:hint="https://example.com"
                 android:textColorHint="@color/text_secondary"
                 android:inputType="numberDecimal"
-                android:importantForAutofill="no"/>
+                android:autofillHints="postalCode"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 5: sensitive fields without a secure input type"
-            android:layout_marginTop="18dp"/>
 
         <!-- Password / CVV entered as plain visible text: no textPassword, no
              numberPassword — the characters are not masked and the field is not
@@ -331,7 +315,7 @@
                 android:hint="Enter your password"
                 android:textColorHint="@color/text_secondary"
                 android:inputType="text"
-                android:importantForAutofill="no"/>
+                android:autofillHints="password"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -349,8 +333,8 @@
                 android:layout_marginTop="4dp"
                 android:hint="Re-enter your password"
                 android:textColorHint="@color/text_secondary"
-                android:inputType="textVisiblePassword"
-                android:importantForAutofill="no"/>
+                android:inputType="textEmailAddress"
+                android:autofillHints="password"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -369,15 +353,8 @@
                 android:hint="3 digits on the back of your card"
                 android:textColorHint="@color/text_secondary"
                 android:inputType="text"
-                android:importantForAutofill="no"/>
+                android:autofillHints="creditCardSecurityCode"/>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="14dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:text="Two sub-rules on one screen. Accessible input field labels — violations 1–3: visible captions that are not linked with android:labelFor, fields with no label of any kind, and fields whose only name is a placeholder hint that vanishes on typing. Input type for input fields — violations 4–5: android:inputType contradicts the label (email typed as phone, phone typed as email, amount as person name, URL as decimal) and password / CVV fields with no secure input type. WCAG 1.3.5 / 2.4.6 / 3.3.2."/>
     </LinearLayout>
 </ScrollView>

@@ -35,22 +35,7 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="ScreenH1">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/text_primary</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:paddingBottom">4dp</item>
-    </style>
 
-    <style name="ScreenSub">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:paddingBottom">14dp</item>
-    </style>
 
     <style name="NumBtn">
         <item name="android:layout_width">52dp</item>
@@ -66,13 +51,4 @@
         <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
     </style>
 
-    <style name="SectionLabel">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textSize">11sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:paddingHorizontal">8dp</item>
-        <item name="android:paddingVertical">4dp</item>
-    </style>
 </resources>

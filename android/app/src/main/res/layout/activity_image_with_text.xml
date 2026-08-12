@@ -5,22 +5,6 @@
     android:orientation="vertical"
     android:padding="12dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_primary"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:text="@string/rule1_title"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_secondary"
-        android:textSize="12sp"
-        android:layout_marginTop="2dp"
-        android:text="@string/rule1_desc"/>
-
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -141,11 +125,4 @@
 
     </GridLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="6dp"
-        android:textColor="@color/text_secondary"
-        android:textSize="11sp"
-        android:text="Each image visibly contains text. Screen readers get nothing, &quot;image&quot;, &quot;photo&quot;, &quot;graphic&quot;, an empty string, a filename, or unrelated copy — Issue Detection Agent should flag every one."/>
 </LinearLayout>

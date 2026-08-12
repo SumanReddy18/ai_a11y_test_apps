@@ -7,12 +7,8 @@ import SwiftUI
 /// Mirrors activity_missing_heading.xml (Android: no android:accessibilityHeading="true").
 struct MissingHeadingView: View {
     var body: some View {
-        RuleScreen(
-            title: Rule.missingHeading.title,
-            subtitle: Rule.missingHeading.desc,
-            footer: "Every section label above (Account, Notifications, Items, Shipping, …) introduces a new section, but is rendered as plain body text with NO .isHeader trait. The VoiceOver heading rotor gets nothing."
-        ) {
-            SectionBadge(text: "VIOLATION 1: settings page sections")
+        RuleScreen {
+            // Settings page sections.
             Card {
                 sectionTitle("Account")
                 body("Manage email, password, and linked devices.")
@@ -22,7 +18,7 @@ struct MissingHeadingView: View {
                 body("Control who can see your activity and profile.")
             }
 
-            SectionBadge(text: "VIOLATION 2: blog article sections").padding(.top, 18)
+            // Blog article sections.
             Card {
                 sectionTitle("Why mobile accessibility matters")
                 body("More than 1 in 7 users rely on assistive tech on mobile. Apps that ignore them lock out paying customers and risk legal exposure.", top: 10)
@@ -32,7 +28,7 @@ struct MissingHeadingView: View {
                 body("Inaccessible apps have triggered ADA and EU EAA complaints in every major market.", top: 4)
             }
 
-            SectionBadge(text: "VIOLATION 3: order summary sections").padding(.top, 18)
+            // Order summary sections.
             Card {
                 sectionTitle("Items")
                 body("Noise cancelling headphones · ₹4,999")
@@ -42,7 +38,7 @@ struct MissingHeadingView: View {
                 body("Visa ending 4242 · UPI fallback enabled")
             }
 
-            SectionBadge(text: "VIOLATION 4: dashboard card titles").padding(.top, 18)
+            // Dashboard card titles.
             Card {
                 sectionTitle("Active users today");  body("38,402")
                 sectionTitle("Crash-free sessions", top: 14); body("99.78%")
@@ -52,9 +48,14 @@ struct MissingHeadingView: View {
     }
 
     /// Looks like a heading (weight/size) but is deliberately NOT exposed as one.
+    ///
+    /// The size/weight gap over the body copy is load-bearing: the rule collects every static-text
+    /// leaf and an AI pass decides which ones *visually function* as headings. At 14sp semibold
+    /// against 13sp body these read as body text, and on Android the only thing reported was the
+    /// ActionBar title. 20/bold against 13/regular is unmistakable.
     private func sectionTitle(_ t: String, top: CGFloat = 0) -> some View {
         Text(t)
-            .font(.system(size: 14, weight: .semibold))
+            .font(.system(size: 20, weight: .bold))
             .foregroundColor(Theme.textPrimary)
             .padding(.top, top)
             .frame(maxWidth: .infinity, alignment: .leading)

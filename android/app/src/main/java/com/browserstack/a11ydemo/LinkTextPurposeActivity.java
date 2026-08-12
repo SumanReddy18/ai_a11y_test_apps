@@ -13,12 +13,21 @@ import androidx.annotation.NonNull;
 /**
  * Link text purpose violations.
  *
- * A plain clickable TextView is NOT a link to Android accessibility services —
- * it reports as a generic clickable view, so the "Link text purpose" rule never
- * applies. An element is only treated as a link when its text carries a
- * ClickableSpan/URLSpan. We therefore wrap each vague phrase in a ClickableSpan
- * (and attach LinkMovementMethod) so the scanner sees real link elements whose
- * text fails to convey their destination.
+ * Two things have to be true for this rule to fire, and the fixture got the second one wrong
+ * for a long time:
+ *
+ *  1. A plain clickable TextView is NOT a link to Android accessibility services — it reports
+ *     as a generic clickable view. An element only counts as a link when its text carries a
+ *     ClickableSpan/URLSpan, so every phrase below is spanned (with LinkMovementMethod).
+ *  2. The rule judges the element's *speakable text*, not the span's substring. A span over
+ *     "click here" inside "To view our refund policy, click here" gave a detected label of the
+ *     whole sentence, which does convey a purpose — so nothing was reported except the line
+ *     whose sentence happened to contain a raw URL. Each link therefore lives in its own
+ *     TextView containing nothing but the phrase, and the span covers all of it.
+ *
+ * With the phrase alone as the label, "click here"/"read more"/"here"/"learn more"/"tap here"/
+ * "this"/"more" are exact matches for the rule's stop-word list — a deterministic FAIL. The raw
+ * URL, the filename and "#" are not stop words and go to AI review with just the phrase.
  */
 public class LinkTextPurposeActivity extends BaseChildActivity {
     @Override
@@ -26,39 +35,36 @@ public class LinkTextPurposeActivity extends BaseChildActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_link_text_purpose);
 
-        // VIOLATION 1: article footer links
-        linkify(R.id.linkClickHere, "click here");
-        linkify(R.id.linkReadMore, "Read more");
-        linkify(R.id.linkHere, "here");
+        // Vague action phrases — stop words.
+        linkifyWholeText(R.id.linkClickHere);
+        linkifyWholeText(R.id.linkReadMore);
+        linkifyWholeText(R.id.linkHere);
 
-        // VIOLATION 2: repeated, indistinguishable "Learn more" links
-        linkify(R.id.linkLearnMore1, "Learn more");
-        linkify(R.id.linkLearnMore2, "Learn more");
-        linkify(R.id.linkLearnMore3, "Learn more");
+        // Repeated, indistinguishable "Learn more" links.
+        linkifyWholeText(R.id.linkLearnMore1);
+        linkifyWholeText(R.id.linkLearnMore2);
+        linkifyWholeText(R.id.linkLearnMore3);
 
-        // VIOLATION 3: raw URL as the link text
-        linkify(R.id.linkRawUrl,
-                "https://www.browserstack.com/docs/app-accessibility/overview?ref=demo&src=apk");
+        // Machine text as the label.
+        linkifyWholeText(R.id.linkRawUrl);
+        linkifyWholeText(R.id.linkFilename);
+        linkifyWholeText(R.id.linkHash);
 
-        // VIOLATION 4: more ambiguous phrases
-        linkify(R.id.linkTapHere, "tap here");
-        linkify(R.id.linkThis, "this");
-        linkify(R.id.linkMore, "More");
+        // More ambiguous phrases.
+        linkifyWholeText(R.id.linkTapHere);
+        linkifyWholeText(R.id.linkThis);
+        linkifyWholeText(R.id.linkMore);
     }
 
     /**
-     * Wraps the first occurrence of {@code linkText} inside the TextView's text
-     * in a ClickableSpan, turning that portion into a real, screen-reader-visible
-     * link whose accessible name is exactly {@code linkText}.
+     * Spans the TextView's entire text with a ClickableSpan, so the element is a real link whose
+     * accessible name is exactly that text — nothing else to dilute it.
      */
-    private void linkify(int viewId, String linkText) {
-        TextView tv = findViewById(viewId);
+    static void linkifyWholeText(TextView tv) {
         String full = tv.getText().toString();
-        int start = full.indexOf(linkText);
-        if (start < 0) {
+        if (full.isEmpty()) {
             return;
         }
-        int end = start + linkText.length();
 
         SpannableString span = new SpannableString(full);
         span.setSpan(new ClickableSpan() {
@@ -66,9 +72,13 @@ public class LinkTextPurposeActivity extends BaseChildActivity {
             public void onClick(@NonNull View widget) {
                 // No-op: this is a demo of inaccessible link text, not navigation.
             }
-        }, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }, 0, full.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         tv.setText(span);
         tv.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private void linkifyWholeText(int viewId) {
+        linkifyWholeText((TextView) findViewById(viewId));
     }
 }
