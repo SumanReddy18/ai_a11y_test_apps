@@ -48,9 +48,14 @@ struct MissingHeadingView: View {
     }
 
     /// Looks like a heading (weight/size) but is deliberately NOT exposed as one.
+    ///
+    /// The size/weight gap over the body copy is load-bearing: the rule collects every static-text
+    /// leaf and an AI pass decides which ones *visually function* as headings. At 14sp semibold
+    /// against 13sp body these read as body text, and on Android the only thing reported was the
+    /// ActionBar title. 20/bold against 13/regular is unmistakable.
     private func sectionTitle(_ t: String, top: CGFloat = 0) -> some View {
         Text(t)
-            .font(.system(size: 14, weight: .semibold))
+            .font(.system(size: 20, weight: .bold))
             .foregroundColor(Theme.textPrimary)
             .padding(.top, top)
             .frame(maxWidth: .infinity, alignment: .leading)

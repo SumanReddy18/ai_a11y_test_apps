@@ -3,16 +3,10 @@ package com.browserstack.a11ydemo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 
 public class AllViolationsActivity extends BaseChildActivity {
 
@@ -55,25 +49,16 @@ public class AllViolationsActivity extends BaseChildActivity {
         next.setOnClickListener(v -> scrollToNextSection(scroll));
         startAutoScroll(scroll);
 
-        // Rule 8 — Link text purpose. A plain clickable TextView is NOT a link to
-        // accessibility services, so the rule never fires. Wrap each vague phrase in
-        // a ClickableSpan so the scanner sees real link elements whose text fails to
-        // convey their destination (mirrors LinkTextPurposeActivity).
-        // VIOLATION 1: article footer links
-        linkify(R.id.av_linkClickHere, "click here");
-        linkify(R.id.av_linkReadMore, "Read more");
-        linkify(R.id.av_linkHere, "here");
-        // VIOLATION 2: repeated, indistinguishable "Learn more" links
-        linkify(R.id.av_linkLearnMore1, "Learn more");
-        linkify(R.id.av_linkLearnMore2, "Learn more");
-        linkify(R.id.av_linkLearnMore3, "Learn more");
-        // VIOLATION 3: raw URL as the link text
-        linkify(R.id.av_linkRawUrl,
-                "https://www.browserstack.com/docs/app-accessibility/overview?ref=demo&src=apk");
-        // VIOLATION 4: more ambiguous phrases
-        linkify(R.id.av_linkTapHere, "tap here");
-        linkify(R.id.av_linkThis, "this");
-        linkify(R.id.av_linkMore, "More");
+        // Rule 8 — Link text purpose. Each phrase is its own TextView, spanned end-to-end, so
+        // the element's speakable text IS the vague phrase (see LinkTextPurposeActivity for why
+        // spanning a substring of a sentence made this rule silently pass).
+        for (int id : new int[] {
+                R.id.av_linkClickHere, R.id.av_linkReadMore, R.id.av_linkHere,
+                R.id.av_linkLearnMore1, R.id.av_linkLearnMore2, R.id.av_linkLearnMore3,
+                R.id.av_linkRawUrl,
+                R.id.av_linkTapHere, R.id.av_linkThis, R.id.av_linkMore }) {
+            LinkTextPurposeActivity.linkifyWholeText((TextView) findViewById(id));
+        }
     }
 
     /**
@@ -120,29 +105,4 @@ public class AllViolationsActivity extends BaseChildActivity {
         scroll.smoothScrollTo(0, 0);
     }
 
-    /**
-     * Wraps the first occurrence of {@code linkText} inside the TextView's text in a
-     * ClickableSpan, turning that portion into a real, screen-reader-visible link
-     * whose accessible name is exactly {@code linkText}.
-     */
-    private void linkify(int viewId, String linkText) {
-        TextView tv = findViewById(viewId);
-        String full = tv.getText().toString();
-        int start = full.indexOf(linkText);
-        if (start < 0) {
-            return;
-        }
-        int end = start + linkText.length();
-
-        SpannableString span = new SpannableString(full);
-        span.setSpan(new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View widget) {
-                // No-op: this is a demo of inaccessible link text, not navigation.
-            }
-        }, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        tv.setText(span);
-        tv.setMovementMethod(LinkMovementMethod.getInstance());
-    }
 }

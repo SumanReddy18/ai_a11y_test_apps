@@ -115,6 +115,15 @@ element isn't the right *type*. Concrete examples that have bitten us:
   claiming the trait, with no activation behind it, and the scan skips it. Use SwiftUI's native
   `Link` (real link element + destination); `LinkTextPurposeView` also offers `Button`/`Image`
   variants carrying `.isLink` so detection doesn't hinge on one element shape.
+  **And the span must cover the whole element.** `link_text_purpose.rb` judges the element's
+  *speakable text*, not the span's substring: a `ClickableSpan` over "click here" inside "To view
+  our refund policy, click here" produced `detectedLabel: "To view our refund policy, click here"`,
+  which does convey a purpose, so it passed. Only the line whose sentence contained a raw URL was
+  ever reported. Each link therefore gets its own `TextView` holding nothing but the phrase, spanned
+  end-to-end (`LinkTextPurposeActivity.linkifyWholeText`). Then the phrase is an exact match against
+  the rule's stop-word list — `click here`, `read more`, `here`, `learn more`, `tap here`, `this`,
+  `more`, `continue`, `details`, `submit`, `open`, `download`, … — which is a deterministic FAIL, no
+  AI review involved. Non-stop-words (a raw URL, a filename, `#`) still go to AI with just the phrase.
 - **Images with text** — the rule needs an element that really is an image *and* pixels a scanner
   can read words out of. Two ways this silently fails: a photo that merely happens to contain text
   (graffiti, a page of a book) reads as an ordinary photo and is illegible once scaled into a grid
@@ -124,6 +133,19 @@ element isn't the right *type*. Concrete examples that have bitten us:
   `TextArtwork` in `Components.swift`). Prefer several *kinds* of text-bearing graphic — banner,
   chart, screenshot of a paragraph, table, wordmark — over N variations of one.
 - **Headings** — heading rules key off `android:accessibilityHeading="true"`, not bold/large text.
+  But `missing-heading` needs *both*: it collects every visible simple-text leaf with its
+  `isHeading` flag and an AI pass decides which ones **visually function** as headings. Pseudo-
+  headings at 14sp regular over 13sp body read as body text, so the only thing reported on the
+  Android screen was the ActionBar title (`text: "6. Missing heading", isHeading: false`) — our
+  twelve fake section titles were all judged body copy. They are now 20sp bold over 13sp
+  secondary. Keep that gap when editing these screens; and note the ActionBar title is itself a
+  standing candidate on every screen.
+- **Meaningful reading order** — the rule does *not* read `android:accessibilityTraversalAfter`
+  off the view. It needs `snapshot['focusOrder']` (a captured TalkBack traversal) in
+  `common_info.android_focus_order_caption_data`; with that missing the focus sequence is empty and
+  the rule returns NOT_APPLICABLE without looking at the app at all. It also processes only the
+  *first* element of a snapshot, so at most one finding per screen. If the traversal attributes are
+  right and nothing is reported, the gap is scan-side focus-order capture, not the fixture.
 - **Input fields** — the two input-purpose checks read different attributes. "Accessible input
   field labels" looks for a programmatic name (`android:labelFor` on the caption, `hint`,
   `contentDescription`) — a caption `TextView` that merely sits above an `EditText` is not a

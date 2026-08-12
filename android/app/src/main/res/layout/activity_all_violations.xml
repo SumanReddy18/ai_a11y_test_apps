@@ -814,7 +814,8 @@
                 android:layout_height="wrap_content"
                 android:text="Account"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
+                android:textSize="20sp"
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -828,7 +829,8 @@
                 android:layout_height="wrap_content"
                 android:text="Notifications"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -843,7 +845,8 @@
                 android:layout_height="wrap_content"
                 android:text="Privacy"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -866,13 +869,14 @@
                 android:layout_height="wrap_content"
                 android:text="Why mobile accessibility matters"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
+                android:textSize="20sp"
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="More than 1 in 7 users rely on assistive tech on mobile. Apps that ignore them lock out paying customers and risk legal exposure."
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="10dp"/>
 
             <TextView
@@ -880,14 +884,15 @@
                 android:layout_height="wrap_content"
                 android:text="The business case"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="16dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Inclusive apps consistently see higher retention and stronger app-store reviews."
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="4dp"/>
 
             <TextView
@@ -895,14 +900,15 @@
                 android:layout_height="wrap_content"
                 android:text="The legal case"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="16dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Inaccessible apps have triggered ADA and EU EAA complaints in every major market."
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="4dp"/>
         </LinearLayout>
 
@@ -918,13 +924,14 @@
                 android:layout_height="wrap_content"
                 android:text="Items"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
+                android:textSize="20sp"
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Noise cancelling headphones · ₹4,999"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="2dp"/>
 
             <TextView
@@ -932,14 +939,15 @@
                 android:layout_height="wrap_content"
                 android:text="Shipping"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="221B Baker Street, Mumbai · arrives Fri"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="2dp"/>
 
             <TextView
@@ -947,14 +955,15 @@
                 android:layout_height="wrap_content"
                 android:text="Payment"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Visa ending 4242 · UPI fallback enabled"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
@@ -970,13 +979,14 @@
                 android:layout_height="wrap_content"
                 android:text="Active users today"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"/>
+                android:textSize="20sp"
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="38,402"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="2dp"/>
 
             <TextView
@@ -984,14 +994,15 @@
                 android:layout_height="wrap_content"
                 android:text="Crash-free sessions"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="99.78%"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="2dp"/>
 
             <TextView
@@ -999,14 +1010,15 @@
                 android:layout_height="wrap_content"
                 android:text="Revenue this week"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:paddingTop="14dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="₹12.4 L"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
@@ -1206,31 +1218,49 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/card_bg">
             <TextView
-                android:id="@+id/av_linkClickHere"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="To view our refund policy, click here"
+                android:text="To view our refund policy,"
                 android:textColor="@color/text_primary"
-                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"/>
             <TextView
-                android:id="@+id/av_linkReadMore"
+                android:id="@+id/av_linkClickHere"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="click here"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New pricing is now live. Read more"
+                android:text="New pricing is now live."
                 android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:id="@+id/av_linkReadMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Read more"
                 android:textColorLink="@color/brand_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Full release notes are available"
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:paddingTop="14dp"/>
             <TextView
                 android:id="@+id/av_linkHere"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Full release notes are available here"
-                android:textColor="@color/text_primary"
+                android:text="here"
                 android:textColorLink="@color/brand_primary"
-                android:textSize="14sp"
-                android:paddingTop="14dp"/>
+                android:textSize="15sp"
+                android:textStyle="bold"/>
         </LinearLayout>
 
         <LinearLayout
@@ -1241,31 +1271,49 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/card_bg">
             <TextView
-                android:id="@+id/av_linkLearnMore1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Automate tests on real devices. Learn more"
+                android:text="Automate tests on real devices."
                 android:textColor="@color/text_primary"
-                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"/>
             <TextView
-                android:id="@+id/av_linkLearnMore2"
+                android:id="@+id/av_linkLearnMore1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Learn more"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Catch accessibility issues early. Learn more"
+                android:text="Catch accessibility issues early."
                 android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:id="@+id/av_linkLearnMore2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Learn more"
                 android:textColorLink="@color/brand_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Scale your CI pipeline."
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:paddingTop="14dp"/>
             <TextView
                 android:id="@+id/av_linkLearnMore3"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Scale your CI pipeline. Learn more"
-                android:textColor="@color/text_primary"
+                android:text="Learn more"
                 android:textColorLink="@color/brand_primary"
-                android:textSize="14sp"
-                android:paddingTop="14dp"/>
+                android:textSize="15sp"
+                android:textStyle="bold"/>
         </LinearLayout>
 
         <LinearLayout
@@ -1275,14 +1323,20 @@
             android:padding="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/card_bg">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Documentation:"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"/>
             <TextView
                 android:id="@+id/av_linkRawUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Documentation: https://www.browserstack.com/docs/app-accessibility/overview?ref=demo&amp;src=apk"
-                android:textColor="@color/text_primary"
+                android:text="https://www.browserstack.com/docs/app-accessibility/overview?ref=demo&amp;src=apk"
                 android:textColorLink="@color/brand_primary"
-                android:textSize="14sp"/>
+                android:textSize="15sp"
+                android:textStyle="bold"/>
         </LinearLayout>
 
         <LinearLayout
@@ -1293,31 +1347,49 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/card_bg">
             <TextView
-                android:id="@+id/av_linkTapHere"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="To update your billing details, tap here"
+                android:text="To update your billing details,"
                 android:textColor="@color/text_primary"
-                android:textColorLink="@color/brand_primary"
                 android:textSize="14sp"/>
             <TextView
-                android:id="@+id/av_linkThis"
+                android:id="@+id/av_linkTapHere"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="tap here"
+                android:textColorLink="@color/brand_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="For onboarding steps, see this"
+                android:text="For onboarding steps, see"
                 android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:id="@+id/av_linkThis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="this"
                 android:textColorLink="@color/brand_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Integrations are expanding every week."
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:paddingTop="14dp"/>
             <TextView
                 android:id="@+id/av_linkMore"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Integrations are expanding every week. More"
-                android:textColor="@color/text_primary"
+                android:text="More"
                 android:textColorLink="@color/brand_primary"
-                android:textSize="14sp"
-                android:paddingTop="14dp"/>
+                android:textSize="15sp"
+                android:textStyle="bold"/>
         </LinearLayout>
 
         <View android:id="@+id/sec9" android:layout_width="match_parent" android:layout_height="1dp"
