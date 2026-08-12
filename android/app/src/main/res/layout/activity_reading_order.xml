@@ -5,20 +5,6 @@
 
     <LinearLayout style="@style/ScreenRoot">
 
-        <TextView style="@style/ScreenH1" android:text="@string/rule4_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule4_desc"/>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: product card"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:text="Card looks like: Title → Price → Description → Buy. But traversalAfter wires TalkBack focus as: Buy → Title → Description → Price."/>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
@@ -79,10 +65,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: news article card"
-            android:layout_marginTop="22dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -151,10 +133,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: invoice summary"
-            android:layout_marginTop="22dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -225,12 +203,5 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="14dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:text="Three cards, three scrambled traversal orders.\nA blind user is asked to buy/read/pay before knowing what or for how much."/>
     </LinearLayout>
 </ScrollView>

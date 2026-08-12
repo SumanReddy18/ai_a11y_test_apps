@@ -13,12 +13,8 @@ struct VisualOrderView: View {
     @State private var expiry = ""
 
     var body: some View {
-        RuleScreen(
-            title: Rule.visualOrder.title,
-            subtitle: Rule.visualOrder.desc,
-            footer: "Four sections, all with scrambled visual flow: Submit / Pay / Finish before their inputs, steps and items in reverse, totals before line items."
-        ) {
-            SectionBadge(text: "VIOLATION 1: sign-up form")
+        RuleScreen {
+            // Submit before its inputs; step captions out of order.
             Card {
                 cardTitle("Sign up")
                 primary("Submit")
@@ -27,7 +23,7 @@ struct VisualOrderView: View {
                 caption("Step 3 of 3"); caption("Step 1 of 3"); caption("Step 2 of 3")
             }
 
-            SectionBadge(text: "VIOLATION 2: checkout form").padding(.top, 18)
+            // Pay before the card fields, and CVV before expiry.
             Card {
                 cardTitle("Checkout")
                 primary("Pay ₹4,999")
@@ -36,7 +32,7 @@ struct VisualOrderView: View {
                 label("Expiry");      field($expiry, "MM/YY")
             }
 
-            SectionBadge(text: "VIOLATION 3: onboarding wizard").padding(.top, 18)
+            // Finish first, then the numbered steps counting backwards.
             Card {
                 cardTitle("Set up your workspace")
                 primary("Finish setup")
@@ -46,7 +42,7 @@ struct VisualOrderView: View {
                 caption("1. Create workspace name")
             }
 
-            SectionBadge(text: "VIOLATION 4: receipt list").padding(.top, 18)
+            // Total before the line items, and the items shuffled.
             Card {
                 cardTitle("Order receipt")
                 Text("Total: ₹2,400")

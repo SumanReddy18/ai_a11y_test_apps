@@ -111,7 +111,7 @@ ios/
     A11yDemoApp.swift         # @main + RootView (reads A11yRuleSelection)
     Rule.swift                # 9-rule catalog + flavor-equivalent selection logic
     Theme.swift               # colours mirrored from Android colors.xml
-    Components.swift          # RuleScreen / Card / SectionBadge / TextTile + a11y helpers
+    Components.swift          # RuleScreen (bare scroll surface) / Card + a11y helpers
     HomeView.swift            # home nav (≈ MainActivity)
     AllViolationsView.swift   # combined screen (≈ AllViolationsActivity)
     Screens/*.swift           # one view per rule (≈ the Android Activities/layouts)

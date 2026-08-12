@@ -12,7 +12,9 @@ import SwiftUI
 /// advance. Trade-off: no swipe gesture and no page dots — use "Next", or wait for the timer.
 struct AllViolationsView: View {
     private static let initialDelay: Double = 5    // settle before the first hop (matches Android)
-    private static let dwell: Double = 14          // seconds held per screen for the scan
+    // Long enough for the rule screen to page through all of itself before we move on —
+    // otherwise this build only ever shows the top viewport of each rule.
+    private static let dwell: Double = RulePaging.fullPassSeconds
 
     @State private var index = 0
     private let rules = Array(Rule.allCases)

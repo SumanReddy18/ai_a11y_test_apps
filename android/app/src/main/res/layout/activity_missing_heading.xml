@@ -5,12 +5,6 @@
 
     <LinearLayout style="@style/ScreenRoot">
 
-        <TextView style="@style/ScreenH1" android:text="@string/rule6_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule6_desc"/>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: settings page sections"/>
-
         <!-- "Account", "Notifications", "Privacy" read as section titles but are styled as plain
              body text AND lack android:accessibilityHeading="true". Neither sighted users nor
              TalkBack users get any section-break cue. -->
@@ -67,10 +61,6 @@
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: blog article sections"
-            android:layout_marginTop="18dp"/>
-
         <!-- Article with one title and two subhead-style labels — all rendered as plain text. -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -126,10 +116,6 @@
                 android:paddingTop="4dp"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: order summary sections"
-            android:layout_marginTop="18dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -182,10 +168,6 @@
                 android:textSize="14sp"
                 android:paddingTop="2dp"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: dashboard card titles"
-            android:layout_marginTop="18dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -240,12 +222,5 @@
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="14dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:text="Every section label above (Account, Notifications, Items, Shipping, …) functionally introduces a new section, but it is rendered as plain body text AND has no android:accessibilityHeading=&quot;true&quot;. Neither sighted users nor TalkBack users get any heading cue — the AI scanner should detect the missing heading from the content."/>
     </LinearLayout>
 </ScrollView>

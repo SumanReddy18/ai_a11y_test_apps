@@ -33,13 +33,9 @@ struct InputFieldLabelsView: View {
     @State private var cvv = ""
 
     var body: some View {
-        RuleScreen(
-            title: Rule.inputFieldLabels.title,
-            subtitle: Rule.inputFieldLabels.desc,
-            footer: "Two sub-rules on one screen. Accessible input field labels — violations 1–3: visible captions that are not associated with the field, fields with no name of any kind, and fields whose only name is a placeholder that disappears on typing. Input type for input fields — violations 4–5: the keyboard/content type contradicts the label (email typed as phone, phone typed as email, amount as plain text, URL as a number pad) and password / CVV fields entered through a plain TextField instead of a SecureField. WCAG 1.3.5 / 2.4.6 / 3.3.2."
-        ) {
+        RuleScreen {
             // ---- Sub-rule A: accessible input field labels -------------------------------
-            SectionBadge(text: "VIOLATION 1: sign-up form — captions not linked to inputs")
+            // Sign-up form: captions not linked to their inputs.
             Card {
                 caption("Full name")
                 field($name)
@@ -50,7 +46,7 @@ struct InputFieldLabelsView: View {
                 field($phone)
             }
 
-            SectionBadge(text: "VIOLATION 2: no label at all — bare inputs").padding(.top, 18)
+            // No label at all — bare inputs.
             Card {
                 Text("Enter the 3-digit code we sent you")
                     .font(.system(size: 13))
@@ -67,7 +63,7 @@ struct InputFieldLabelsView: View {
                 field($address2).padding(.top, 8)
             }
 
-            SectionBadge(text: "VIOLATION 3: placeholder used instead of a label").padding(.top, 18)
+            // Placeholder used instead of a label.
             Card {
                 // The placeholder is the ONLY thing naming these fields, and it is gone as
                 // soon as there is any text — the label is not persistent.
@@ -77,7 +73,7 @@ struct InputFieldLabelsView: View {
             }
 
             // ---- Sub-rule B: input type for input fields ---------------------------------
-            SectionBadge(text: "VIOLATION 4: input type contradicts the label").padding(.top, 18)
+            // Input type contradicts the label.
             Card {
                 // These fields ARE named properly (visible caption + accessibilityLabel), so
                 // the label sub-rule passes. What fails is the TYPE: the keyboard and content
@@ -110,23 +106,30 @@ struct InputFieldLabelsView: View {
                     .accessibilityLabel("Website URL")
             }
 
-            SectionBadge(text: "VIOLATION 5: sensitive fields without a secure input type")
-                .padding(.top, 18)
+            // Sensitive fields without a secure input type.
             Card {
-                // Passwords and the CVV go through a plain TextField: characters are not
-                // masked, no .password content type, nothing marks them as secure entry.
+                // Passwords and the CVV go through a plain TextField, so characters are not
+                // masked and the element is a text field rather than a secure one — the half of
+                // this sub-rule iOS reliably exposes (keyboardType is not in the AX tree, the
+                // .secureTextField element type is). Each one also *declares* a sensitive
+                // autofill purpose via textContentType, which contradicts the plain entry.
                 caption("Password")
                 TextField("Enter your password", text: $password)
+                    .textContentType(.password)
                     .inputBox()
                     .accessibilityLabel("Password")
 
+                // Password purpose, email keyboard, no masking.
                 caption("Confirm password", top: 14)
                 TextField("Re-enter your password", text: $confirmPassword)
+                    .textContentType(.password)
+                    .keyboardType(.emailAddress)
                     .inputBox()
                     .accessibilityLabel("Confirm password")
 
                 caption("Card CVV", top: 14)
                 TextField("3 digits on the back of your card", text: $cvv)
+                    .textContentType(.creditCardNumber)   // label says CVV, purpose says card number
                     .keyboardType(.default)
                     .inputBox()
                     .accessibilityLabel("Card CVV")

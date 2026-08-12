@@ -5,22 +5,6 @@
     android:orientation="vertical"
     android:padding="12dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_primary"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:text="@string/rule2_title"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_secondary"
-        android:textSize="12sp"
-        android:layout_marginTop="2dp"
-        android:text="@string/rule2_desc"/>
-
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -142,11 +126,4 @@
             android:contentDescription="picture"/>
     </GridLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="6dp"
-        android:textColor="@color/text_secondary"
-        android:textSize="11sp"
-        android:text="Violations of ImageView Element Accessibility Label: (1) Missing — absent or empty contentDescription. (2) Inadequate — generic (&quot;image&quot;/&quot;photo&quot;/&quot;icon&quot;/&quot;picture&quot;/&quot;graphic&quot;), filename, or mismatched copy. (3) Inaccessible — label hidden via importantForAccessibility=&quot;no&quot;. WCAG 1.1.1."/>
 </LinearLayout>

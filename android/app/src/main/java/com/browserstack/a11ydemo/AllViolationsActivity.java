@@ -16,8 +16,11 @@ import androidx.annotation.NonNull;
 
 public class AllViolationsActivity extends BaseChildActivity {
 
-    // Section anchors (each rule's heading), top-to-bottom. The "Next ↓" button
-    // jumps to the next one below the current scroll position.
+    // Section anchors, top-to-bottom: rule 1's grid, then the 1dp divider that opens each
+    // later rule. They deliberately sit on containers/dividers rather than on a heading
+    // TextView — this screen carries no chrome, so nothing but violations is in the
+    // accessibility tree. The "Next ↓" button jumps to the next one below the current
+    // scroll position.
     private static final int[] SECTION_ANCHORS = {
             R.id.sec1, R.id.sec2, R.id.sec3, R.id.sec4,
             R.id.sec5, R.id.sec6, R.id.sec7, R.id.sec8,
@@ -35,6 +38,12 @@ public class AllViolationsActivity extends BaseChildActivity {
     private static final long AUTOSCROLL_STEP_DELAY_MS = 14000;    // dwell per section for the scan
     private final Handler autoScrollHandler = new Handler(Looper.getMainLooper());
     private int autoScrollIndex = 0;
+
+    // This screen walks its own section anchors, so the base class's viewport paging stays off.
+    @Override
+    protected boolean autoScrollsContent() {
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

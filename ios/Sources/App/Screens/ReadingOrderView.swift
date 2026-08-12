@@ -7,13 +7,8 @@ import SwiftUI
 /// where Android used android:accessibilityTraversalAfter.
 struct ReadingOrderView: View {
     var body: some View {
-        RuleScreen(
-            title: Rule.readingOrder.title,
-            subtitle: Rule.readingOrder.desc,
-            footer: "Three cards, three scrambled focus orders. A VoiceOver user is asked to buy / read / pay before knowing what, or for how much."
-        ) {
-            SectionBadge(text: "VIOLATION 1: product card")
-            note("Visual: Title → Price → Description → Buy. VoiceOver: Buy → Title → Description → Price.")
+        RuleScreen {
+            // Visual: Title → Price → Description → Buy. VoiceOver: Buy → Title → Description → Price.
             Card {
                 orderedLine("Wireless Headphones X9", size: 18, bold: true,
                             color: Theme.textPrimary, priority: 3)
@@ -27,8 +22,7 @@ struct ReadingOrderView: View {
             // sortPriority — making the traversal-vs-visual mismatch a detectable violation.
             .accessibilityElement(children: .contain)
 
-            SectionBadge(text: "VIOLATION 2: news article card").padding(.top, 22)
-            note("Visual: Headline → Byline → Body → Read more. VoiceOver: Read more → Headline → Body → Byline.")
+            // Visual: Headline → Byline → Body → Read more. VoiceOver: Read more → Headline → Body → Byline.
             Card {
                 orderedLine("Mars rover finds new mineral deposit", size: 18, bold: true,
                             color: Theme.textPrimary, priority: 3)
@@ -39,9 +33,9 @@ struct ReadingOrderView: View {
                 cta("Read more", priority: 4)
             }
             .accessibilityElement(children: .contain)
+            .padding(.top, 22)
 
-            SectionBadge(text: "VIOLATION 3: invoice summary").padding(.top, 22)
-            note("Visual: Invoice # → Customer → Total → Pay now. VoiceOver: Pay now → Invoice # → Total → Customer.")
+            // Visual: Invoice # → Customer → Total → Pay now. VoiceOver: Pay now → Invoice # → Total → Customer.
             Card {
                 orderedLine("Invoice #INV-2042", size: 18, bold: true,
                             color: Theme.textPrimary, priority: 3)
@@ -52,6 +46,7 @@ struct ReadingOrderView: View {
                 cta("Pay now", priority: 4)
             }
             .accessibilityElement(children: .contain)
+            .padding(.top, 22)
         }
     }
 
@@ -73,14 +68,5 @@ struct ReadingOrderView: View {
         }
         .padding(.top, 14)
         .accessibilitySortPriority(priority)
-    }
-
-    private func note(_ text: String) -> some View {
-        Text(text)
-            .font(.system(size: 12))
-            .foregroundColor(Theme.textSecondary)
-            .padding(.top, 8)
-            .padding(.bottom, 4)
-            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

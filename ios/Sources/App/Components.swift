@@ -1,55 +1,75 @@
 import SwiftUI
 
-// MARK: - Screen scaffolding (mirrors styles.xml ScreenRoot / ScreenH1 / ScreenSub)
+// MARK: - Screen scaffolding
 
-/// Standard violation-screen wrapper: scrollable, padded, with an H1 title + subtitle
-/// and a grey explanatory footer — matching the Android BaseChildActivity screens.
+/// Standard violation-screen wrapper: a scrollable, padded surface and nothing else.
+///
+/// Deliberately bare. It used to add a screen title, subtitle, "VIOLATION N" badges and an
+/// explanatory footer; every one of those is a real element in the accessibility tree, so each
+/// scanned screen was mostly text that isn't a violation — and the title carried `.isHeader`,
+/// which handed the missing-heading build a perfectly correct heading. The reference fixture
+/// (browserstack/app-accessibility-ios-app @ app-for-issue-details) ships violating elements
+/// and nothing else, and gets every violation reported off one screen.
+///
+/// Explanations belong in each screen's doc comment, where the scanner can't see them.
+/// Auto-paging timings, shared with `AllViolationsView` so its per-rule dwell can't drift
+/// below the time one screen needs to show all of itself. Mirrors BaseChildActivity on Android.
+enum RulePaging {
+    static let initialDelay: Double = 5      // settle before the first hop
+    static let dwell: Double = 9             // seconds held per viewport
+    static let pages = 4                     // covers the tallest screen here (~3 viewports)
+
+    /// How long one screen needs to page through itself once.
+    static var fullPassSeconds: Double { initialDelay + Double(pages) * dwell }
+
+    static func markerID(_ i: Int) -> String { "rulePage\(i)" }
+}
+
 struct RuleScreen<Content: View>: View {
-    let title: String
-    let subtitle: String
-    let footer: String
     @ViewBuilder var content: () -> Content
+    @State private var page = 0
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                Text(title)
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(Theme.textPrimary)
-                    .padding(.bottom, 4)
-                    // Real screen heading — correctly exposed as a header.
-                    .accessibilityAddTraits(.isHeader)
-
-                Text(subtitle)
-                    .font(.system(size: 13))
-                    .foregroundColor(Theme.textSecondary)
-                    .padding(.bottom, 14)
-
-                content()
-
-                Text(footer)
-                    .font(.system(size: 12))
-                    .foregroundColor(Theme.textSecondary)
-                    .padding(.top, 14)
+        ScrollViewReader { proxy in
+            ScrollView {
+                // Spacing here (rather than a padding on every card) is what the deleted
+                // "VIOLATION N" badges used to provide between sections.
+                VStack(alignment: .leading, spacing: 14, content: content)
+                    .padding(20)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    // Invisible page markers to scroll to. A Color is not an accessibility
+                    // element, so paging costs the tree nothing.
+                    .overlay(alignment: .top) { markers }
             }
-            .padding(20)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            // Most rule screens are 2–3 viewports tall and the scan captures the viewport
+            // without scrolling, so violations below the fold were never looked at — which is
+            // why "Input type for input fields" (bottom of the input screen) was rarely
+            // reported while the label violations at the top always were. Page down on a loop;
+            // it loops because the scan starts well after launch.
+            .task {
+                try? await Task.sleep(nanoseconds: UInt64(RulePaging.initialDelay * 1_000_000_000))
+                while !Task.isCancelled {
+                    page = (page + 1) % RulePaging.pages
+                    withAnimation { proxy.scrollTo(RulePaging.markerID(page), anchor: .top) }
+                    try? await Task.sleep(nanoseconds: UInt64(RulePaging.dwell * 1_000_000_000))
+                }
+            }
         }
         .background(Theme.bg)
     }
-}
 
-/// Red "VIOLATION N: …" badge — the Android SectionLabel + badge_red drawable.
-struct SectionBadge: View {
-    let text: String
-    var body: some View {
-        Text(text)
-            .font(.system(size: 11, weight: .bold))
-            .foregroundColor(.white)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-            .background(Theme.violationRed)
-            .cornerRadius(4)
+    /// Markers spread evenly down the content (the overlay is content-height, so the spacers
+    /// distribute them). `Color` is not an accessibility element, so paging costs the tree nothing.
+    private var markers: some View {
+        VStack(spacing: 0) {
+            ForEach(0..<RulePaging.pages, id: \.self) { i in
+                Color.clear
+                    .frame(height: 1)
+                    .id(RulePaging.markerID(i))
+                if i < RulePaging.pages - 1 { Spacer(minLength: 0) }
+            }
+        }
+        .allowsHitTesting(false)
     }
 }
 

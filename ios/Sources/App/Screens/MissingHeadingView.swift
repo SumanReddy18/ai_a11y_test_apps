@@ -7,12 +7,8 @@ import SwiftUI
 /// Mirrors activity_missing_heading.xml (Android: no android:accessibilityHeading="true").
 struct MissingHeadingView: View {
     var body: some View {
-        RuleScreen(
-            title: Rule.missingHeading.title,
-            subtitle: Rule.missingHeading.desc,
-            footer: "Every section label above (Account, Notifications, Items, Shipping, …) introduces a new section, but is rendered as plain body text with NO .isHeader trait. The VoiceOver heading rotor gets nothing."
-        ) {
-            SectionBadge(text: "VIOLATION 1: settings page sections")
+        RuleScreen {
+            // Settings page sections.
             Card {
                 sectionTitle("Account")
                 body("Manage email, password, and linked devices.")
@@ -22,7 +18,7 @@ struct MissingHeadingView: View {
                 body("Control who can see your activity and profile.")
             }
 
-            SectionBadge(text: "VIOLATION 2: blog article sections").padding(.top, 18)
+            // Blog article sections.
             Card {
                 sectionTitle("Why mobile accessibility matters")
                 body("More than 1 in 7 users rely on assistive tech on mobile. Apps that ignore them lock out paying customers and risk legal exposure.", top: 10)
@@ -32,7 +28,7 @@ struct MissingHeadingView: View {
                 body("Inaccessible apps have triggered ADA and EU EAA complaints in every major market.", top: 4)
             }
 
-            SectionBadge(text: "VIOLATION 3: order summary sections").padding(.top, 18)
+            // Order summary sections.
             Card {
                 sectionTitle("Items")
                 body("Noise cancelling headphones · ₹4,999")
@@ -42,7 +38,7 @@ struct MissingHeadingView: View {
                 body("Visa ending 4242 · UPI fallback enabled")
             }
 
-            SectionBadge(text: "VIOLATION 4: dashboard card titles").padding(.top, 18)
+            // Dashboard card titles.
             Card {
                 sectionTitle("Active users today");  body("38,402")
                 sectionTitle("Crash-free sessions", top: 14); body("99.78%")

@@ -5,12 +5,6 @@
 
     <LinearLayout style="@style/ScreenRoot">
 
-        <TextView style="@style/ScreenH1" android:text="@string/rule7_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule7_desc"/>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: body paragraph as heading"/>
-
         <!-- Long body copy is marked as a heading — heading nav lands here as if it were a section title. -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,10 +32,6 @@
                 android:accessibilityHeading="true"
                 android:text="By continuing you agree that any data captured by this demo app may be used to train internal QA models, that you understand this is a synthetic accessibility test fixture, and that you will not redistribute the bundled APKs outside your organization."/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: inline error labelled as heading"
-            android:layout_marginTop="18dp"/>
 
         <!-- Form error message marked as heading — heading nav will jump to a transient state. -->
         <LinearLayout
@@ -73,10 +63,6 @@
                 android:paddingTop="4dp"
                 android:accessibilityHeading="true"/>
         </LinearLayout>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: every list item is a heading"
-            android:layout_marginTop="18dp"/>
 
         <!-- A list where every row is flagged as a heading — heading nav becomes useless. -->
         <LinearLayout
@@ -130,10 +116,6 @@
                 android:accessibilityHeading="true"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: ad / promo flagged as heading"
-            android:layout_marginTop="18dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -178,10 +160,6 @@
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 5: button label as heading"
-            android:layout_marginTop="18dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -215,12 +193,5 @@
                 android:accessibilityHeading="true"/>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="14dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:text="Body copy, error messages, list rows, ad blurbs, and even a Button are all flagged with android:accessibilityHeading=&quot;true&quot;. TalkBack heading navigation will treat each one as a section title — pure noise."/>
     </LinearLayout>
 </ScrollView>

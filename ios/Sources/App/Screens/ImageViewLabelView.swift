@@ -24,11 +24,7 @@ struct ImageViewLabelView: View {
     ]
 
     var body: some View {
-        RuleScreen(
-            title: Rule.imageviewLabel.title,
-            subtitle: Rule.imageviewLabel.desc,
-            footer: "Violations: (1) Missing — absent or empty accessibilityLabel. (2) Inadequate — generic (\"image\"/\"photo\"/\"icon\"/\"picture\"/\"graphic\"), filename, or mismatched copy. (3) Inaccessible — image hidden from VoiceOver. WCAG 1.1.1."
-        ) {
+        RuleScreen {
             LazyVGrid(columns: columns, spacing: 6) {
                 ForEach(Array(items.enumerated()), id: \.offset) { _, it in
                     ZStack {

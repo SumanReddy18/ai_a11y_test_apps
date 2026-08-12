@@ -130,9 +130,25 @@ element isn't the right *type*. Concrete examples that have bitten us:
   label. "Input type for input fields" compares that detected label against `android:inputType`,
   so a field must *be labelled* for a type mismatch to fire at all. On iOS a `TextField`'s
   placeholder becomes its accessibility label, so an unnamed field needs `TextField("", …)`.
+  Two more things that silently killed "Input type for input fields":
+  `android:importantForAutofill="no"` (it was on every field) strips the *autofill metadata* the
+  rule inspects alongside the type, so the type-violation fields now carry a deliberately
+  contradicting `android:autofillHints` instead; and on iOS `keyboardType`/`textContentType` are
+  not accessibility attributes at all, so the only half of this rule iOS reliably exposes is
+  secure entry — a plain `TextField` where a `SecureField` belongs shows up as a different
+  element type.
+- **Below the fold is invisible** — the scan captures the viewport and does not scroll, so a
+  violation on the second screenful is simply never seen. This is why the input-type violations
+  (~960dp down a 1700dp screen) were rarely reported while the label violations at the top always
+  were. Every scrollable rule screen therefore pages itself down on a loop:
+  `BaseChildActivity.onContentChanged` on Android (`AllViolationsActivity` opts out via
+  `autoScrollsContent()`, it walks its own section anchors), `RuleScreen` + `RulePaging` on iOS.
+  Keep `AllViolationsView`'s per-rule dwell at `RulePaging.fullPassSeconds` or that build only
+  ever shows each rule's top viewport.
 
 When a violation "isn't detected", first check the element actually has the accessibility
-property/role the rule inspects — don't just restyle it.
+property/role the rule inspects — don't just restyle it. Then check it is on the first screenful,
+or that the screen pages itself.
 
 ## Building
 
@@ -243,8 +259,20 @@ flavor installs alongside the others.
 
 ## Conventions
 
-- One Activity + one layout per rule; keep violation screens self-explanatory (section labels,
-  red "VIOLATION" badges, an explanatory footer describing what should be flagged).
+- One Activity + one layout per rule.
+- **Violation screens carry NO chrome, on both platforms.** No screen title, no subtitle, no red
+  "VIOLATION N" badge, no per-section note, no explanatory footer. Every one of those is a real
+  element in the accessibility tree, so a scanned screen was mostly text that *isn't* a violation
+  — and on iOS the old `RuleScreen` title even carried `.isHeader`, handing the `missingHeading`
+  build a perfectly correct heading. The upstream fixtures
+  ([iOS](https://github.com/browserstack/app-accessibility-ios-app/tree/app-for-issue-details),
+  [Android](https://github.com/browserstack/app-accessibility-android-app/tree/multi-page-regression-app))
+  ship violating elements and little else; the iOS one gets every violation off a single screen.
+  Put the explanation in an XML comment or the SwiftUI view's doc comment — somewhere the scanner
+  cannot see it. A caption that is *part* of a violation (an unassociated "Email" label above an
+  unnamed field) is not chrome; keep it.
+- `AllViolationsActivity`'s auto-scroll anchors (`sec1…sec9`) therefore sit on layout containers
+  and 1dp dividers, never on a heading TextView.
 - Don't bump the version just to refresh a screen's content — rebuild at the same version and
   re-push (the user often wants the same URL to serve corrected bytes).
 - Commit the rebuilt `releases/v<version>/*.apk` alongside the source change so the committed

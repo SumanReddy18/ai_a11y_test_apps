@@ -5,12 +5,6 @@
 
     <LinearLayout style="@style/ScreenRoot">
 
-        <TextView style="@style/ScreenH1" android:text="@string/rule5_title"/>
-        <TextView style="@style/ScreenSub" android:text="@string/rule5_desc"/>
-
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 1: sign-up form"/>
-
         <!-- Form: visual order is scrambled - Submit appears first, then Email, then Name -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,10 +81,6 @@
                 android:textSize="12sp"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 2: checkout form"
-            android:layout_marginTop="18dp"/>
-
         <!-- Checkout form: Pay button comes before card details, expiry/CVV reversed -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -156,10 +146,6 @@
                 android:inputType="datetime"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 3: onboarding wizard"
-            android:layout_marginTop="18dp"/>
-
         <!-- Wizard with Finish button before steps, and step labels in reverse order -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -214,10 +200,6 @@
                 android:paddingTop="6dp"/>
         </LinearLayout>
 
-        <TextView style="@style/SectionLabel" android:background="@drawable/badge_red"
-            android:text="VIOLATION 4: receipt list"
-            android:layout_marginTop="18dp"/>
-
         <!-- Itemized receipt where total appears above the items -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -266,12 +248,5 @@
                 android:paddingTop="6dp"/>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="14dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:text="Four sections, all with scrambled visual flow: Submit/Pay/Finish before their inputs, steps and items in reverse, totals before line items. Sighted users with cognitive accessibility needs cannot follow the natural top-to-bottom order."/>
     </LinearLayout>
 </ScrollView>

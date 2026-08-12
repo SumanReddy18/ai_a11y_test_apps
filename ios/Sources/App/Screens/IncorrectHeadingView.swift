@@ -9,12 +9,8 @@ struct IncorrectHeadingView: View {
     @State private var email = ""
 
     var body: some View {
-        RuleScreen(
-            title: Rule.incorrectHeading.title,
-            subtitle: Rule.incorrectHeading.desc,
-            footer: "Body copy, an error message, list rows, an ad blurb, and a button are all flagged with .isHeader. The VoiceOver heading rotor treats each as a section title — pure noise."
-        ) {
-            SectionBadge(text: "VIOLATION 1: body paragraph as heading")
+        RuleScreen {
+            // Body paragraph as heading.
             Card {
                 heading("Terms of service", size: 18)
                 // Long body copy wrongly marked as a heading.
@@ -22,7 +18,7 @@ struct IncorrectHeadingView: View {
                         size: 14, top: 8)
             }
 
-            SectionBadge(text: "VIOLATION 2: inline error labelled as heading").padding(.top, 18)
+            // Inline error labelled as heading.
             Card {
                 Text("Email").foregroundColor(Theme.textPrimary)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -34,7 +30,7 @@ struct IncorrectHeadingView: View {
                     .accessibilityAddTraits(.isHeader)
             }
 
-            SectionBadge(text: "VIOLATION 3: every list row is a heading").padding(.top, 18)
+            // Every list row is a heading.
             Card {
                 heading("Inbox", size: 18)
                 heading("Anya — your invoice is ready", size: 14, top: 10)
@@ -43,7 +39,7 @@ struct IncorrectHeadingView: View {
                 heading("Zomato — 30% off this weekend", size: 14, top: 6)
             }
 
-            SectionBadge(text: "VIOLATION 4: ad / promo flagged as heading").padding(.top, 18)
+            // Ad / promo flagged as heading.
             Card {
                 heading("Articles", size: 18)
                 heading("Sponsored — Try Cloud Plus free for 30 days. No credit card needed.",
@@ -54,7 +50,7 @@ struct IncorrectHeadingView: View {
                     .padding(.top, 2).frame(maxWidth: .infinity, alignment: .leading)
             }
 
-            SectionBadge(text: "VIOLATION 5: button label as heading").padding(.top, 18)
+            // Button label as heading.
             Card {
                 heading("Confirm booking", size: 18)
                 Text("Mumbai → Goa · Sat 9:40 AM · 2 passengers")
