@@ -35,6 +35,31 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <!-- Fixture scaffolding: names the AI task and the rules the group beneath it
+         should raise, so the expected result can be read off a screenshot.
+         importantForAccessibility="no" keeps these captions out of the test
+         surface — they are documentation, not elements under test. -->
+    <style name="AiTaskCaption">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">18dp</item>
+        <item name="android:textColor">@color/brand_primary</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
+    <style name="AiRuleCaption">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
 
 
     <style name="NumBtn">
