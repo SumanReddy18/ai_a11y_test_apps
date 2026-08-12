@@ -4,6 +4,13 @@
     android:layout_height="match_parent">
 
     <LinearLayout style="@style/ScreenRoot">
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_link_text_purpose  ·  link-text-purpose"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="Also expected: reading/visual order + missing/incorrect heading"/>
+
 
         <!-- Each link is its OWN TextView whose entire text is the vague phrase, spanned
              end-to-end in LinkTextPurposeActivity.

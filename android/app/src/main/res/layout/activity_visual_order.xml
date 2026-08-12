@@ -4,6 +4,13 @@
     android:layout_height="match_parent">
 
     <LinearLayout style="@style/ScreenRoot">
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_visual_order  ·  meaningful-visual-order"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="Also expected: reading order + missing/incorrect heading (whole-tree + text rules)"/>
+
 
         <!-- Form: visual order is scrambled - Submit appears first, then Email, then Name -->
         <LinearLayout
@@ -23,12 +30,20 @@
                 android:textSize="18sp"
                 android:paddingBottom="10dp"/>
 
-            <Button
+            <!-- Rendered as a non-clickable TextView on purpose. A real Button/EditText is a
+     candidate for interactable- / editable-element-content-label and the input-field
+     rules, which would make this screen report check_accessibility_label and
+     check_input_field_purpose issues on top of its own AI task. It still carries text
+     and is focusable, so it keeps its place in the traversal order this screen tests. -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Submit"
-                android:backgroundTint="@color/brand_primary"
-                android:textColor="#FFFFFF"/>
+                android:background="@color/brand_primary"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:padding="12dp"
+                android:focusable="true"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -37,12 +52,18 @@
                 android:textColor="@color/text_primary"
                 android:paddingTop="14dp"/>
 
-            <EditText
+            <!-- Rendered as a non-clickable TextView on purpose. A real Button/EditText is a
+     candidate for interactable- / editable-element-content-label and the input-field
+     rules, which would make this screen report check_accessibility_label and
+     check_input_field_purpose issues on top of its own AI task. It still carries text
+     and is focusable, so it keeps its place in the traversal order this screen tests. -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="you@example.com"
-                android:inputType="textEmailAddress"
-                android:autofillHints="emailAddress"/>
+                android:text="you@example.com"
+                android:padding="10dp"
+                android:background="@drawable/card_bg"
+                android:focusable="true"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -51,12 +72,18 @@
                 android:textColor="@color/text_primary"
                 android:paddingTop="14dp"/>
 
-            <EditText
+            <!-- Rendered as a non-clickable TextView on purpose. A real Button/EditText is a
+     candidate for interactable- / editable-element-content-label and the input-field
+     rules, which would make this screen report check_accessibility_label and
+     check_input_field_purpose issues on top of its own AI task. It still carries text
+     and is focusable, so it keeps its place in the traversal order this screen tests. -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Your name"
-                android:inputType="textPersonName"
-                android:autofillHints="name"/>
+                android:text="Your name"
+                android:padding="10dp"
+                android:background="@drawable/card_bg"
+                android:focusable="true"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -99,12 +126,20 @@
                 android:textSize="18sp"
                 android:paddingBottom="10dp"/>
 
-            <Button
+            <!-- Rendered as a non-clickable TextView on purpose. A real Button/EditText is a
+     candidate for interactable- / editable-element-content-label and the input-field
+     rules, which would make this screen report check_accessibility_label and
+     check_input_field_purpose issues on top of its own AI task. It still carries text
+     and is focusable, so it keeps its place in the traversal order this screen tests. -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Pay ₹4,999"
-                android:backgroundTint="@color/brand_primary"
-                android:textColor="#FFFFFF"/>
+                android:background="@color/brand_primary"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:padding="12dp"
+                android:focusable="true"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -113,11 +148,18 @@
                 android:textColor="@color/text_primary"
                 android:paddingTop="14dp"/>
 
-            <EditText
+            <!-- Rendered as a non-clickable TextView on purpose. A real Button/EditText is a
+     candidate for interactable- / editable-element-content-label and the input-field
+     rules, which would make this screen report check_accessibility_label and
+     check_input_field_purpose issues on top of its own AI task. It still carries text
+     and is focusable, so it keeps its place in the traversal order this screen tests. -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="1234 5678 9012 3456"
-                android:inputType="number"/>
+                android:text="1234 5678 9012 3456"
+                android:padding="10dp"
+                android:background="@drawable/card_bg"
+                android:focusable="true"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -126,11 +168,18 @@
                 android:textColor="@color/text_primary"
                 android:paddingTop="14dp"/>
 
-            <EditText
+            <!-- Rendered as a non-clickable TextView on purpose. A real Button/EditText is a
+     candidate for interactable- / editable-element-content-label and the input-field
+     rules, which would make this screen report check_accessibility_label and
+     check_input_field_purpose issues on top of its own AI task. It still carries text
+     and is focusable, so it keeps its place in the traversal order this screen tests. -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="123"
-                android:inputType="numberPassword"/>
+                android:text="123"
+                android:padding="10dp"
+                android:background="@drawable/card_bg"
+                android:focusable="true"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -139,11 +188,18 @@
                 android:textColor="@color/text_primary"
                 android:paddingTop="14dp"/>
 
-            <EditText
+            <!-- Rendered as a non-clickable TextView on purpose. A real Button/EditText is a
+     candidate for interactable- / editable-element-content-label and the input-field
+     rules, which would make this screen report check_accessibility_label and
+     check_input_field_purpose issues on top of its own AI task. It still carries text
+     and is focusable, so it keeps its place in the traversal order this screen tests. -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="MM/YY"
-                android:inputType="datetime"/>
+                android:text="MM/YY"
+                android:padding="10dp"
+                android:background="@drawable/card_bg"
+                android:focusable="true"/>
         </LinearLayout>
 
         <!-- Wizard with Finish button before steps, and step labels in reverse order -->
@@ -164,12 +220,20 @@
                 android:textSize="18sp"
                 android:paddingBottom="10dp"/>
 
-            <Button
+            <!-- Rendered as a non-clickable TextView on purpose. A real Button/EditText is a
+     candidate for interactable- / editable-element-content-label and the input-field
+     rules, which would make this screen report check_accessibility_label and
+     check_input_field_purpose issues on top of its own AI task. It still carries text
+     and is focusable, so it keeps its place in the traversal order this screen tests. -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Finish setup"
-                android:backgroundTint="@color/brand_primary"
-                android:textColor="#FFFFFF"/>
+                android:background="@color/brand_primary"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:padding="12dp"
+                android:focusable="true"/>
 
             <TextView
                 android:layout_width="match_parent"

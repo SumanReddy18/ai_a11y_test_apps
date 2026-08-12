@@ -4,6 +4,13 @@
     android:layout_height="match_parent">
 
     <LinearLayout style="@style/ScreenRoot">
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_reading_order  ·  meaningful-reading-order"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="Also expected: visual order + missing/incorrect heading (whole-tree + text rules)"/>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -53,17 +60,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:accessibilityTraversalAfter="@+id/title"/>
 
-            <Button
+            <!-- Rendered as a non-clickable TextView on purpose. A real Button/EditText is a
+     candidate for interactable- / editable-element-content-label and the input-field
+     rules, which would make this screen report check_accessibility_label and
+     check_input_field_purpose issues on top of its own AI task. It still carries text
+     and is focusable, so it keeps its place in the traversal order this screen tests. -->
+            <TextView
                 android:id="@+id/buy"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:text="Buy now"
-                android:backgroundTint="@color/brand_primary"
+                android:background="@color/brand_primary"
                 android:textColor="#FFFFFF"
                 app:layout_constraintTop_toBottomOf="@id/desc"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center"
+                android:padding="12dp"
+                android:focusable="true"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -121,17 +136,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:accessibilityTraversalAfter="@+id/headline"/>
 
-            <Button
+            <!-- Rendered as a non-clickable TextView on purpose. A real Button/EditText is a
+     candidate for interactable- / editable-element-content-label and the input-field
+     rules, which would make this screen report check_accessibility_label and
+     check_input_field_purpose issues on top of its own AI task. It still carries text
+     and is focusable, so it keeps its place in the traversal order this screen tests. -->
+            <TextView
                 android:id="@+id/readmore"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:text="Read more"
-                android:backgroundTint="@color/brand_primary"
+                android:background="@color/brand_primary"
                 android:textColor="#FFFFFF"
                 app:layout_constraintTop_toBottomOf="@id/body"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center"
+                android:padding="12dp"
+                android:focusable="true"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -190,17 +213,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:accessibilityTraversalAfter="@+id/invNumber"/>
 
-            <Button
+            <!-- Rendered as a non-clickable TextView on purpose. A real Button/EditText is a
+     candidate for interactable- / editable-element-content-label and the input-field
+     rules, which would make this screen report check_accessibility_label and
+     check_input_field_purpose issues on top of its own AI task. It still carries text
+     and is focusable, so it keeps its place in the traversal order this screen tests. -->
+            <TextView
                 android:id="@+id/payNow"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:text="Pay now"
-                android:backgroundTint="@color/brand_primary"
+                android:background="@color/brand_primary"
                 android:textColor="#FFFFFF"
                 app:layout_constraintTop_toBottomOf="@id/invTotal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center"
+                android:padding="12dp"
+                android:focusable="true"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

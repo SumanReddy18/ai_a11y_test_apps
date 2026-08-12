@@ -8,6 +8,13 @@
     <LinearLayout style="@style/ScreenRoot"
         android:focusableInTouchMode="true"
         android:descendantFocusability="beforeDescendants">
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_input_field_purpose"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="accessible-input-field-label + input-type-for-input-field · also raises check_accessibility_label (any editable)"/>
+
 
         <!-- ============================================================
              Sub-rule A — "Accessible input field labels"
