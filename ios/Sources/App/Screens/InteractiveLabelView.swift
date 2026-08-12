@@ -96,8 +96,8 @@ struct InteractiveLabelView: View {
             // label that is PRESENT but poor, which is the only way this rule
             // reaches AI review.
             // ─────────────────────────────────────────────────────────────────
-            caption("AI: check_accessibility_label",
-                    "editable-element-content-label · expects \"Meaningful Label\"")
+            AiCaption(task: "AI: check_accessibility_label",
+                      rules: "editable-element-content-label · expects \"Meaningful Label\"")
 
             TextField("Name", text: $editNamed)
                 .textFieldStyle(.roundedBorder)
