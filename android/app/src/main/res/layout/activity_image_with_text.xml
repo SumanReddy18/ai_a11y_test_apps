@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- importantForAccessibility="no" on every tile is deliberate, and it is what keeps
+         this screen on ONE AI task. imageview-element-content-label bails on
+         `if (!view.isAccessible) return` (BSAIRules.kt), so hiding the tiles from the
+         a11y tree removes them from check_image_label — the imageviewLabel screen's job.
+         images-of-text has no such guard: it keys only on the role plus OCR text, so this
+         screen still raises check_images_of_text exactly as before.
+
+         It is also a real violation shape: an image carrying meaning in its pixels that a
+         developer has marked decorative. -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="12dp">
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_images_of_text  ·  images-of-text"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="Also expected on every screen: reading/visual order + missing/incorrect heading"/>
+
 
     <GridLayout
         android:layout_width="match_parent"
@@ -22,7 +38,8 @@
             android:layout_rowWeight="1"
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/unsplash_text_01"/>
+            android:src="@drawable/unsplash_text_01"
+                android:importantForAccessibility="no"/>
 
         <!-- 2: generic "image" -->
         <ImageView
@@ -33,7 +50,8 @@
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
             android:src="@drawable/unsplash_text_02"
-            android:contentDescription="image"/>
+            android:contentDescription="image"
+                android:importantForAccessibility="no"/>
 
         <!-- 3: description ignores embedded text -->
         <ImageView
@@ -44,7 +62,8 @@
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
             android:src="@drawable/unsplash_text_03"
-            android:contentDescription="A diagram"/>
+            android:contentDescription="A diagram"
+                android:importantForAccessibility="no"/>
 
         <!-- 4: empty contentDescription -->
         <ImageView
@@ -55,7 +74,8 @@
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
             android:src="@drawable/unsplash_text_04"
-            android:contentDescription=""/>
+            android:contentDescription=""
+                android:importantForAccessibility="no"/>
 
         <!-- 5: generic "photo" -->
         <ImageView
@@ -66,7 +86,8 @@
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
             android:src="@drawable/unsplash_text_05"
-            android:contentDescription="photo"/>
+            android:contentDescription="photo"
+                android:importantForAccessibility="no"/>
 
         <!-- 6: filename used as label -->
         <ImageView
@@ -77,7 +98,8 @@
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
             android:src="@drawable/unsplash_text_06"
-            android:contentDescription="img_06.jpg"/>
+            android:contentDescription="img_06.jpg"
+                android:importantForAccessibility="no"/>
 
         <!-- 7: marketing label hides text -->
         <ImageView
@@ -88,7 +110,8 @@
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
             android:src="@drawable/unsplash_text_07"
-            android:contentDescription="Welcome banner"/>
+            android:contentDescription="Welcome banner"
+                android:importantForAccessibility="no"/>
 
         <!-- 8: single word "graphic" -->
         <ImageView
@@ -99,7 +122,8 @@
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
             android:src="@drawable/unsplash_text_08"
-            android:contentDescription="graphic"/>
+            android:contentDescription="graphic"
+                android:importantForAccessibility="no"/>
 
         <!-- 9: generic "icon" -->
         <ImageView
@@ -110,7 +134,8 @@
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
             android:src="@drawable/unsplash_text_09"
-            android:contentDescription="icon"/>
+            android:contentDescription="icon"
+                android:importantForAccessibility="no"/>
 
         <!-- 10: generic "picture" -->
         <ImageView
@@ -121,7 +146,8 @@
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
             android:src="@drawable/unsplash_text_10"
-            android:contentDescription="picture"/>
+            android:contentDescription="picture"
+                android:importantForAccessibility="no"/>
 
     </GridLayout>
 

@@ -9,7 +9,29 @@
         android:orientation="vertical"
         android:padding="12dp">
 
-        <!-- ===== Interactable elements (ImageButton / custom clickable Views) ===== -->
+        <!-- Captions name the AI task and the rules each group should raise, so a
+             reviewer can read the expected result off a screenshot instead of the
+             source. importantForAccessibility="no" keeps them out of the test
+             surface (mirrors .accessibilityHidden on the iOS port). -->
+
+        <!-- These were ImageButtons, which are ROLE_IMAGE_BUTTON and therefore route to
+             imageview-element-content-label — the check_image_label task, i.e. the
+             imageviewLabel screen's job, not this screen's. That made this build report
+             two AI tasks at once and told you nothing about interactable-element-content-label.
+
+             Now each tile is a clickable container that carries the (bad) description, with
+             the icon inside marked importantForAccessibility="no" so it leaves the
+             accessibility tree entirely. The demonstration is unchanged — missing, generic,
+             contextually wrong, empty and filename-as-label on interactive controls — but it
+             lands on the rule this screen is for. It is also how real apps build icon
+             buttons, so the shape is representative. -->
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_accessibility_label  ·  interactable-element-content-label"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="Icon controls: missing / generic / wrong / empty / filename names"/>
+
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,84 +39,132 @@
             android:columnCount="2"
             android:useDefaultMargins="false">
 
-            <!-- 1: ImageButton — no contentDescription (Missing label) -->
-            <ImageButton
+            <!-- 1: no description at all (Missing label) -->
+            <FrameLayout
                 android:id="@+id/btnFavorite"
                 android:layout_width="0dp"
                 android:layout_height="90dp"
                 android:layout_columnWeight="1"
                 android:layout_margin="3dp"
-                android:padding="18dp"
-                android:src="@drawable/ic_heart"
-                android:scaleType="fitCenter"
-                android:background="@drawable/card_bg"/>
+                android:background="@drawable/card_bg"
+                android:clickable="true"
+                android:focusable="true">
 
-            <!-- 2: ImageButton — generic "button" (Inadequate) -->
-            <ImageButton
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dp"
+                    android:src="@drawable/ic_heart"
+                    android:scaleType="fitCenter"
+                    android:importantForAccessibility="no"/>
+            </FrameLayout>
+
+            <!-- 2: generic "button" (Inadequate) -->
+            <FrameLayout
                 android:id="@+id/btnShare"
                 android:layout_width="0dp"
                 android:layout_height="90dp"
                 android:layout_columnWeight="1"
                 android:layout_margin="3dp"
-                android:padding="18dp"
-                android:src="@drawable/ic_share"
-                android:scaleType="fitCenter"
                 android:background="@drawable/card_bg"
-                android:contentDescription="button"/>
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="button">
 
-            <!-- 3: ImageButton trash labeled "share" (Contextually inaccurate) -->
-            <ImageButton
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dp"
+                    android:src="@drawable/ic_share"
+                    android:scaleType="fitCenter"
+                    android:importantForAccessibility="no"/>
+            </FrameLayout>
+
+            <!-- 3: trash icon described as "share" (Contextually wrong) -->
+            <FrameLayout
                 android:id="@+id/btnDelete"
                 android:layout_width="0dp"
                 android:layout_height="90dp"
                 android:layout_columnWeight="1"
                 android:layout_margin="3dp"
-                android:padding="18dp"
-                android:src="@drawable/ic_trash"
-                android:scaleType="fitCenter"
                 android:background="@drawable/card_bg"
-                android:contentDescription="share"/>
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="share">
 
-            <!-- 4: ImageButton warning — empty contentDescription -->
-            <ImageButton
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dp"
+                    android:src="@drawable/ic_trash"
+                    android:scaleType="fitCenter"
+                    android:importantForAccessibility="no"/>
+            </FrameLayout>
+
+            <!-- 4: empty description -->
+            <FrameLayout
                 android:id="@+id/btnAlert"
                 android:layout_width="0dp"
                 android:layout_height="90dp"
                 android:layout_columnWeight="1"
                 android:layout_margin="3dp"
-                android:padding="18dp"
-                android:src="@drawable/ic_warning"
-                android:scaleType="fitCenter"
                 android:background="@drawable/card_bg"
-                android:contentDescription=""/>
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="">
 
-            <!-- 5: ImageButton chevron — filename/identifier as label -->
-            <ImageButton
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dp"
+                    android:src="@drawable/ic_warning"
+                    android:scaleType="fitCenter"
+                    android:importantForAccessibility="no"/>
+            </FrameLayout>
+
+            <!-- 5: filename / identifier as the description -->
+            <FrameLayout
                 android:id="@+id/btnNext"
                 android:layout_width="0dp"
                 android:layout_height="90dp"
                 android:layout_columnWeight="1"
                 android:layout_margin="3dp"
-                android:padding="18dp"
-                android:src="@drawable/ic_chevron"
-                android:scaleType="fitCenter"
                 android:background="@drawable/card_bg"
-                android:contentDescription="ic_chevron"/>
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="ic_chevron">
 
-            <!-- 6: ImageButton avatar — generic "icon" -->
-            <ImageButton
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dp"
+                    android:src="@drawable/ic_chevron"
+                    android:scaleType="fitCenter"
+                    android:importantForAccessibility="no"/>
+            </FrameLayout>
+
+            <!-- 6: generic "icon" -->
+            <FrameLayout
                 android:id="@+id/btnProfile"
                 android:layout_width="0dp"
                 android:layout_height="90dp"
                 android:layout_columnWeight="1"
                 android:layout_margin="3dp"
-                android:padding="18dp"
-                android:src="@drawable/ic_avatar"
-                android:scaleType="fitCenter"
                 android:background="@drawable/card_bg"
-                android:contentDescription="icon"/>
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="icon">
 
-            <!-- 7: Custom clickable View (blue CTA) — no label at all -->
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dp"
+                    android:src="@drawable/ic_avatar"
+                    android:scaleType="fitCenter"
+                    android:importantForAccessibility="no"/>
+            </FrameLayout>
+
+            <!-- 7 & 8: custom clickable Views with no label at all. -->
             <View
                 android:id="@+id/ctaPrimary"
                 android:layout_width="0dp"
@@ -105,7 +175,6 @@
                 android:clickable="true"
                 android:focusable="true"/>
 
-            <!-- 8: Custom clickable View (red CTA) — no label at all -->
             <View
                 android:id="@+id/ctaDanger"
                 android:layout_width="0dp"
@@ -116,6 +185,13 @@
                 android:clickable="true"
                 android:focusable="true"/>
         </GridLayout>
+
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_accessibility_label  ·  switch-element-content-label"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="Switch: missing name, then generic name"/>
 
         <!-- ===== Switch elements (Switch element content label) ===== -->
         <!-- Switch — no android:text, no contentDescription (Missing label) -->
@@ -133,6 +209,13 @@
             android:layout_marginTop="10dp"
             android:contentDescription="switch"/>
 
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_accessibility_label  ·  checkbox-element-content-label"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="CheckBox: missing name, then generic name (Android-only rule)"/>
+
         <!-- ===== Checkbox elements (Checkbox element content label) ===== -->
         <!-- CheckBox — no android:text, no contentDescription (Missing label) -->
         <CheckBox
@@ -148,6 +231,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:contentDescription="checkbox"/>
+
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_accessibility_label  ·  editable-element-content-label"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="EditText: both below FAIL deterministically (no hint / desc / labelFor)"/>
+        <!-- An editable is the only element that can exercise
+             editable-element-content-label, and any editable ALSO feeds
+             accessible-input-field-label / input-type-for-input-field, i.e. the
+             check_input_field_purpose task. That overlap is inherent to the rules,
+             not something this screen chose — expect input-field issues here too. -->
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="(also raises check_input_field_purpose — unavoidable for any editable)"/>
 
         <!-- ===== Editable elements (Editable element content label) ===== -->
         <!-- EditText — no hint, no contentDescription, no labelFor (Missing label) -->
@@ -174,6 +272,52 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
+            android:importantForAutofill="no"/>
+
+        <!-- ============================================================
+             Everything ABOVE has a MISSING label, which is the deterministic
+             FAIL branch of each rule — the AI is never asked to judge anything,
+             so this screen could look full of violations while the AI was dead.
+             That is the RCA-1294 failure mode. The two elements below carry a
+             label that is PRESENT but poor, which is the only way these rules
+             reach AI_REVIEW and produce an AI-attributed issue.
+             ============================================================ -->
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_accessibility_label  ·  AI_REVIEW branch"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="interactable- + editable-element-content-label · expects &quot;Meaningful Label&quot;"/>
+
+        <!-- interactable-element-content-label → AI_REVIEW.
+             BSAIRules.kt excludes ROLE_IMAGE / IMAGE_BUTTON / SWITCH / CHECK_BOX /
+             EDIT_TEXT / SIMPLE_TEXT from this rule, so every element above is
+             handled by some other rule and this one only ever saw the two
+             unlabelled CTAs (deterministic FAIL). A clickable custom View with a
+             vague label is the smallest thing that reaches the AI. -->
+        <View
+            android:id="@+id/ctaVagueLabel"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/brand_primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="tap"/>
+
+        <!-- editable-element-content-label → AI_REVIEW.
+             Needs a label from one of hint / labeledBy / child / desc. Both
+             EditTexts above deliberately have none, so this rule only ever took
+             its FAIL branch on this screen. A hint-only field supplies the label
+             and lets the AI judge whether "Name" actually describes the field. -->
+        <EditText
+            android:id="@+id/editVagueHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Name"
+            android:textColorHint="@color/text_secondary"
+            android:inputType="text"
             android:importantForAutofill="no"/>
 
     </LinearLayout>

@@ -35,6 +35,38 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <!-- Fixture scaffolding: names the AI task and the rules the group beneath it
+         should raise, so the expected result can be read off a screenshot.
+
+         These are NOT hidden from accessibility. missing-heading has no isAccessible
+         guard on either platform — it fires on any visible static-text leaf with text —
+         so importantForAccessibility="no" did not keep them out of its candidate set. It
+         only made them hidden text that the AI then judged "should be a heading",
+         producing a junk missing-heading violation at the top of every screen.
+
+         The title line is marked as a real heading instead, which is what it visually is,
+         so missing-heading passes it. The detail line stays plain body text: small, clearly
+         subordinate, and not heading-shaped, so it should pass on its own merits. -->
+    <style name="AiTaskCaption">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">18dp</item>
+        <item name="android:textColor">@color/brand_primary</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:accessibilityHeading">true</item>
+    </style>
+
+    <style name="AiRuleCaption">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:paddingBottom">2dp</item>
+    </style>
+
 
 
     <style name="NumBtn">
