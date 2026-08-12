@@ -6,20 +6,18 @@ import SwiftUI
 /// buttons appear before their inputs, steps and line items run in reverse.
 /// Purely a layout violation — no accessibility API involved. Mirrors activity_visual_order.xml.
 struct VisualOrderView: View {
-    @State private var email = ""
-    @State private var name = ""
-    @State private var card = ""
-    @State private var cvv = ""
-    @State private var expiry = ""
 
     var body: some View {
         RuleScreen {
+            AiCaption(task: "AI: check_visual_order  ·  meaningful-visual-order",
+                      rules: "Every screen also raises reading/visual order + missing/incorrect heading")
+
             // Submit before its inputs; step captions out of order.
             Card {
                 cardTitle("Sign up")
                 primary("Submit")
-                label("Email");     field($email, "you@example.com")
-                label("Full name"); field($name, "Your name")
+                label("Email");     field("you@example.com")
+                label("Full name"); field("Your name")
                 caption("Step 3 of 3"); caption("Step 1 of 3"); caption("Step 2 of 3")
             }
 
@@ -27,9 +25,9 @@ struct VisualOrderView: View {
             Card {
                 cardTitle("Checkout")
                 primary("Pay ₹4,999")
-                label("Card number"); field($card, "1234 5678 9012 3456")
-                label("CVV");         field($cvv, "123")
-                label("Expiry");      field($expiry, "MM/YY")
+                label("Card number"); field("1234 5678 9012 3456")
+                label("CVV");         field("123")
+                label("Expiry");      field("MM/YY")
             }
 
             // Finish first, then the numbered steps counting backwards.
@@ -60,18 +58,28 @@ struct VisualOrderView: View {
             .foregroundColor(Theme.textPrimary).padding(.bottom, 10)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
+    /// Rendered as styled Text, not a Button, on purpose. A real Button is a candidate for
+    /// interactable-element-content-label, which would make this screen report
+    /// check_accessibility_label issues on top of its own AI task. It keeps its text and its
+    /// place in the traversal order, which is what this screen actually tests.
     private func primary(_ t: String) -> some View {
-        Button(action: {}) {
-            Text(t).foregroundColor(.white).frame(maxWidth: .infinity)
-                .padding(.vertical, 10).background(Theme.brandPrimary).cornerRadius(8)
-        }
+        Text(t).foregroundColor(.white).frame(maxWidth: .infinity)
+            .padding(.vertical, 10).background(Theme.brandPrimary).cornerRadius(8)
     }
     private func label(_ t: String) -> some View {
         Text(t).foregroundColor(Theme.textPrimary).padding(.top, 14)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
-    private func field(_ text: Binding<String>, _ placeholder: String) -> some View {
-        TextField(placeholder, text: text).textFieldStyle(.roundedBorder)
+    /// Styled Text rather than a TextField: an editable feeds both
+    /// editable-element-content-label and the input-field rules, so a real field here would
+    /// add check_accessibility_label and check_input_field_purpose to this screen's report.
+    private func field(_ placeholder: String) -> some View {
+        Text(placeholder)
+            .foregroundColor(Theme.textSecondary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(10)
+            .background(Theme.card)
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Theme.cardBorder, lineWidth: 1))
     }
     private func caption(_ t: String) -> some View {
         Text(t).font(.system(size: 12)).foregroundColor(Theme.textSecondary)

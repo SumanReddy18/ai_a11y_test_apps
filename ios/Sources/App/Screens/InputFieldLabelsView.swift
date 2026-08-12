@@ -34,6 +34,9 @@ struct InputFieldLabelsView: View {
 
     var body: some View {
         RuleScreen {
+            AiCaption(task: "AI: check_input_field_purpose",
+                      rules: "accessible-input-field-label + input-type-for-input-field · also raises check_accessibility_label (any editable)")
+
             // ---- Sub-rule A: accessible input field labels -------------------------------
             // Sign-up form: captions not linked to their inputs.
             Card {

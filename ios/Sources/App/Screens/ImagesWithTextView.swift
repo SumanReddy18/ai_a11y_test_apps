@@ -30,6 +30,9 @@ struct ImagesWithTextView: View {
 
     var body: some View {
         RuleScreen {
+            AiCaption(task: "AI: check_images_of_text  ·  images-of-text",
+                      rules: "Also raises check_image_label — unavoidable on iOS: both rules require isAccessible")
+
             LazyVGrid(columns: columns, spacing: 6) {
                 ForEach(Array(tiles.enumerated()), id: \.offset) { _, t in
                     Image(uiImage: Self.artwork(t.image))

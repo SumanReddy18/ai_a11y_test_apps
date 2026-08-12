@@ -8,6 +8,9 @@ import SwiftUI
 struct ReadingOrderView: View {
     var body: some View {
         RuleScreen {
+            AiCaption(task: "AI: check_reading_order  ·  meaningful-reading-order",
+                      rules: "Every screen also raises reading/visual order + missing/incorrect heading")
+
             // Visual: Title → Price → Description → Buy. VoiceOver: Buy → Title → Description → Price.
             Card {
                 orderedLine("Wireless Headphones X9", size: 18, bold: true,
@@ -60,13 +63,15 @@ struct ReadingOrderView: View {
             .accessibilitySortPriority(priority)
     }
 
+    /// Rendered as styled Text, not a Button, on purpose. A real Button is a candidate for
+    /// interactable-element-content-label, which would make this screen report
+    /// check_accessibility_label issues on top of its own AI task. It keeps its text and its
+    /// place in the traversal order, which is what this screen actually tests.
     private func cta(_ label: String, priority: Double) -> some View {
-        Button(action: {}) {
-            Text(label).foregroundColor(.white).frame(maxWidth: .infinity)
-                .padding(.vertical, 10)
-                .background(Theme.brandPrimary).cornerRadius(8)
-        }
-        .padding(.top, 14)
-        .accessibilitySortPriority(priority)
+        Text(label).foregroundColor(.white).frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(Theme.brandPrimary).cornerRadius(8)
+            .padding(.top, 14)
+            .accessibilitySortPriority(priority)
     }
 }

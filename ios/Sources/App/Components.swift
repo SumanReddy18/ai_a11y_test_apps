@@ -108,3 +108,31 @@ private struct OptionalLabel: ViewModifier {
         else { content }
     }
 }
+
+/// Names the AI task a screen is for, the on-device rules that feed it, and any other task
+/// that is expected to appear anyway — so the expected result can be read off a screenshot
+/// instead of the source. Hidden from VoiceOver: this is fixture scaffolding, not part of
+/// the surface under test.
+struct AiCaption: View {
+    let task: String
+    let rules: String
+    var also: String? = nil
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(task)
+                .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                .foregroundColor(Theme.brandPrimary)
+            Text(rules)
+                .font(.system(size: 10, design: .monospaced))
+                .foregroundColor(Theme.textSecondary)
+            if let also {
+                Text(also)
+                    .font(.system(size: 10, design: .monospaced))
+                    .foregroundColor(Theme.textSecondary)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityHidden(true)
+    }
+}

@@ -28,8 +28,8 @@ struct InteractiveLabelView: View {
 
     var body: some View {
         RuleScreen {
-            caption("AI: check_accessibility_label",
-                    "interactable-element-content-label · missing / generic / wrong names")
+            AiCaption(task: "AI: check_accessibility_label",
+                      rules: "interactable-element-content-label · missing / generic / wrong names")
 
             // Icon buttons / tappable views.
             LazyVGrid(columns: columns, spacing: 6) {
@@ -57,8 +57,8 @@ struct InteractiveLabelView: View {
                 }
             }
 
-            caption("AI: check_accessibility_label",
-                    "switch-element-content-label · iOS has no native checkbox, so both pairs are Toggles")
+            AiCaption(task: "AI: check_accessibility_label",
+                      rules: "switch-element-content-label · iOS has no native checkbox, so both pairs are Toggles")
 
             // Switch-style toggles: missing, then generic label.
             Toggle("", isOn: $toggleMissing).labelsHidden().padding(.top, 8)
@@ -70,8 +70,8 @@ struct InteractiveLabelView: View {
             Toggle("", isOn: $checkGeneric).labelsHidden().padding(.top, 8)
                 .accessibilityLabel("checkbox")
 
-            caption("AI: check_accessibility_label",
-                    "editable-element-content-label · both fields below FAIL deterministically")
+            AiCaption(task: "AI: check_accessibility_label",
+                      rules: "editable-element-content-label · both fields below FAIL deterministically")
 
             // No placeholder, no accessibility label → missing name.
             TextField("", text: $editMissing)
@@ -118,8 +118,8 @@ struct InteractiveLabelView: View {
             // them as evidence that AI is working: only "Label Missing" and
             // "Meaningful Label" surface that, and always on the submitting rule.
             // ─────────────────────────────────────────────────────────────────
-            caption("Deterministic only — AI fan-out disabled",
-                    "label-in-name · label-at-front · state-in-content-label")
+            AiCaption(task: "Deterministic only — AI fan-out disabled",
+                      rules: "label-in-name · label-at-front · state-in-content-label")
 
             // Visible "Submit", announced "Send form". Same on both platforms.
             Button("Submit") {}
@@ -137,22 +137,6 @@ struct InteractiveLabelView: View {
             Button("Standard delivery") {}
                 .accessibilityLabel("Standard delivery selected, selected")
         }
-    }
-
-    /// On-screen label naming what the elements under it are expected to raise, so a
-    /// reviewer can read the expected result off a screenshot instead of the source.
-    private func caption(_ task: String, _ rules: String) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(task)
-                .font(.system(size: 11, weight: .semibold, design: .monospaced))
-                .foregroundColor(Theme.brandPrimary)
-            Text(rules)
-                .font(.system(size: 10, design: .monospaced))
-                .foregroundColor(Theme.textSecondary)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.top, 18)
-        .accessibilityHidden(true)   // fixture scaffolding, not part of the test surface
     }
 }
 

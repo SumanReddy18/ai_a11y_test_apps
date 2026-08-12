@@ -34,6 +34,9 @@ struct ImageViewLabelView: View {
 
     var body: some View {
         RuleScreen {
+            AiCaption(task: "AI: check_image_label  ·  imageview-element-content-label",
+                      rules: "Every screen also raises reading/visual order + missing/incorrect heading")
+
             LazyVGrid(columns: columns, spacing: 6) {
                 ForEach(Array(items.enumerated()), id: \.offset) { _, it in
                     Image(uiImage: Self.artwork(it.image))
