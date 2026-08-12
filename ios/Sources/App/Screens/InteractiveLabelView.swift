@@ -102,40 +102,6 @@ struct InteractiveLabelView: View {
             TextField("Name", text: $editNamed)
                 .textFieldStyle(.roundedBorder)
 
-            // ─────────────────────────────────────────────────────────────────
-            // Deterministic only — NOT AI-attributed.
-            //
-            // The AI returns a rulesViolated list, and app-accessibility fans the
-            // entries out onto their own rules via AI_DETECTED_ISSUES::RULE_MAPPING
-            // ("Label in Name" -> label-in-name, "Label at Front" -> label-at-front,
-            // "Label with State" -> state-in-content-label, and two more). But all
-            // five of those rules sit in RULES_WITH_AI_FEATURE_DISABLED, and both
-            // callback paths skip a mapped rule that appears in that list — so the
-            // AI half of these rules is switched off server-side today.
-            //
-            // They are kept here because the ON-DEVICE rules still evaluate them
-            // and had no fixture at all, so this is real coverage. Just do not read
-            // them as evidence that AI is working: only "Label Missing" and
-            // "Meaningful Label" surface that, and always on the submitting rule.
-            // ─────────────────────────────────────────────────────────────────
-            AiCaption(task: "Deterministic only — AI fan-out disabled",
-                      rules: "label-in-name · label-at-front · state-in-content-label")
-
-            // Visible "Submit", announced "Send form". Same on both platforms.
-            Button("Submit") {}
-                .accessibilityLabel("Send form")
-
-            // iOS scores label-at-front DIFFERENTLY from Android: it fails when the
-            // name begins with a TRAIT word ("button"/"btn"/"link"/"image"/"img"/
-            // "search"). Android's "Tap to Search flights" would pass here.
-            Button("Save") {}
-                .accessibilityLabel("Button Save changes")
-
-            // Also iOS-specific: a REPEATED "selected" on buttons. Switches key on
-            // "0"/"1" and sliders on duplicate percentages — never "on"/"off" the
-            // way the Android switch branch does.
-            Button("Standard delivery") {}
-                .accessibilityLabel("Standard delivery selected, selected")
         }
     }
 }
