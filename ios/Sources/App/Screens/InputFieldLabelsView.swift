@@ -30,10 +30,15 @@ struct InputFieldLabelsView: View {
     @State private var urlTyped = ""
     @State private var password = ""
     @State private var confirmPassword = ""
+    @State private var securePassword = ""
+    @State private var secureDob      = ""
     @State private var cvv = ""
 
     var body: some View {
         RuleScreen {
+            AiCaption(task: "AI: check_input_field_purpose",
+                      rules: "accessible-input-field-label + input-type-for-input-field · also raises check_accessibility_label (any editable)")
+
             // ---- Sub-rule A: accessible input field labels -------------------------------
             // Sign-up form: captions not linked to their inputs.
             Card {
@@ -133,6 +138,41 @@ struct InputFieldLabelsView: View {
                     .keyboardType(.default)
                     .inputBox()
                     .accessibilityLabel("Card CVV")
+            }
+
+            // ── The only deterministic branch iOS has for this rule ──────────────
+            //
+            // BSRuleInputTypeForInputField evaluates ONLY secure text fields. Every other
+            // editable text field skips the type/category checks and goes straight to AI
+            // review, so the twelve plain TextFields above never reach the deterministic
+            // path — nothing on this screen could tell whether it still worked.
+            //
+            // The category table drives it: expectedTypesByCategory maps ONLY
+            // "Password Input" -> SecureTextField. Every other category resolves to [],
+            // which can never match, so a secure field whose label reads as anything other
+            // than a password fails by construction.
+            //
+            // This is NOT the Android shape. Android decodes android:inputType and compares
+            // the decoded category against the label for six categories; iOS keys entirely
+            // off the element being a secure entry. Same rule id, different question.
+            Card {
+                AiCaption(task: "AI: check_input_field_purpose  ·  SecureField cases",
+                          rules: "iOS-only deterministic branch — plain fields go straight to AI")
+
+                // Label reads as a password -> category "Password Input" -> matches the
+                // expected SecureTextField -> deterministic PASS, escalated to AI review.
+                caption("Password", top: 14)
+                SecureField("Enter your password", text: $securePassword)
+                    .inputBox()
+                    .accessibilityLabel("Password")
+
+                // A date of birth rendered as a secure entry: masked characters on a field
+                // that is not a secret. Category "Date & Time Input" has no expected iOS
+                // type, so this fails.
+                caption("Date of birth", top: 14)
+                SecureField("DD / MM / YYYY", text: $secureDob)
+                    .inputBox()
+                    .accessibilityLabel("Date of birth")
             }
         }
     }

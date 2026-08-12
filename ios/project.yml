@@ -31,10 +31,15 @@ targetTemplates:
     platform: iOS
     sources:
       - path: Sources
-      # Rule 1 uses the SAME JPEGs as the Android fixture — one copy, referenced from the
-      # Android drawable dir so the two ports can never drift apart.
+      # Rules 1 and 2 use the SAME JPEGs as the Android fixture — one copy, referenced from
+      # the Android drawable dir so the two ports can never drift apart.
+      #   unsplash_text_*   → rule 1, images with text baked into the pixels
+      #   meaningful_img_*  → rule 2, real photographs whose alt text the AI has to judge
+      # Rule 2 previously drew SF Symbols instead. A monochrome glyph is not the same
+      # question as "does this label describe this photograph", so the AI verdict diverged
+      # from Android's for the same nominal fixture.
       - path: ../android/app/src/main/res/drawable
-        includes: ["unsplash_text_*.jpg"]
+        includes: ["unsplash_text_*.jpg", "meaningful_img_*.jpg"]
         buildPhase: resources
     settings:
       base:

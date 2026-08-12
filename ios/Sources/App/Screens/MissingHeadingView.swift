@@ -8,6 +8,9 @@ import SwiftUI
 struct MissingHeadingView: View {
     var body: some View {
         RuleScreen {
+            AiCaption(task: "AI: check_missing_heading  ·  missing-heading",
+                      rules: "incorrect-heading always fires too — same eligibility, shared ai:mis-head hash")
+
             // Settings page sections.
             Card {
                 sectionTitle("Account")
