@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:theme="@style/Theme.AllRules">
+
+        <!-- Pages 1-2 are deliberately NOT orientation-locked: the responsive-containers
+             rule returns NOT_APPLICABLE for the whole snapshot unless the screen supports
+             both portrait and landscape. -->
+        <activity android:name=".Page1Activity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Page2Activity" android:exported="true" />
+
+        <!-- Page 3 is locked to portrait ON PURPOSE: this single lock is the fixture for
+             BOTH orientation rules — screen-orientation (per-snapshot: landscape value
+             missing while page 3 is up) and app-orientation-support (manifest-level:
+             'portrait' is outside the allowed unspecified/sensor/user set).
+             stateHidden: the page is full of EditTexts; keep the keyboard down so the
+             scan sees the whole form. -->
+        <activity android:name=".Page3Activity" android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+    </application>
+
+</manifest>

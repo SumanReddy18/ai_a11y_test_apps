@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PAGE 2 — text, contrast & geometry. 13 deliberate violations, no chrome.
+     This activity is NOT orientation-locked: responsive-containers is killed for the
+     whole snapshot unless the screen supports both orientations. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- text-color-contrast: 14sp (< 18dp -> needs 4.5:1); #999999 on white ≈ 2.85:1.
+             Wide, not near-square, so the icon-skip heuristic can't fire. -->
+        <TextView
+            android:id="@+id/low_contrast_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:text="Low contrast body copy"
+            android:textColor="#999999"
+            android:textSize="14sp" />
+
+        <!-- missing-heading: heading-styled text (22sp bold over 13sp secondary body)
+             with NO android:accessibilityHeading — the AI pass judges these as visual
+             headings. Two sections give it contrast. -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Order Summary"
+            android:textColor="#111111"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3 items · Delivered Friday"
+            android:textColor="#5A5A66"
+            android:textSize="13sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Payment Method"
+            android:textColor="#111111"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Visa ending 4242"
+            android:textColor="#5A5A66"
+            android:textSize="13sp" />
+
+        <!-- incorrect-heading: body-styled text programmatically MARKED as a heading. -->
+        <TextView
+            android:id="@+id/fake_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:accessibilityHeading="true"
+            android:text="Info"
+            android:textColor="#111111"
+            android:textSize="14sp" />
+
+        <!-- readable-text-size: far below the 14-unit floor. -->
+        <TextView
+            android:id="@+id/tiny_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Terms and conditions apply"
+            android:textColor="#111111"
+            android:textSize="4sp" />
+
+        <!-- readable-text-spacing: multi-line with default leading — inter-line gap is
+             far under the required 1.5x font size (needs OCR in the snapshot). -->
+        <TextView
+            android:id="@+id/tight_spacing"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="0dp"
+            android:lineSpacingMultiplier="1.0"
+            android:text="Delivery within two days\nFree returns for thirty days\nCash on delivery available"
+            android:textColor="#111111"
+            android:textSize="16sp" />
+
+        <!-- text-magnification: dp is not sp — this text ignores the user font scale. -->
+        <TextView
+            android:id="@+id/non_scaling_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="This text will not scale"
+            android:textColor="#111111"
+            android:textSize="16dp" />
+
+        <!-- text-truncation: fixed-width box, sp text that overflows it. -->
+        <!-- responsive-containers: BOTH axes fixed, text nearly fills the box at 1x. -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/truncated_text"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Order confirmation details for your recent purchase"
+                android:textColor="#111111"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/fixed_box_overflow"
+                android:layout_width="140dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="24dp"
+                android:maxLines="1"
+                android:text="Shipment tracking number 9876543210"
+                android:textColor="#111111"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- non-text-color-contrast: flat #BBBBBB glyph on an explicit white bg ≈ 2.0:1. -->
+        <!-- touch-target-size: 32dp < 44dp, isolated by 24dp+ margins (isolation keeps the
+             spacing rule quiet; margins keep it off the scroll-container edges). -->
+        <!-- touch-target-size-and-spacing: two 20dp targets, 0dp apart — centres 20dp
+             apart < 24dp AND both under the 24dp desired size. -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/low_contrast_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="#FFFFFF"
+                android:src="@drawable/ic_chevron_grey"
+                android:contentDescription="Next" />
+            <ImageButton
+                android:id="@+id/tiny_close"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_close"
+                android:contentDescription="Close" />
+            <ImageButton
+                android:id="@+id/thumbs_up"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_thumb"
+                android:contentDescription="Like" />
+            <ImageButton
+                android:id="@+id/thumbs_down"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_thumb"
+                android:rotation="180"
+                android:contentDescription="Dislike" />
+        </LinearLayout>
+
+        <!-- overlapping-interactive-elements: two sibling clickable Buttons with
+             byte-identical bounds (distinct labels keep the duplicate-label rule clean). -->
+        <FrameLayout
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp">
+            <Button
+                android:id="@+id/overlap_a"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Buy now" />
+            <Button
+                android:id="@+id/overlap_b"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:contentDescription="Buy now duplicate" />
+        </FrameLayout>
+
+        <!-- two-dimensional-scroll: custom view reporting BOTH horizontal and vertical
+             scroll actions on one node (canScrollHorizontally/Vertically -> true). -->
+        <com.browserstack.a11yallrules.TwoDScrollView
+            android:id="@+id/two_d_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:background="#E5E5EA"
+            android:importantForAccessibility="yes" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PAGE 1 — labels & controls. 15 deliberate violations, no chrome.
+     Every explanation lives in comments only: a visible caption would be a real element
+     in the accessibility tree and dilute the scan. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- interactable-element-content-label: clickable Button, empty text, no desc,
+             no labeled children. Distinct rect from every sibling (overlay heuristic). -->
+        <!-- interactive-element-unsupported-type: app-package class, clickable+focusable,
+             labeled, does NOT override getAccessibilityClassName. -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_unlabeled"
+                android:layout_width="120dp"
+                android:layout_height="48dp"
+                android:text=""
+                android:background="#FF6B00" />
+            <com.browserstack.a11yallrules.FancyToggle
+                android:id="@+id/fancy_toggle"
+                android:layout_width="120dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="24dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Enable dark mode"
+                android:background="#7E57C2" />
+        </LinearLayout>
+
+        <!-- imageview-element-content-label: plain photo ImageView, NO contentDescription. -->
+        <!-- screen-reader-for-interactive-elements: clickable ImageButton with NO
+             contentDescription (also fires the imageview rule — dependent-rule design). -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/img_no_desc"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/meaningful_img_01" />
+            <ImageButton
+                android:id="@+id/imgbtn_no_desc"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginStart="24dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/meaningful_img_02" />
+        </LinearLayout>
+
+        <!-- duplicate-element-content-label: two ImageButtons, identical label "Add".
+             48dp so the touch-target rules stay quiet; 24dp apart. -->
+        <!-- state-in-content-label: checked Switch whose desc already ends in the state
+             word -> TalkBack speaks "Wi-Fi on, on". -->
+        <!-- switch-element-content-label: bare Switch, no text/desc/hint. -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/add_one"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_add"
+                android:contentDescription="Add" />
+            <ImageButton
+                android:id="@+id/add_two"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="24dp"
+                android:src="@drawable/ic_add"
+                android:contentDescription="Add" />
+            <Switch
+                android:id="@+id/switch_state_dup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:checked="true"
+                android:contentDescription="Wi-Fi on" />
+            <Switch
+                android:id="@+id/switch_bare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp" />
+        </LinearLayout>
+
+        <!-- button-element-content-label-capitalization: first word lowercase. -->
+        <!-- label-at-front: name contains the text but does not START with it. -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_lowercase"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="submit now" />
+            <Button
+                android:id="@+id/btn_label_not_front"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:text="Submit"
+                android:contentDescription="Tap here to Submit" />
+        </LinearLayout>
+
+        <!-- label-in-name: name does not contain the visible text at all. -->
+        <!-- special-character-element-content-label: emoji (default emoji presentation)
+             at end of the accessible name. -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_label_not_in_name"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Confirm"
+                android:contentDescription="Send form" />
+            <Button
+                android:id="@+id/btn_emoji_label"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:text="Notifications"
+                android:contentDescription="Notifications 🔔" />
+        </LinearLayout>
+
+        <!-- view-type-in-content-label: role word "Button" duplicated in the desc. -->
+        <!-- checkbox-element-content-label: bare CheckBox; the caption TextView sits
+             beside it with NO labelFor link (the realistic violation). -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_type_dup"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Play"
+                android:contentDescription="Play Button, Button" />
+            <CheckBox
+                android:id="@+id/cb_bare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Accept terms and conditions"
+                android:textColor="#111111"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- images-of-text: bitmap with baked-in words, correctly labeled — the violation
+             is that the text exists only as pixels. No TextView repeats its words. -->
+        <ImageView
+            android:id="@+id/img_baked_text"
+            android:layout_width="320dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unsplash_text_01"
+            android:contentDescription="Promotional banner" />
+
+        <!-- traversal-order-cycle: mutual accessibilityTraversalBefore set in
+             Page1Activity — a 2-node cycle. -->
+        <TextView
+            android:id="@+id/node_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Alpha section marker"
+            android:textColor="#111111"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/node_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Beta section marker"
+            android:textColor="#111111"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+</ScrollView>

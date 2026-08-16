@@ -1,0 +1,39 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.browserstack.a11yallrules'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.browserstack.a11yallrules"
+        minSdk 24
+        targetSdk 34
+        versionCode (project.findProperty('appVersionCode')?.toInteger() ?: 1)
+        versionName (project.findProperty('appVersionName') ?: "1.0.0")
+    }
+
+    buildFeatures {
+        buildConfig false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildTypes {
+        debug { minifyEnabled false }
+        release { minifyEnabled false }
+    }
+
+    applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach {
+            outputFileName = "ai-app-a11y-allrules-v${variant.versionName}.apk"
+        }
+    }
+}
+
+// No dependencies on purpose: framework theme + framework widgets keep the reported
+// accessibility class names exactly android.widget.* (the class-gated rules need that).

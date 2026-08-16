@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Framework theme (no AppCompat/Material dependency): plain android.app.Activity +
+         framework widgets so the a11y tree reports exact android.widget.* class names,
+         which the class-gated rules (Switch/CheckBox/Button/EditText) require.
+         NoActionBar: the ActionBar title would be a standing heading candidate. -->
+    <style name="Theme.AllRules" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">#1B1B1F</item>
+        <item name="android:colorAccent">#FF6B00</item>
+        <item name="android:statusBarColor">#1B1B1F</item>
+        <item name="android:windowBackground">#FFFFFF</item>
+    </style>
+</resources>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PAGE 3 — forms, order & focus. Locked to portrait in the manifest ON PURPOSE:
+     that lock IS the fixture for screen-orientation and app-orientation-support. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- accessible-input-field-label + editable-element-content-label: the caption
+             TextView deliberately has NO labelFor, and the EditText has no hint/desc/text
+             — visually labelled, programmatically nameless. -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textColor="#111111"
+            android:textSize="14sp" />
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress" />
+
+        <!-- editable-element-no-content-description: contentDescription on an EditText. -->
+        <EditText
+            android:id="@+id/et_phone_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Phone"
+            android:contentDescription="Phone number field"
+            android:inputType="phone" />
+
+        <!-- input-type-for-input-field: phone input type, but the visible text is a
+             name — deterministic type/content mismatch (text populated on purpose so it
+             is the mismatch branch, not the empty-text branch). -->
+        <EditText
+            android:id="@+id/et_type_mismatch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Contact phone"
+            android:inputType="phone"
+            android:text="Full name" />
+
+        <!-- meaningful-reading-order: traversal attributes force TalkBack to read
+             step 3 before step 1 while the visual order is 1, 2, 3. -->
+        <TextView
+            android:id="@+id/step1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:accessibilityTraversalAfter="@+id/step3"
+            android:focusable="true"
+            android:text="Step 1: Enter your name"
+            android:textColor="#111111"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/step2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:text="Step 2: Enter your email"
+            android:textColor="#111111"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/step3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:accessibilityTraversalBefore="@+id/step1"
+            android:focusable="true"
+            android:text="Step 3: Confirm"
+            android:textColor="#111111"
+            android:textSize="14sp" />
+
+        <!-- meaningful-visual-order: an inherently ordered set laid out scrambled —
+             3 top-left, 1 top-right, 2 centred underneath. -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+            <TextView
+                android:id="@+id/order3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="3. Confirm order"
+                android:textColor="#111111"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/order1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="1. Add to cart"
+                android:textColor="#111111"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/order2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/order3"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:text="2. Enter address"
+                android:textColor="#111111"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <!-- focus-order-for-interactive-elements: clickable but removed from the
+             accessibility tree, so the TalkBack traversal capture never includes it. -->
+        <View
+            android:id="@+id/focus_order_missing"
+            android:layout_width="200dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="#3F51B5"
+            android:clickable="true"
+            android:importantForAccessibility="no" />
+
+        <!-- keyboard-focus-for-interactive-elements: clickable yet focusable=false —
+             it can never gain keyboard focus. -->
+        <View
+            android:id="@+id/click_not_focusable"
+            android:layout_width="200dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="12dp"
+            android:background="#009688"
+            android:clickable="true"
+            android:focusable="false" />
+
+        <!-- missing-view-type-in-spoken-output: clickable app-package View — TalkBack
+             speaks "Delete item" with no role word. -->
+        <com.browserstack.a11yallrules.TapArea
+            android:id="@+id/no_role_announced"
+            android:layout_width="200dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="12dp"
+            android:background="#795548"
+            android:clickable="true"
+            android:contentDescription="Delete item" />
+
+        <!-- link-text-purpose: each TextView holds ONLY the stop-word phrase, and
+             Page3Activity spans it end-to-end with a URLSpan — the element's whole
+             speakable text is the meaningless phrase. -->
+        <TextView
+            android:id="@+id/link_click_here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="#1F6FEB"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/link_read_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#1F6FEB"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</ScrollView>

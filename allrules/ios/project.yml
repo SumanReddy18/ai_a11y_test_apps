@@ -1,0 +1,34 @@
+# XcodeGen project — `xcodegen generate` here produces A11yAllRules.xcodeproj.
+# Standalone all-rules fixture: one target, three jam-packed auto-scrolling pages that
+# together violate every active rule in the App Accessibility rule engine.
+name: A11yAllRules
+
+options:
+  bundleIdPrefix: com.browserstack.a11yallrules
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    INFOPLIST_FILE: App/Info.plist
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+
+targets:
+  A11yAllRules:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+      # Same text-bearing JPEGs as the Android fixture (single copy, referenced across).
+      - path: ../../android/app/src/main/res/drawable
+        includes: ["unsplash_text_01.jpg", "unsplash_text_02.jpg", "unsplash_text_03.jpg", "meaningful_img_01.jpg"]
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.browserstack.a11yallrules
+        PRODUCT_NAME: A11yAllRules
