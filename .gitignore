@@ -41,3 +41,6 @@ google-services.json
 
 # XcodeGen output (regenerated on CI via `xcodegen generate`)
 *.xcodeproj/
+
+# Scan-report analysis dumps (fetched from the dashboard, not source)
+allrules/scan-report-*.json

@@ -107,10 +107,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal">
+            <!-- textAllCaps=false is load-bearing: the default Button all-caps transform
+                 renders "SUBMIT NOW", and the OCR-preferring label path then sees an
+                 uppercase first word and passes. -->
             <Button
                 android:id="@+id/btn_lowercase"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
+                android:textAllCaps="false"
                 android:text="submit now" />
             <Button
                 android:id="@+id/btn_label_not_front"
