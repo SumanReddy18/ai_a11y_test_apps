@@ -17,6 +17,11 @@ on:
         default: ""
   push:
     branches: [main]
+    # The standalone all-rules fixture has its own flow (allrules-release.yml);
+    # commits touching only it must not cut a release of the per-flavor apps.
+    paths-ignore:
+      - "allrules/**"
+      - ".github/workflows/allrules-release.yml"
 
 permissions:
   contents: write        # needed to push the bump commit + create the Release
