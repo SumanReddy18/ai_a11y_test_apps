@@ -68,7 +68,7 @@ defined in `app/build.gradle`. There are **11 flavors**: `full` + 9 single-issue
 | `missingHeading` | `.missingheading` | Missing heading |
 | `incorrectHeading` | `.incorrectheading` | Incorrect heading |
 | `linkTextPurpose` | `.linktextpurpose` | Link text purpose |
-| `inputFieldLabels` | `.inputfieldlabels` | Input field labels (accessible labels + input type) |
+| `inputFieldLabels` | `.inputfieldlabels` | Input field labels — **AI label review** via `editable-element-content-label` (see [[input-fields-are-static-only]] below) |
 | `allViolations` | `.allviolations` | all rules on one screen — launches straight into `AllViolationsActivity` (no home/install screen) |
 
 How a single-issue APK is produced:
@@ -146,19 +146,44 @@ element isn't the right *type*. Concrete examples that have bitten us:
   the rule returns NOT_APPLICABLE without looking at the app at all. It also processes only the
   *first* element of a snapshot, so at most one finding per screen. If the traversal attributes are
   right and nothing is reported, the gap is scan-side focus-order capture, not the fixture.
-- **Input fields** — the two input-purpose checks read different attributes. "Accessible input
-  field labels" looks for a programmatic name (`android:labelFor` on the caption, `hint`,
-  `contentDescription`) — a caption `TextView` that merely sits above an `EditText` is not a
-  label. "Input type for input fields" compares that detected label against `android:inputType`,
-  so a field must *be labelled* for a type mismatch to fire at all. On iOS a `TextField`'s
-  placeholder becomes its accessibility label, so an unnamed field needs `TextField("", …)`.
-  Two more things that silently killed "Input type for input fields":
-  `android:importantForAutofill="no"` (it was on every field) strips the *autofill metadata* the
-  rule inspects alongside the type, so the type-violation fields now carry a deliberately
-  contradicting `android:autofillHints` instead; and on iOS `keyboardType`/`textContentType` are
-  not accessibility attributes at all, so the only half of this rule iOS reliably exposes is
-  secure entry — a plain `TextField` where a `SecureField` belongs shows up as a different
-  element type.
+- **[[input-fields-are-static-only]]** — the two input-purpose rules, "Accessible input field
+  labels" (`accessible-input-field-label`) and "Input type for input fields"
+  (`input-type-for-input-field`), **cannot ever produce an AI verdict.** In the rule engine both
+  sit in the `standard_rules` bucket (`config/initializers/bucket_config.rb`), appear in none of
+  the eight `AI_TASKS` (`config/initializers/constants.rb`), never return
+  `RuleStatus::AI_REVIEW`, and are absent from the `AI_BASED_*` branch chain in
+  `scan_helper.rb` — so they are also invisible to the dashboard's AI-only filter. Their
+  `extra_info.AI_remediation_rule_name` is AI-authored *fix text* for an
+  already-detected issue, not AI detection. **No fixture change can move them to AI.** An AI
+  input-field agent does exist in the `ai-accessibility` service
+  (`POST /app-ally/input-field-purpose`, flag `appAllyInputFieldPurpose`) but nothing calls it;
+  wiring it up is backend work, not fixture work.
+
+  So `activity_input_field_labels.xml` / `InputFieldLabelsView.swift` deliberately target
+  `editable-element-content-label` instead, which is AI-eligible and does have an AI branch:
+
+  | content label | verdict |
+  |---|---|
+  | missing | `RuleStatus::FAIL` — static, the AI never runs |
+  | present | `RuleStatus::AI_REVIEW` — the AI judges whether it is meaningful |
+
+  Every field therefore **passes** both static input rules and carries a junk
+  `contentDescription` / `accessibilityLabel` (`"field 1"`, `"field 2"`, …). **Do not
+  "strengthen" this screen by stripping labels** — a bare field short-circuits to a static FAIL
+  and the AI is never consulted. That mistake is what commit `a781fa2` made: it tuned the fields
+  against the live AI judge prompts, which the engine never reaches.
+
+  Mechanics that matter when editing: "Accessible input field labels" passes on
+  `android:labelFor` on the caption *or* text/OCR content — `labelFor` is one-to-one, so the
+  three verification-code boxes each need their own caption. "Input type for input fields"
+  derives its visible text from the field's own `text`, falling back to the `labelFor` caption,
+  then either auto-passes the `Text Input` category or regex-matches the caption against the
+  type's category — so captions and `inputType` must agree. Avoid `date` and `textUri`: both
+  decode through the ambiguous `0x10` variation bit that also means number-password, landing the
+  field in `Password Input` and failing the match. On iOS the label rule FAILs on
+  `placeholder.present?` for any accessible text field, so fields are built as
+  `TextField("", …)` with a separate visible caption; and the iOS type rule is only *eligible*
+  for `SecureTextField`, which is why the secrets use `SecureField`.
 - **Below the fold is invisible** — the scan captures the viewport and does not scroll, so a
   violation on the second screenful is simply never seen. This is why the input-type violations
   (~960dp down a 1700dp screen) were rarely reported while the label violations at the top always
