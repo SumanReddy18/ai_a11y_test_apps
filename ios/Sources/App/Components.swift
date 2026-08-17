@@ -16,60 +16,34 @@ import SwiftUI
 /// below the time one screen needs to show all of itself. Mirrors BaseChildActivity on Android.
 enum RulePaging {
     static let initialDelay: Double = 5      // settle before the first hop
-    static let dwell: Double = 9             // seconds held per viewport
-    static let pages = 4                     // covers the tallest screen here (~3 viewports)
-
-    /// How long one screen needs to page through itself once.
-    static var fullPassSeconds: Double { initialDelay + Double(pages) * dwell }
-
-    static func markerID(_ i: Int) -> String { "rulePage\(i)" }
+    static let dwell: Double = 9             // seconds a screen is held before the next one
 }
 
+/// A rule screen. Deliberately does NOT scroll itself.
+///
+/// This used to page down through its own height on a loop (4 pages x 9s), because screens were
+/// 2-3 viewports tall and the scan captures the viewport without scrolling. That made
+/// `AllViolationsView` crawl: it had to hold every rule for a full self-pass (41s), so one cycle
+/// through nine rules took over six minutes.
+///
+/// The fix is the reference fixture's approach, described above: ship violating elements and
+/// nothing else, so each screen fits one viewport and no internal scrolling is needed. Keep new
+/// screens short enough to fit — if a screen needs scrolling to show all its violations, split it
+/// or cut it down rather than reintroducing an auto-scroll here.
+///
+/// The `ScrollView` stays so nothing is clipped or unreachable by hand if a screen does overflow.
 struct RuleScreen<Content: View>: View {
     @ViewBuilder var content: () -> Content
-    @State private var page = 0
 
     var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                // Spacing here (rather than a padding on every card) is what the deleted
-                // "VIOLATION N" badges used to provide between sections.
-                VStack(alignment: .leading, spacing: 14, content: content)
-                    .padding(20)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    // Invisible page markers to scroll to. A Color is not an accessibility
-                    // element, so paging costs the tree nothing.
-                    .overlay(alignment: .top) { markers }
-            }
-            // Most rule screens are 2–3 viewports tall and the scan captures the viewport
-            // without scrolling, so violations below the fold were never looked at — which is
-            // why "Input type for input fields" (bottom of the input screen) was rarely
-            // reported while the label violations at the top always were. Page down on a loop;
-            // it loops because the scan starts well after launch.
-            .task {
-                try? await Task.sleep(nanoseconds: UInt64(RulePaging.initialDelay * 1_000_000_000))
-                while !Task.isCancelled {
-                    page = (page + 1) % RulePaging.pages
-                    withAnimation { proxy.scrollTo(RulePaging.markerID(page), anchor: .top) }
-                    try? await Task.sleep(nanoseconds: UInt64(RulePaging.dwell * 1_000_000_000))
-                }
-            }
+        ScrollView {
+            // Spacing here (rather than a padding on every card) is what the deleted
+            // "VIOLATION N" badges used to provide between sections.
+            VStack(alignment: .leading, spacing: 14, content: content)
+                .padding(20)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .background(Theme.bg)
-    }
-
-    /// Markers spread evenly down the content (the overlay is content-height, so the spacers
-    /// distribute them). `Color` is not an accessibility element, so paging costs the tree nothing.
-    private var markers: some View {
-        VStack(spacing: 0) {
-            ForEach(0..<RulePaging.pages, id: \.self) { i in
-                Color.clear
-                    .frame(height: 1)
-                    .id(RulePaging.markerID(i))
-                if i < RulePaging.pages - 1 { Spacer(minLength: 0) }
-            }
-        }
-        .allowsHitTesting(false)
     }
 }
 
