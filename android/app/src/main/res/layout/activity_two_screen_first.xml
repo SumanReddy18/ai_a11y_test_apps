@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Two-screen fixture, screen 1: visual & label rules.
+     Violations, top to bottom:
+       1. Images with text  — two text-bearing JPEGs (banner + OCR paragraph) whose words
+          exist only as pixels; good contentDescriptions, but no TextView repeats the words.
+       2. ImageView label   — meaningful photo with NO contentDescription.
+       3. Interactive label — icon ImageButton with no desc + Button with empty text.
+       4. Missing heading   — section titles 20sp bold over 13sp body, no accessibilityHeading.
+       5. Incorrect heading — 14sp body text wrongly flagged accessibilityHeading="true".
+     The "Continue to page 2" button at the bottom is deliberately correct (labelled,
+     high-contrast, ≥48dp) — it is navigation, not a fixture. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout style="@style/ScreenRoot">
+
+        <!-- 1. Images with text: words are pixels, not text elements. -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginTop="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/unsplash_text_01"
+            android:contentDescription="Promotional banner"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/text_image_ocr"
+            android:contentDescription="Quarterly report figure"/>
+
+        <!-- 2. ImageView label: meaningful photo, NO contentDescription at all. -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meaningful_img_01"/>
+
+        <!-- 3. Interactive label: unlabeled icon button + empty-text button. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp">
+
+            <ImageButton
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/ic_share"
+                android:background="@drawable/card_bg"/>
+
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:text=""
+                android:backgroundTint="@color/brand_primary"/>
+        </LinearLayout>
+
+        <!-- 4. Missing heading: 20sp bold titles over 13sp secondary body, NO
+             android:accessibilityHeading anywhere (the proven visual gap). -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Order Summary"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3 items in your cart, arriving Friday between 9am and 1pm."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:paddingTop="2dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Payment Method"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:paddingTop="14dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Visa ending 4242, billed to your home address."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:paddingTop="2dp"/>
+        </LinearLayout>
+
+        <!-- 5. Incorrect heading: plain body copy and a vague one-worder, both wrongly
+             carrying accessibilityHeading="true". -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delivery partners may call you from a masked number before arriving."
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:accessibilityHeading="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Info"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="10dp"
+                android:accessibilityHeading="true"/>
+        </LinearLayout>
+
+        <!-- Navigation, not a fixture: correctly labelled, high contrast, 48dp+. -->
+        <Button
+            android:id="@+id/continueToPage2"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="14dp"
+            android:text="Continue to page 2"
+            android:backgroundTint="@color/brand_dark"
+            android:textColor="#FFFFFF"/>
+
+    </LinearLayout>
+</ScrollView>

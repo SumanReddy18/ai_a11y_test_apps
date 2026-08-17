@@ -81,3 +81,8 @@ targets:
   A11yDemo-InputFieldLabels:
     templates: [RuleApp]
     templateAttributes: { rule: "inputFieldLabels", bundleSuffix: ".inputfieldlabels", productName: "A11y InputFieldLabels" }
+
+  # twoScreens — all 9 violations jam-packed into just 2 screens
+  A11yDemo-TwoScreens:
+    templates: [RuleApp]
+    templateAttributes: { rule: "twoScreens", bundleSuffix: ".twoscreens", productName: "A11y TwoScreens" }

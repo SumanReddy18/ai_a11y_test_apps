@@ -99,6 +99,12 @@ android {
             versionNameSuffix "-allviolations"
             resValue "string", "app_name", "A11y: All violations"
         }
+        twoScreens {
+            dimension "issue"
+            applicationIdSuffix ".twoscreens"
+            versionNameSuffix "-twoscreens"
+            resValue "string", "app_name", "A11y: Two screens (all violations)"
+        }
     }
 
     applicationVariants.all { variant ->

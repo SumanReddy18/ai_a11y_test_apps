@@ -76,13 +76,15 @@ jobs:
           distribution: temurin
           java-version: "17"
       - uses: android-actions/setup-android@v3
-      - name: Build all APK flavors
+      - name: Build release APK flavors (full, allViolations, twoScreens)
         working-directory: android
         env:
           VERSION: ${{ needs.prepare.outputs.version }}
           CODE: ${{ needs.prepare.outputs.code }}
+        # Only these 3 flavors are released going forward (6 artifacts with iOS).
+        # The per-rule single-issue flavors still exist and build locally.
         run: |
-          ./gradlew assembleDebug \
+          ./gradlew assembleFullDebug assembleAllViolationsDebug assembleTwoScreensDebug \
             -PappVersionName="$VERSION" \
             -PappVersionCode="$CODE"
           mkdir -p ../out
@@ -112,18 +114,12 @@ jobs:
           CODE: ${{ needs.prepare.outputs.code }}
         run: |
           set -euo pipefail
+          # Only these 3 targets are released going forward (6 artifacts with Android).
+          # The per-rule single-issue targets still exist in project.yml for local builds.
           MAP=(
             "A11yDemo:"
             "A11yDemo-AllViolations:allviolations"
-            "A11yDemo-ImagesText:imagestext"
-            "A11yDemo-ImageViewLabel:imageviewlabel"
-            "A11yDemo-InteractiveLabel:interactivelabel"
-            "A11yDemo-ReadingOrder:readingorder"
-            "A11yDemo-VisualOrder:visualorder"
-            "A11yDemo-MissingHeading:missingheading"
-            "A11yDemo-IncorrectHeading:incorrectheading"
-            "A11yDemo-LinkTextPurpose:linktextpurpose"
-            "A11yDemo-InputFieldLabels:inputfieldlabels"
+            "A11yDemo-TwoScreens:twoscreens"
           )
           mkdir -p ../out
           for ENTRY in "${MAP[@]}"; do
@@ -201,4 +197,4 @@ jobs:
           gh release delete "v${VERSION}" --yes 2>/dev/null || true
           gh release create "v${VERSION}" dist/*.apk dist/*.ipa \
             --title "v${VERSION}" \
-            --notes "Android APKs + iOS IPAs for all flavors (full, allViolations, and one per rule). iOS builds are unsigned (BrowserStack re-signs on upload)."
+            --notes "Android APKs + iOS IPAs for the released flavors: full, allViolations, twoScreens (all 9 violations on 2 compact screens). iOS builds are unsigned (BrowserStack re-signs on upload)."

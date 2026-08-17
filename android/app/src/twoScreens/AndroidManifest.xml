@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application>
-        <activity android:name=".MissingHeadingActivity"
+        <activity android:name=".TwoScreenFirstActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Child"
             tools:replace="android:label,android:theme">
@@ -19,12 +19,11 @@
         <activity android:name=".InteractiveLabelActivity" tools:node="remove" />
         <activity android:name=".ReadingOrderActivity" tools:node="remove" />
         <activity android:name=".VisualOrderActivity" tools:node="remove" />
+        <activity android:name=".MissingHeadingActivity" tools:node="remove" />
         <activity android:name=".IncorrectHeadingActivity" tools:node="remove" />
         <activity android:name=".LinkTextPurposeActivity" tools:node="remove" />
         <activity android:name=".AllViolationsActivity" tools:node="remove" />
         <activity android:name=".InputFieldLabelsActivity" tools:node="remove" />
-        <activity android:name=".TwoScreenFirstActivity" tools:node="remove" />
-        <activity android:name=".TwoScreenSecondActivity" tools:node="remove" />
     </application>
 
 </manifest>

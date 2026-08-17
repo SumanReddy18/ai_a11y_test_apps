@@ -23,6 +23,9 @@ struct RootView: View {
             NavigationStack { HomeView() }
         case .all:
             NavigationStack { AllViolationsView() }
+        case .twoScreens:
+            // Compact 2-screen build: all 9 violations across two jam-packed pages.
+            NavigationStack { TwoScreenFirstView() }
         case .single(let rule):
             // Single-issue build: launch straight into that one violation screen, no home.
             NavigationStack { rule.screen.navigationTitle(rule.title) }
