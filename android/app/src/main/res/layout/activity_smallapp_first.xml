@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Two-screen fixture, screen 1: visual & label rules.
-     Violations, top to bottom:
-       1. Images with text  — one text-bearing banner whose words exist only as pixels;
-          no TextView repeats the words.
+     Violations, top to bottom (each shaped to what the ai-accessibility judge prompts
+     actually flag — see the per-section comments):
+       1. Images with text  — flat promo banner ("50% off"), words exist only as pixels.
        2. ImageView label   — the same banner carries NO contentDescription.
-       3. Interactive label — icon ImageButton with no desc + two unlabeled clickable Views.
-       4. Missing heading   — section titles 20sp bold over 13sp body, no accessibilityHeading.
-       5. Incorrect heading — 14sp body text wrongly flagged accessibilityHeading="true".
-       6. Meaningful reading order — numbered steps announced 3, 1, 4, 2 with the section
+       3. Interactive label — icon ImageButton with no desc + two unlabeled clickable
+          icon containers (flat-colour crops are filtered out as "Blank").
+       4. Missing heading   — section titles 20sp bold over two 13sp body lines each,
+          no accessibilityHeading (incorrect-heading lives on screen 2 to respect the
+          judge's 1-4 headings-per-screen budget).
+       5. Meaningful reading order — numbered steps announced 3, 1, 4, 2 with the section
           title announced last (shuffled ordered list + heading-after-content).
-       7. Meaningful visual order — checkout steps stacked 3, 1, 2 on screen.
+       6. Meaningful visual order — Sign up card with the CTA ABOVE its input fields
+          (the judge's one named violation shape).
      No manual navigation: the activity auto-advances to screen 2 after one full
      auto-scroll pass (see SmallAppFirstActivity). -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,15 +21,17 @@
 
     <LinearLayout style="@style/ScreenRoot">
 
-        <!-- 1+2. One image, two violations: the banner's words are pixels, not text
-             elements (images with text), and it carries NO contentDescription at all
-             (imageview label). -->
+        <!-- 1+2. One image, two violations: a flat PROMO banner — the only image class
+             the images-with-text judge does not exempt (wordmarks -> Logo, typographic
+             art / document scans -> Essential; promo copy like "50% off" is its named
+             Informative example). Words are pixels only, and NO contentDescription at
+             all (imageview label). -->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:layout_marginTop="4dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/text_image_ocr"/>
+            android:scaleType="fitXY"
+            android:src="@drawable/banner_offer50"/>
 
         <!-- 3. Interactive label: unlabeled icon button (also feeds the image-label rule)
              plus two unlabeled clickable Views — the pattern PROVEN to fire the
@@ -46,23 +51,43 @@
                 android:src="@drawable/ic_share"
                 android:background="@drawable/card_bg"/>
 
-            <View
+            <!-- Clickable containers with icon CONTENT but no speakable text: the AI
+                 judge's image filter drops flat-colour crops as "Blank" before scoring,
+                 so an unlabeled button must LOOK like a button. Icons are marked
+                 not-important so the parents stay genuinely unlabeled. -->
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="52dp"
                 android:layout_weight="1"
                 android:layout_marginStart="12dp"
                 android:background="@color/brand_primary"
                 android:clickable="true"
-                android:focusable="true"/>
+                android:focusable="true">
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_heart"
+                    android:importantForAccessibility="no"
+                    android:tint="#FFFFFF"/>
+            </FrameLayout>
 
-            <View
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="52dp"
                 android:layout_weight="1"
                 android:layout_marginStart="12dp"
                 android:background="@color/violation_red"
                 android:clickable="true"
-                android:focusable="true"/>
+                android:focusable="true">
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_trash"
+                    android:importantForAccessibility="no"
+                    android:tint="#FFFFFF"/>
+            </FrameLayout>
         </LinearLayout>
 
         <!-- 4. Missing heading: 20sp bold titles over 13sp secondary body, NO
@@ -89,6 +114,13 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
                 android:paddingTop="2dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Signature required on delivery. Contactless drop-off is available from settings."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:paddingTop="2dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -105,35 +137,18 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
                 android:paddingTop="2dp"/>
-        </LinearLayout>
-
-        <!-- 5. Incorrect heading: plain body copy and a vague one-worder, both wrongly
-             carrying accessibilityHeading="true". -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Delivery partners may call you from a masked number before arriving."
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:accessibilityHeading="true"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Info"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:paddingTop="10dp"
-                android:accessibilityHeading="true"/>
+                android:text="Your next charge is on the 1st of every month unless you cancel earlier."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:paddingTop="2dp"/>
         </LinearLayout>
+
+        <!-- (Incorrect heading moved to screen 2: the missing-heading judge keeps a
+             1-4 headings-per-screen budget, and the two wrongly-marked elements were
+             crowding out the real candidates here.) -->
 
         <!-- 6. Meaningful reading order: an ORDERED LIST announced out of sequence plus a
              heading announced after its content — the two shapes the MRO judge's prompt
@@ -198,7 +213,10 @@
                 android:accessibilityTraversalAfter="@+id/saRoStep1"/>
         </LinearLayout>
 
-        <!-- 7. Meaningful visual order: inherently ordered steps stacked 3, 1, 2. -->
+        <!-- 7. Meaningful visual order: the ONE shape the visual-order judge names as a
+             violation — "CTA appearing before necessary input/relevant information".
+             Submit sits ABOVE the fields it submits. (Fields are hint-labelled with
+             correct input types so no input rule fires here by accident.) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -210,20 +228,32 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="3. Confirm order"
-                android:textColor="@color/text_primary"/>
-            <TextView
+                android:text="Sign up"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:text="Create account"
+                android:backgroundTint="@color/brand_primary"
+                android:textColor="#FFFFFF"/>
+
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1. Add to cart"
-                android:textColor="@color/text_primary"
-                android:paddingTop="6dp"/>
-            <TextView
+                android:layout_marginTop="8dp"
+                android:hint="Full name"
+                android:inputType="textPersonName"/>
+
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2. Enter address"
-                android:textColor="@color/text_primary"
-                android:paddingTop="6dp"/>
+                android:layout_marginTop="4dp"
+                android:hint="Email address"
+                android:inputType="textEmailAddress"/>
         </LinearLayout>
 
     </LinearLayout>

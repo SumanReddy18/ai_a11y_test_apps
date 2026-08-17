@@ -3,15 +3,17 @@ import UIKit
 
 /// allViolationsSmall build, page 1 of 2 — visual & label violations jam-packed:
 ///
-///  * **Images with text** — one shared unsplash JPEG whose words live in pixels only.
+///  * **Images with text** — a flat promo banner ("50% off"), the only image class the
+///    judge's classifier does not exempt; words live in pixels only.
 ///  * **ImageView label** — the same image element carries NO accessible name.
-///  * **Interactive element label** — an icon Button with no name and a coloured tappable
-///    shape whose name is empty.
-///  * **Missing heading** — two 22pt-bold section titles over 13pt body, no `.isHeader`.
-///  * **Incorrect heading** — footnote body text wrongly carrying `.isHeader`.
+///  * **Interactive element label** — two icon Buttons with no name (flat-colour crops
+///    are filtered out as "Blank" before scoring, so both carry icon content).
+///  * **Missing heading** — 22pt-bold section titles over two 13pt body lines each, no
+///    `.isHeader` (incorrect-heading lives on page 2 for the heading budget).
 ///  * **Meaningful reading order** — numbered steps announced 3, 1, 4, 2 with the section
 ///    title announced last (shuffled ordered list + heading-after-content).
-///  * **Meaningful visual order** — checkout steps laid out 3 → 1 → 2.
+///  * **Meaningful visual order** — Sign up card with the CTA ABOVE its input fields
+///    (the visual judge's one named violation shape).
 ///
 /// No manual navigation: `SmallAppRootView` swaps to page 2 after one full auto-scroll
 /// pass and the pair cycles forever — the scan just watches.
@@ -32,12 +34,15 @@ struct SmallAppRootView: View {
 }
 
 struct SmallAppFirstView: View {
+    @State private var fullName = ""
+    @State private var email = ""
+
     var body: some View {
         RuleScreen {
-            // One image, two violations: the page's words exist only in the JPEG pixels,
-            // never as text elements (images with text), and the element has no
-            // accessible name at all (imageview label).
-            artwork("unsplash_text_02.jpg", label: nil)
+            // One image, two violations: a flat PROMO banner (the judge's own named
+            // Informative example — wordmarks/typographic art/document scans are all
+            // exempt buckets), words in pixels only, and no accessible name at all.
+            artwork("banner_offer50.jpg", label: nil)
 
             // Interactive element label: unnamed icon button + empty-named tappable shape.
             HStack(spacing: 14) {
@@ -52,12 +57,17 @@ struct SmallAppFirstView: View {
                 }
                 .accessibilityElement(children: .ignore) // strips the SF symbol's implicit name
 
-                Theme.brandPrimary
-                    .frame(width: 120, height: 48)
-                    .cornerRadius(8)
-                    .onTapGesture {}
-                    .accessibilityAddTraits(.isButton)
-                    .accessibilityLabel("")
+                // Second unnamed icon button: a flat shape would be filtered as
+                // "Blank" by the crop filter, so it must carry icon content.
+                Button(action: {}) {
+                    Image(systemName: "trash")
+                        .resizable().scaledToFit().padding(14)
+                        .frame(width: 64, height: 48)
+                        .foregroundColor(.white)
+                        .background(Theme.violationRed)
+                        .cornerRadius(8)
+                }
+                .accessibilityElement(children: .ignore)
             }
 
             // Missing heading: heading-styled text over body copy, no .isHeader anywhere.
@@ -69,6 +79,10 @@ struct SmallAppFirstView: View {
                     .font(.system(size: 13))
                     .foregroundColor(Theme.textSecondary)
                     .padding(.top, 4)
+                Text("Contactless drop-off is available from delivery settings.")
+                    .font(.system(size: 13))
+                    .foregroundColor(Theme.textSecondary)
+                    .padding(.top, 2)
                 Text("Payment Method")
                     .font(.system(size: 22, weight: .bold))
                     .foregroundColor(Theme.textPrimary)
@@ -77,13 +91,11 @@ struct SmallAppFirstView: View {
                     .font(.system(size: 13))
                     .foregroundColor(Theme.textSecondary)
                     .padding(.top, 4)
+                Text("Update your card any time from the billing page.")
+                    .font(.system(size: 13))
+                    .foregroundColor(Theme.textSecondary)
+                    .padding(.top, 2)
             }
-
-            // Incorrect heading: 13pt body text claiming the header trait.
-            Text("Prices include all applicable taxes.")
-                .font(.system(size: 13))
-                .foregroundColor(Theme.textSecondary)
-                .accessibilityAddTraits(.isHeader)
 
             // Meaningful reading order: an ORDERED LIST announced out of sequence plus a
             // heading announced after its content — the two shapes the MRO judge's prompt
@@ -104,13 +116,26 @@ struct SmallAppFirstView: View {
             }
             .accessibilityElement(children: .contain)
 
-            // Meaningful visual order: steps of one flow scattered 3 → 1 → 2 down the page.
+            // Meaningful visual order: the visual judge's one NAMED violation shape —
+            // "CTA appearing before necessary input/relevant information". Create
+            // account sits ABOVE the fields it submits (placeholders keep the fields
+            // named, so no input rule fires here by accident).
             Card {
-                HStack { Spacer(); step("3. Confirm order") }
-                HStack { step("1. Add to cart"); Spacer() }
-                    .padding(.top, 10)
-                HStack { Spacer(); step("2. Enter address"); Spacer() }
-                    .padding(.top, 10)
+                Text("Sign up")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(Theme.textPrimary)
+                Button(action: {}) {
+                    Text("Create account")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 44)
+                        .background(Theme.brandPrimary)
+                        .cornerRadius(8)
+                }
+                .padding(.top, 8)
+                signupField("Full name", text: $fullName)
+                signupField("Email address", text: $email)
             }
         }
     }
@@ -125,10 +150,15 @@ struct SmallAppFirstView: View {
             .accessibilitySortPriority(priority)
     }
 
-    private func step(_ text: String) -> some View {
-        Text(text)
-            .font(.system(size: 15, weight: .semibold))
-            .foregroundColor(Theme.textPrimary)
+    private func signupField(_ placeholder: String, text: Binding<String>) -> some View {
+        TextField(placeholder, text: text)
+            .font(.system(size: 15))
+            .padding(.horizontal, 12)
+            .frame(height: 44)
+            .background(Theme.card)
+            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Theme.cardBorder, lineWidth: 1))
+            .cornerRadius(8)
+            .padding(.top, 6)
     }
 
     private func artwork(_ name: String, label: String?) -> some View {

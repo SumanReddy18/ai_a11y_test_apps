@@ -2,14 +2,15 @@
 <!-- Two-screen fixture, screen 2: order & input rules.
      Violations, top to bottom (input rules first so they sit in the first viewport —
      the type sub-rule was historically missed below the fold):
-       1. Input field labels — caption TextView with NO labelFor above a bare EditText
-          (no hint, no desc): the field has no programmatic name.
+       1. Input field labels — a completely BARE EditText (no caption, no hint): a
+          visible caption would satisfy the judge's visible-text precedence rule.
        2. Input type — a PROPERLY labelled field (caption + labelFor + hint) whose
           android:inputType and android:autofillHints contradict the label.
-       3. Link text purpose — links whose whole accessible name is a stop-word phrase
-          ("Click here", "Read more") or a raw URL; spanned end-to-end in the Activity.
-       4. Images with text — a second text-bearing image (wordmark), mirroring screen 1
-          so the rule gets two chances across the pair. -->
+       3. Link text purpose — bare links whose whole accessible name is a stop-word
+          phrase ("Click here", "Read more") or a raw URL, with no context sentences
+          nearby; spanned end-to-end in the Activity.
+       4. Incorrect heading — body prose + vague "Info", both accessibilityHeading=true.
+       5. Images with text — a second flat promo banner, mirroring screen 1. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -25,16 +26,18 @@
             android:layout_marginTop="4dp"
             android:background="@drawable/card_bg">
 
-            <!-- Caption with NO labelFor; EditText with no hint/desc -> unnamed field. -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email"
-                android:textColor="@color/text_primary"/>
+            <!-- Completely bare field: no caption, no hint, no desc. A visible "Email"
+                 caption above it would SATISFY the input-label judge ("persistent
+                 visible text holds precedence"), so there must be nothing nearby that
+                 explains the field. Boxed background so the crop filter can't call the
+                 element "Blank". -->
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"/>
+                android:layout_height="48dp"
+                android:inputType="text"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:background="@drawable/card_bg"/>
 
             <!-- Labelled correctly (caption + labelFor + hint), but the TYPE lies:
                  an email field declared as phone, autofill agreeing with the lie. -->
@@ -64,32 +67,23 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/card_bg">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Our refund policy changed on 1 August."
-                android:textColor="@color/text_primary"/>
+            <!-- Bare links with NO surrounding sentences: the link judge's 80-90 band
+                 lets nearby context rescue a stop-word phrase, so nothing on screen
+                 may explain where these go. -->
             <TextView
                 android:id="@+id/tsLinkClickHere"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Click here"
-                android:textColor="@color/info_blue"
-                android:paddingTop="4dp"/>
+                android:textColor="@color/info_blue"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="The 2026 shipping calendar is out."
-                android:textColor="@color/text_primary"
-                android:paddingTop="10dp"/>
             <TextView
                 android:id="@+id/tsLinkReadMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Read more"
                 android:textColor="@color/info_blue"
-                android:paddingTop="4dp"/>
+                android:paddingTop="10dp"/>
 
             <TextView
                 android:id="@+id/tsLinkRawUrl"
@@ -100,14 +94,43 @@
                 android:paddingTop="10dp"/>
         </LinearLayout>
 
-        <!-- 4. Images with text (second chance, mirrors screen 1): a bold wordmark whose
-             words exist only as pixels; labelled, so only images-with-text fires here. -->
+        <!-- 4. Incorrect heading (moved from screen 1 for the heading budget): plain
+             body copy and a vague one-worder, both wrongly accessibilityHeading="true". -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delivery partners may call you from a masked number before arriving."
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:accessibilityHeading="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Info"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:paddingTop="10dp"
+                android:accessibilityHeading="true"/>
+        </LinearLayout>
+
+        <!-- 5. Images with text (second chance, mirrors screen 1): another flat promo
+             banner (the only image class the judge does not exempt); labelled, so only
+             images-with-text fires here. -->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:layout_marginTop="10dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/text_image_quote"
+            android:scaleType="fitXY"
+            android:src="@drawable/banner_freedelivery"
             android:contentDescription="Feature artwork"/>
 
     </LinearLayout>

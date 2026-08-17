@@ -22,18 +22,17 @@ struct SmallAppSecondView: View {
         RuleScreen {
             // Link text purpose: each phrase is its own real link element.
             Card {
-                linkRow("To view our refund policy,", "Click here")
-                linkRow("New pricing is now live.", "Read more", top: 12)
-                linkRow("Setup guide:",
-                        "https://www.browserstack.com/docs/app-accessibility/overview?ref=smallapp",
+                linkRow("Click here")
+                linkRow("Read more", top: 12)
+                linkRow("https://www.browserstack.com/docs/app-accessibility/overview?ref=smallapp",
                         top: 12)
             }
 
-            // Input field labels: caption + unnamed field (nothing associates the two).
+            // Input field labels: a completely bare field — no caption, no placeholder.
+            // A visible "Email" caption above it would SATISFY the input-label judge
+            // ("persistent visible text holds precedence"). The boxed inputBox styling
+            // keeps the crop from being filtered as "Blank".
             Card {
-                Text("Email")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(Theme.textSecondary)
                 inputBox(TextField("", text: $email))
 
                 // Input type: number-purpose label on a secure field…
@@ -51,9 +50,23 @@ struct SmallAppSecondView: View {
                 inputBox(TextField("", text: $password))
             }
 
-            // Images with text (second chance, mirrors page 1): the same text-bearing
-            // JPEG, labelled — so only images-with-text fires on this one.
-            if let image = UIImage(named: "unsplash_text_02.jpg") {
+            // Incorrect heading (moved from page 1 for the heading budget): body prose
+            // and a vague one-worder, both wrongly carrying the header trait.
+            Card {
+                Text("Delivery partners may call you from a masked number before arriving.")
+                    .font(.system(size: 13))
+                    .foregroundColor(Theme.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
+                Text("Info")
+                    .font(.system(size: 13))
+                    .foregroundColor(Theme.textPrimary)
+                    .padding(.top, 8)
+                    .accessibilityAddTraits(.isHeader)
+            }
+
+            // Images with text (second chance, mirrors page 1): another flat promo
+            // banner, labelled — so only images-with-text fires on this one.
+            if let image = UIImage(named: "banner_freedelivery.jpg") {
                 Image(uiImage: image)
                     .resizable().scaledToFill()
                     .frame(maxWidth: .infinity, minHeight: 110, maxHeight: 110)
@@ -64,17 +77,14 @@ struct SmallAppSecondView: View {
         }
     }
 
-    private func linkRow(_ context: String, _ phrase: String, top: CGFloat = 0) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(context)
-                .font(.system(size: 14))
-                .foregroundColor(Theme.textPrimary)
-            Link(destination: Self.dest) {
-                Text(phrase)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(Theme.brandPrimary)
-                    .underline()
-            }
+    private func linkRow(_ phrase: String, top: CGFloat = 0) -> some View {
+        // Bare link, deliberately NO surrounding sentence: the link judge's 80-90 band
+        // lets nearby context rescue a stop-word phrase.
+        Link(destination: Self.dest) {
+            Text(phrase)
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(Theme.brandPrimary)
+                .underline()
         }
         .padding(.top, top)
         .frame(maxWidth: .infinity, alignment: .leading)
