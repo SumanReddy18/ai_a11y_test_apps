@@ -7,6 +7,9 @@
        3. Interactive label — icon ImageButton with no desc + two unlabeled clickable Views.
        4. Missing heading   — section titles 20sp bold over 13sp body, no accessibilityHeading.
        5. Incorrect heading — 14sp body text wrongly flagged accessibilityHeading="true".
+       6. Meaningful reading order — product card whose traversal reads the Buy button
+          first (buy -> title -> desc -> price), the dedicated screen's proven shape.
+       7. Meaningful visual order — checkout steps stacked 3, 1, 2 on screen.
      No manual navigation: the activity auto-advances to screen 2 after one full
      auto-scroll pass (see SmallAppFirstActivity). -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -130,6 +133,98 @@
                 android:textSize="14sp"
                 android:paddingTop="10dp"
                 android:accessibilityHeading="true"/>
+        </LinearLayout>
+
+        <!-- 6. Meaningful reading order: the proven product-card shape from the dedicated
+             screen — TalkBack reads Buy now -> title -> description -> price while the
+             screen reads title -> price -> description -> Buy now. -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:id="@+id/saProdTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Wireless Headphones X9"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/saProdBuy"/>
+
+            <TextView
+                android:id="@+id/saProdPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="₹4,999  (was ₹7,999)"
+                android:textColor="@color/violation_red"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/saProdTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/saProdDesc"/>
+
+            <TextView
+                android:id="@+id/saProdDesc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Active noise cancelling with 32-hour battery life and adaptive EQ tuned for podcasts and music."
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/saProdPrice"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:accessibilityTraversalAfter="@+id/saProdTitle"/>
+
+            <Button
+                android:id="@+id/saProdBuy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="Buy now"
+                android:backgroundTint="@color/brand_primary"
+                android:textColor="#FFFFFF"
+                app:layout_constraintTop_toBottomOf="@id/saProdDesc"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 7. Meaningful visual order: inherently ordered steps stacked 3, 1, 2. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3. Confirm order"
+                android:textColor="@color/text_primary"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Add to cart"
+                android:textColor="@color/text_primary"
+                android:paddingTop="6dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2. Enter address"
+                android:textColor="@color/text_primary"
+                android:paddingTop="6dp"/>
         </LinearLayout>
 
     </LinearLayout>

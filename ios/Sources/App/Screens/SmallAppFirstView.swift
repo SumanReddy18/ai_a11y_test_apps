@@ -9,6 +9,9 @@ import UIKit
 ///    shape whose name is empty.
 ///  * **Missing heading** — two 22pt-bold section titles over 13pt body, no `.isHeader`.
 ///  * **Incorrect heading** — footnote body text wrongly carrying `.isHeader`.
+///  * **Meaningful reading order** — product card whose sortPriority sends VoiceOver to
+///    Buy first (moved here from page 2 to balance the pages).
+///  * **Meaningful visual order** — checkout steps laid out 3 → 1 → 2.
 ///
 /// No manual navigation: `SmallAppRootView` swaps to page 2 after one full auto-scroll
 /// pass and the pair cycles forever — the scan just watches.
@@ -81,7 +84,54 @@ struct SmallAppFirstView: View {
                 .font(.system(size: 13))
                 .foregroundColor(Theme.textSecondary)
                 .accessibilityAddTraits(.isHeader)
+
+            // Meaningful reading order: sortPriority contradicts the visual order —
+            // VoiceOver visits Buy → Price → Description → Title (ReadingOrderView pattern).
+            Card {
+                orderedLine("Wireless Keyboard K3", size: 18, bold: true,
+                            color: Theme.textPrimary, priority: 3)
+                orderedLine("₹2,499  (was ₹3,999)", size: 15, bold: true,
+                            color: Theme.violationRed, priority: 1, top: 6)
+                orderedLine("Low-profile keys, three-device Bluetooth pairing and six months of battery on one charge.",
+                            size: 14, bold: false, color: Theme.textSecondary, priority: 2, top: 10)
+                Button(action: {}) {
+                    Text("Buy now")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 24).padding(.vertical, 10)
+                        .background(Theme.brandPrimary)
+                        .cornerRadius(8)
+                }
+                .padding(.top, 12)
+                .accessibilitySortPriority(4)
+            }
+            .accessibilityElement(children: .contain)
+
+            // Meaningful visual order: steps of one flow scattered 3 → 1 → 2 down the page.
+            Card {
+                HStack { Spacer(); step("3. Confirm order") }
+                HStack { step("1. Add to cart"); Spacer() }
+                    .padding(.top, 10)
+                HStack { Spacer(); step("2. Enter address"); Spacer() }
+                    .padding(.top, 10)
+            }
         }
+    }
+
+    private func orderedLine(_ text: String, size: CGFloat, bold: Bool,
+                             color: Color, priority: Double, top: CGFloat = 0) -> some View {
+        Text(text)
+            .font(.system(size: size, weight: bold ? .bold : .regular))
+            .foregroundColor(color)
+            .padding(.top, top)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilitySortPriority(priority)
+    }
+
+    private func step(_ text: String) -> some View {
+        Text(text)
+            .font(.system(size: 15, weight: .semibold))
+            .foregroundColor(Theme.textPrimary)
     }
 
     private func artwork(_ name: String, label: String?) -> some View {

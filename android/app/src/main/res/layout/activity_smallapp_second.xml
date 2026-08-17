@@ -6,10 +6,7 @@
           (no hint, no desc): the field has no programmatic name.
        2. Input type — a PROPERLY labelled field (caption + labelFor + hint) whose
           android:inputType and android:autofillHints contradict the label.
-       3. Meaningful reading order — Step 1/2/3 with accessibilityTraversalAfter making
-          TalkBack read 3 → 1 → 2 while the screen reads 1 → 2 → 3.
-       4. Meaningful visual order — checkout steps stacked 3, 1, 2 on screen.
-       5. Link text purpose — links whose whole accessible name is a stop-word phrase
+       3. Link text purpose — links whose whole accessible name is a stop-word phrase
           ("Click here", "Read more") or a raw URL; spanned end-to-end in the Activity. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -55,73 +52,7 @@
                 android:autofillHints="phone"/>
         </LinearLayout>
 
-        <!-- 3. Meaningful reading order: visual 1 -> 2 -> 3, TalkBack 3 -> 1 -> 2. -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/card_bg">
-
-            <TextView
-                android:id="@+id/tsStep1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Step 1: Enter your name"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:accessibilityTraversalAfter="@+id/tsStep3"/>
-
-            <TextView
-                android:id="@+id/tsStep2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Step 2: Enter your email"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:paddingTop="8dp"
-                android:accessibilityTraversalAfter="@+id/tsStep1"/>
-
-            <TextView
-                android:id="@+id/tsStep3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Step 3: Confirm and submit"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:paddingTop="8dp"/>
-        </LinearLayout>
-
-        <!-- 4. Meaningful visual order: inherently ordered steps stacked 3, 1, 2. -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/card_bg">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="3. Confirm order"
-                android:textColor="@color/text_primary"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1. Add to cart"
-                android:textColor="@color/text_primary"
-                android:paddingTop="6dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="2. Enter address"
-                android:textColor="@color/text_primary"
-                android:paddingTop="6dp"/>
-        </LinearLayout>
-
-        <!-- 5. Link text purpose: each phrase is its own TextView, whole-text-spanned in
+        <!-- 3. Link text purpose: each phrase is its own TextView, whole-text-spanned in
              SmallAppSecondActivity, so the phrase IS the accessible name. -->
         <LinearLayout
             android:layout_width="match_parent"
