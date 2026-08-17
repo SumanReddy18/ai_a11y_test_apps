@@ -7,7 +7,9 @@
        2. Input type — a PROPERLY labelled field (caption + labelFor + hint) whose
           android:inputType and android:autofillHints contradict the label.
        3. Link text purpose — links whose whole accessible name is a stop-word phrase
-          ("Click here", "Read more") or a raw URL; spanned end-to-end in the Activity. -->
+          ("Click here", "Read more") or a raw URL; spanned end-to-end in the Activity.
+       4. Images with text — a second text-bearing image (wordmark), mirroring screen 1
+          so the rule gets two chances across the pair. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -97,6 +99,16 @@
                 android:textColor="@color/info_blue"
                 android:paddingTop="10dp"/>
         </LinearLayout>
+
+        <!-- 4. Images with text (second chance, mirrors screen 1): a bold wordmark whose
+             words exist only as pixels; labelled, so only images-with-text fires here. -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/text_image_quote"
+            android:contentDescription="Feature artwork"/>
 
     </LinearLayout>
 </ScrollView>

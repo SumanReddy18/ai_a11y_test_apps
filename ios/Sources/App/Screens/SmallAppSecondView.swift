@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// allViolationsSmall build, page 2 of 2 — link & input violations (the two order
 /// violations live on page 1, which had the spare room):
@@ -48,6 +49,17 @@ struct SmallAppSecondView: View {
                     .foregroundColor(Theme.textSecondary)
                     .padding(.top, 12)
                 inputBox(TextField("", text: $password))
+            }
+
+            // Images with text (second chance, mirrors page 1): the same text-bearing
+            // JPEG, labelled — so only images-with-text fires on this one.
+            if let image = UIImage(named: "unsplash_text_02.jpg") {
+                Image(uiImage: image)
+                    .resizable().scaledToFill()
+                    .frame(maxWidth: .infinity, minHeight: 110, maxHeight: 110)
+                    .clipped()
+                    .cornerRadius(8)
+                    .asImageElement(label: "Feature artwork")
             }
         }
     }

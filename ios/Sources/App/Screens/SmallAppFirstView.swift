@@ -9,8 +9,8 @@ import UIKit
 ///    shape whose name is empty.
 ///  * **Missing heading** — two 22pt-bold section titles over 13pt body, no `.isHeader`.
 ///  * **Incorrect heading** — footnote body text wrongly carrying `.isHeader`.
-///  * **Meaningful reading order** — product card whose sortPriority sends VoiceOver to
-///    Buy first (moved here from page 2 to balance the pages).
+///  * **Meaningful reading order** — numbered steps announced 3, 1, 4, 2 with the section
+///    title announced last (shuffled ordered list + heading-after-content).
 ///  * **Meaningful visual order** — checkout steps laid out 3 → 1 → 2.
 ///
 /// No manual navigation: `SmallAppRootView` swaps to page 2 after one full auto-scroll
@@ -85,25 +85,22 @@ struct SmallAppFirstView: View {
                 .foregroundColor(Theme.textSecondary)
                 .accessibilityAddTraits(.isHeader)
 
-            // Meaningful reading order: sortPriority contradicts the visual order —
-            // VoiceOver visits Buy → Price → Description → Title (ReadingOrderView pattern).
+            // Meaningful reading order: an ORDERED LIST announced out of sequence plus a
+            // heading announced after its content — the two shapes the MRO judge's prompt
+            // names as violations and does NOT whitelist (a "Buy first" card is an
+            // explicitly valid pattern to that judge and always came back Not an Issue).
+            // Visual: title, Step 1, 2, 3, 4. VoiceOver: Step 3 → 1 → 4 → 2 → title.
             Card {
-                orderedLine("Wireless Keyboard K3", size: 18, bold: true,
-                            color: Theme.textPrimary, priority: 3)
-                orderedLine("₹2,499  (was ₹3,999)", size: 15, bold: true,
-                            color: Theme.violationRed, priority: 1, top: 6)
-                orderedLine("Low-profile keys, three-device Bluetooth pairing and six months of battery on one charge.",
-                            size: 14, bold: false, color: Theme.textSecondary, priority: 2, top: 10)
-                Button(action: {}) {
-                    Text("Buy now")
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 24).padding(.vertical, 10)
-                        .background(Theme.brandPrimary)
-                        .cornerRadius(8)
-                }
-                .padding(.top, 12)
-                .accessibilitySortPriority(4)
+                orderedLine("How to return an item", size: 17, bold: true,
+                            color: Theme.textPrimary, priority: 1)
+                orderedLine("1. Open your orders", size: 14, bold: false,
+                            color: Theme.textPrimary, priority: 4, top: 8)
+                orderedLine("2. Select the item and reason", size: 14, bold: false,
+                            color: Theme.textPrimary, priority: 2, top: 6)
+                orderedLine("3. Print the return label", size: 14, bold: false,
+                            color: Theme.textPrimary, priority: 5, top: 6)
+                orderedLine("4. Drop the parcel at any partner store", size: 14, bold: false,
+                            color: Theme.textPrimary, priority: 3, top: 6)
             }
             .accessibilityElement(children: .contain)
 

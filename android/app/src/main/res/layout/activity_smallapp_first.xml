@@ -7,8 +7,8 @@
        3. Interactive label — icon ImageButton with no desc + two unlabeled clickable Views.
        4. Missing heading   — section titles 20sp bold over 13sp body, no accessibilityHeading.
        5. Incorrect heading — 14sp body text wrongly flagged accessibilityHeading="true".
-       6. Meaningful reading order — product card whose traversal reads the Buy button
-          first (buy -> title -> desc -> price), the dedicated screen's proven shape.
+       6. Meaningful reading order — numbered steps announced 3, 1, 4, 2 with the section
+          title announced last (shuffled ordered list + heading-after-content).
        7. Meaningful visual order — checkout steps stacked 3, 1, 2 on screen.
      No manual navigation: the activity auto-advances to screen 2 after one full
      auto-scroll pass (see SmallAppFirstActivity). -->
@@ -135,69 +135,68 @@
                 android:accessibilityHeading="true"/>
         </LinearLayout>
 
-        <!-- 6. Meaningful reading order: the proven product-card shape from the dedicated
-             screen — TalkBack reads Buy now -> title -> description -> price while the
-             screen reads title -> price -> description -> Buy now. -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <!-- 6. Meaningful reading order: an ORDERED LIST announced out of sequence plus a
+             heading announced after its content — the two shapes the MRO judge's prompt
+             names as violations and does NOT whitelist. (A "Buy button first" card is
+             explicitly a valid pattern to that judge and always came back Not an Issue.)
+             Visual: title, Step 1, 2, 3, 4. TalkBack: Step 3 -> 1 -> 4 -> 2 -> title. -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="16dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/card_bg">
 
             <TextView
-                android:id="@+id/saProdTitle"
-                android:layout_width="0dp"
+                android:id="@+id/saRoTitle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Wireless Headphones X9"
+                android:text="How to return an item"
                 android:textColor="@color/text_primary"
                 android:textStyle="bold"
-                android:textSize="18sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/saProdBuy"/>
+                android:textSize="17sp"
+                android:accessibilityTraversalAfter="@+id/saRoStep2"/>
 
             <TextView
-                android:id="@+id/saProdPrice"
-                android:layout_width="0dp"
+                android:id="@+id/saRoStep1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="₹4,999  (was ₹7,999)"
-                android:textColor="@color/violation_red"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                app:layout_constraintTop_toBottomOf="@id/saProdTitle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/saProdDesc"/>
-
-            <TextView
-                android:id="@+id/saProdDesc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Active noise cancelling with 32-hour battery life and adaptive EQ tuned for podcasts and music."
-                android:textColor="@color/text_secondary"
+                android:paddingTop="8dp"
+                android:text="1. Open your orders"
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/saProdPrice"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/saProdTitle"/>
+                android:accessibilityTraversalAfter="@+id/saRoStep3"/>
 
-            <Button
-                android:id="@+id/saProdBuy"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/saRoStep2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="Buy now"
-                android:backgroundTint="@color/brand_primary"
-                android:textColor="#FFFFFF"
-                app:layout_constraintTop_toBottomOf="@id/saProdDesc"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:paddingTop="6dp"
+                android:text="2. Select the item and reason"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:accessibilityTraversalAfter="@+id/saRoStep4"/>
+
+            <TextView
+                android:id="@+id/saRoStep3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+                android:text="3. Print the return label"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/saRoStep4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+                android:text="4. Drop the parcel at any partner store"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:accessibilityTraversalAfter="@+id/saRoStep1"/>
+        </LinearLayout>
 
         <!-- 7. Meaningful visual order: inherently ordered steps stacked 3, 1, 2. -->
         <LinearLayout
