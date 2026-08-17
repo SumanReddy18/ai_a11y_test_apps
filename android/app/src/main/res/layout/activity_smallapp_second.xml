@@ -122,7 +122,7 @@
         </LinearLayout>
 
         <!-- 5. Link text purpose: each phrase is its own TextView, whole-text-spanned in
-             TwoScreenSecondActivity, so the phrase IS the accessible name. -->
+             SmallAppSecondActivity, so the phrase IS the accessible name. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

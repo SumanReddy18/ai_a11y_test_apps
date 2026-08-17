@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-/// twoScreens build, page 1 of 2 — visual & label violations jam-packed:
+/// allViolationsSmall build, page 1 of 2 — visual & label violations jam-packed:
 ///
 ///  * **Images with text** — two of the shared unsplash JPEGs (same pixels Android detects on),
 ///    with decent human labels; the violation is the text living in pixels only.
@@ -11,9 +11,25 @@ import UIKit
 ///  * **Missing heading** — two 22pt-bold section titles over 13pt body, no `.isHeader`.
 ///  * **Incorrect heading** — footnote body text wrongly carrying `.isHeader`.
 ///
-/// The "Continue to page 2" link at the bottom is deliberately clean (proper label) so the
-/// only issues a scan finds here are the planted ones.
-struct TwoScreenFirstView: View {
+/// No manual navigation: `SmallAppRootView` swaps to page 2 after one full auto-scroll
+/// pass and the pair cycles forever — the scan just watches.
+struct SmallAppRootView: View {
+    @State private var onSecondPage = false
+
+    var body: some View {
+        Group {
+            if onSecondPage { SmallAppSecondView() } else { SmallAppFirstView() }
+        }
+        .task {
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: UInt64(RulePaging.fullPassSeconds * 1_000_000_000))
+                onSecondPage.toggle()
+            }
+        }
+    }
+}
+
+struct SmallAppFirstView: View {
     var body: some View {
         RuleScreen {
             // Images with text: words exist only in the JPEG pixels, never as text elements.
@@ -74,19 +90,6 @@ struct TwoScreenFirstView: View {
                 .font(.system(size: 13))
                 .foregroundColor(Theme.textSecondary)
                 .accessibilityAddTraits(.isHeader)
-
-            // Clean, properly-labelled navigation to the second screen.
-            NavigationLink {
-                TwoScreenSecondView()
-            } label: {
-                Text("Continue to page 2")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 48)
-                    .background(Theme.brandDark)
-                    .cornerRadius(8)
-            }
         }
     }
 

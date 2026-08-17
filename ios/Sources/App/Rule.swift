@@ -85,7 +85,7 @@ enum Rule: String, CaseIterable, Identifiable {
 enum A11yRuleSelection {
     case full
     case all
-    case twoScreens
+    case allViolationsSmall
     case single(Rule)
 
     static var current: A11yRuleSelection {
@@ -96,7 +96,7 @@ enum A11yRuleSelection {
         switch raw {
         case "full", "": return .full
         case "all", "allViolations": return .all
-        case "twoScreens", "twoscreens": return .twoScreens
+        case "allViolationsSmall", "allviolationssmall": return .allViolationsSmall
         default:
             if let rule = Rule(rawValue: raw) { return .single(rule) }
             return .full

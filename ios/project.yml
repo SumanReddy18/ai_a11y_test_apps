@@ -82,7 +82,7 @@ targets:
     templates: [RuleApp]
     templateAttributes: { rule: "inputFieldLabels", bundleSuffix: ".inputfieldlabels", productName: "A11y InputFieldLabels" }
 
-  # twoScreens — all 9 violations jam-packed into just 2 screens
-  A11yDemo-TwoScreens:
+  # allViolationsSmall — all 9 violations jam-packed into 2 auto-cycling screens
+  A11yDemo-AllViolationsSmall:
     templates: [RuleApp]
-    templateAttributes: { rule: "twoScreens", bundleSuffix: ".twoscreens", productName: "A11y TwoScreens" }
+    templateAttributes: { rule: "allViolationsSmall", bundleSuffix: ".allviolationssmall", productName: "A11y AllViolations Small" }

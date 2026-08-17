@@ -4,11 +4,11 @@
        1. Images with text  — two text-bearing JPEGs (banner + OCR paragraph) whose words
           exist only as pixels; good contentDescriptions, but no TextView repeats the words.
        2. ImageView label   — meaningful photo with NO contentDescription.
-       3. Interactive label — icon ImageButton with no desc + Button with empty text.
+       3. Interactive label — icon ImageButton with no desc + two unlabeled clickable Views.
        4. Missing heading   — section titles 20sp bold over 13sp body, no accessibilityHeading.
        5. Incorrect heading — 14sp body text wrongly flagged accessibilityHeading="true".
-     The "Continue to page 2" button at the bottom is deliberately correct (labelled,
-     high-contrast, ≥48dp) — it is navigation, not a fixture. -->
+     No manual navigation: the activity auto-advances to screen 2 after one full
+     auto-scroll pass (see SmallAppFirstActivity). -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -40,7 +40,11 @@
             android:scaleType="centerCrop"
             android:src="@drawable/meaningful_img_01"/>
 
-        <!-- 3. Interactive label: unlabeled icon button + empty-text button. -->
+        <!-- 3. Interactive label: unlabeled icon button (also feeds the image-label rule)
+             plus two unlabeled clickable Views — the pattern PROVEN to fire the
+             interactive-element rule (an empty-text Button never did; an ImageButton
+             routes to the imageview rule instead). Mirrors InteractiveLabelActivity's
+             ctaPrimary/ctaDanger. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,12 +58,23 @@
                 android:src="@drawable/ic_share"
                 android:background="@drawable/card_bg"/>
 
-            <Button
-                android:layout_width="120dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="16dp"
-                android:text=""
-                android:backgroundTint="@color/brand_primary"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:background="@color/brand_primary"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:background="@color/violation_red"
+                android:clickable="true"
+                android:focusable="true"/>
         </LinearLayout>
 
         <!-- 4. Missing heading: 20sp bold titles over 13sp secondary body, NO
@@ -131,16 +146,6 @@
                 android:paddingTop="10dp"
                 android:accessibilityHeading="true"/>
         </LinearLayout>
-
-        <!-- Navigation, not a fixture: correctly labelled, high contrast, 48dp+. -->
-        <Button
-            android:id="@+id/continueToPage2"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="14dp"
-            android:text="Continue to page 2"
-            android:backgroundTint="@color/brand_dark"
-            android:textColor="#FFFFFF"/>
 
     </LinearLayout>
 </ScrollView>

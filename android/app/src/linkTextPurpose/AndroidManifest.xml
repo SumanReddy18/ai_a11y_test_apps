@@ -23,8 +23,8 @@
         <activity android:name=".IncorrectHeadingActivity" tools:node="remove" />
         <activity android:name=".AllViolationsActivity" tools:node="remove" />
         <activity android:name=".InputFieldLabelsActivity" tools:node="remove" />
-        <activity android:name=".TwoScreenFirstActivity" tools:node="remove" />
-        <activity android:name=".TwoScreenSecondActivity" tools:node="remove" />
+        <activity android:name=".SmallAppFirstActivity" tools:node="remove" />
+        <activity android:name=".SmallAppSecondActivity" tools:node="remove" />
     </application>
 
 </manifest>

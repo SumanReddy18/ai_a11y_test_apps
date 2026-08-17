@@ -37,10 +37,10 @@
         <activity android:name=".AllViolationsActivity" android:exported="false"
             android:label="All violations" android:theme="@style/Theme.Child" />
 
-        <!-- Two-screen compact fixture (twoScreens flavor): all 9 rules across 2 screens. -->
-        <activity android:name=".TwoScreenFirstActivity" android:exported="true"
+        <!-- All-violations-small fixture (allViolationsSmall flavor): all 9 rules across 2 auto-cycling screens. -->
+        <activity android:name=".SmallAppFirstActivity" android:exported="true"
             android:label="Two screens 1 of 2" android:theme="@style/Theme.Child" />
-        <activity android:name=".TwoScreenSecondActivity" android:exported="true"
+        <activity android:name=".SmallAppSecondActivity" android:exported="true"
             android:label="Two screens 2 of 2" android:theme="@style/Theme.Child"
             android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>

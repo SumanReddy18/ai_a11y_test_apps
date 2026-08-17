@@ -76,7 +76,7 @@ jobs:
           distribution: temurin
           java-version: "17"
       - uses: android-actions/setup-android@v3
-      - name: Build release APK flavors (full, allViolations, twoScreens)
+      - name: Build release APK flavors (full, allViolations, allViolationsSmall)
         working-directory: android
         env:
           VERSION: ${{ needs.prepare.outputs.version }}
@@ -84,7 +84,7 @@ jobs:
         # Only these 3 flavors are released going forward (6 artifacts with iOS).
         # The per-rule single-issue flavors still exist and build locally.
         run: |
-          ./gradlew assembleFullDebug assembleAllViolationsDebug assembleTwoScreensDebug \
+          ./gradlew assembleFullDebug assembleAllViolationsDebug assembleAllViolationsSmallDebug \
             -PappVersionName="$VERSION" \
             -PappVersionCode="$CODE"
           mkdir -p ../out
@@ -119,7 +119,7 @@ jobs:
           MAP=(
             "A11yDemo:"
             "A11yDemo-AllViolations:allviolations"
-            "A11yDemo-TwoScreens:twoscreens"
+            "A11yDemo-AllViolationsSmall:allviolationssmall"
           )
           mkdir -p ../out
           for ENTRY in "${MAP[@]}"; do
@@ -197,4 +197,4 @@ jobs:
           gh release delete "v${VERSION}" --yes 2>/dev/null || true
           gh release create "v${VERSION}" dist/*.apk dist/*.ipa \
             --title "v${VERSION}" \
-            --notes "Android APKs + iOS IPAs for the released flavors: full, allViolations, twoScreens (all 9 violations on 2 compact screens). iOS builds are unsigned (BrowserStack re-signs on upload)."
+            --notes "Android APKs + iOS IPAs for the released flavors: full, allViolations, allViolationsSmall (all 9 violations on 2 auto-cycling screens). iOS builds are unsigned (BrowserStack re-signs on upload)."

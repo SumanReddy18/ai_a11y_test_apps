@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// twoScreens build, page 2 of 2 — order & input violations jam-packed:
+/// allViolationsSmall build, page 2 of 2 — order & input violations jam-packed:
 ///
 ///  * **Meaningful reading order** — VoiceOver visits Buy → Price → Description → Title while
 ///    the eye reads Title → Price → Description → Buy (`accessibilitySortPriority` scramble,
@@ -13,7 +13,7 @@ import SwiftUI
 ///    unnamed `TextField("")` below it (empty placeholder = genuinely unnamed).
 ///  * **Input type** — a card-number `SecureField` (number-purpose label on a secure field)
 ///    and a password taken through a plain `TextField`.
-struct TwoScreenSecondView: View {
+struct SmallAppSecondView: View {
     private static let dest = URL(string: "a11ydemo://destination")!
 
     @State private var email = ""
@@ -57,7 +57,7 @@ struct TwoScreenSecondView: View {
                 linkRow("To view our refund policy,", "Click here")
                 linkRow("New pricing is now live.", "Read more", top: 12)
                 linkRow("Setup guide:",
-                        "https://www.browserstack.com/docs/app-accessibility/overview?ref=twoscreens",
+                        "https://www.browserstack.com/docs/app-accessibility/overview?ref=smallapp",
                         top: 12)
             }
 
