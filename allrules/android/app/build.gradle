@@ -10,8 +10,8 @@ android {
         applicationId "com.browserstack.a11yallrules"
         minSdk 24
         targetSdk 34
-        versionCode (project.findProperty('appVersionCode')?.toInteger() ?: 3)
-        versionName (project.findProperty('appVersionName') ?: "1.0.2")
+        versionCode (project.findProperty('appVersionCode')?.toInteger() ?: 4)
+        versionName (project.findProperty('appVersionName') ?: "1.0.3")
     }
 
     buildFeatures {
