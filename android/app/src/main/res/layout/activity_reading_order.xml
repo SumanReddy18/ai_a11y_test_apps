@@ -3,205 +3,91 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout style="@style/ScreenRoot">
+    <!-- focusableInTouchMode + beforeDescendants keeps the first EditText from grabbing
+         focus on launch, so the soft keyboard never covers the screen during a scan. -->
+    <LinearLayout style="@style/ScreenRoot"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="beforeDescendants">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <!-- Meaningful reading order.
+
+             The violation IS the layout order — there are no android:accessibilityTraversal*
+             overrides here on purpose. A signup form has one logical sequence: name, then
+             password, then confirm it, then submit. This screen lays that out upside down, so
+             focus (which follows layout order, top to bottom) hits "Signup now" first and
+             "Enter name" last. A screen-reader user is asked to submit before being given
+             anything to fill in.
+
+             That is what the judge reports: "the focus order follows an illogical bottom-to-top
+             sequence instead of a logical top-to-bottom reading path".
+
+             Every element here is INTERACTIVE (two Buttons, three EditTexts). The rule
+             evaluates the focus order of interactive elements, so a screen made of TextViews
+             with traversal overrides is a weaker test than this one.
+
+             Expect this screen to report the editable-element / input-label rules too — the
+             inputs are named only by their hints. That is accepted noise; keeping them
+             placeholder-only is what makes the form read the way the image shows. -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="16dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/card_bg">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="0dp"
+            <!-- 1st in focus order, last in logic: submit, before anything has been entered. -->
+            <Button
+                android:id="@+id/roSignup"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Wireless Headphones X9"
-                android:textColor="@color/text_primary"
+                android:text="Signup now"
+                android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="18sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/buy"/>
+                android:backgroundTint="@color/brand_primary"/>
 
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="0dp"
+            <!-- Confirm a password that has not been asked for yet. -->
+            <EditText
+                android:id="@+id/roConfirmPassword"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="₹4,999  (was ₹7,999)"
-                android:textColor="@color/violation_red"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                app:layout_constraintTop_toBottomOf="@id/title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/desc"/>
-
-            <TextView
-                android:id="@+id/desc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Active noise cancelling with 32-hour battery life and adaptive EQ tuned for podcasts and music."
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/price"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/title"/>
+                android:layout_marginTop="18dp"
+                android:hint="Confirm password"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPassword"
+                android:importantForAutofill="no"/>
 
             <Button
-                android:id="@+id/buy"
-                android:layout_width="0dp"
+                android:id="@+id/roLogin"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="Buy now"
-                android:backgroundTint="@color/brand_primary"
+                android:layout_marginTop="18dp"
+                android:text="Login now"
                 android:textColor="#FFFFFF"
-                app:layout_constraintTop_toBottomOf="@id/desc"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="6dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:text="Visual: Headline → Byline → Body → Read more. Traversal: Read more → Headline → Body → Byline."/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/card_bg">
-
-            <TextView
-                android:id="@+id/headline"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Mars rover finds new mineral deposit"
-                android:textColor="@color/text_primary"
                 android:textStyle="bold"
-                android:textSize="18sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/readmore"/>
+                android:backgroundTint="@color/brand_primary"/>
 
-            <TextView
-                android:id="@+id/byline"
-                android:layout_width="0dp"
+            <EditText
+                android:id="@+id/roPassword"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="By Sneha K. — 2h ago"
-                android:textColor="@color/text_secondary"
-                android:textSize="13sp"
-                app:layout_constraintTop_toBottomOf="@id/headline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/body"/>
+                android:layout_marginTop="18dp"
+                android:hint="Enter password"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPassword"
+                android:importantForAutofill="no"/>
 
-            <TextView
-                android:id="@+id/body"
-                android:layout_width="0dp"
+            <!-- Last in focus order, first in logic. -->
+            <EditText
+                android:id="@+id/roName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="The discovery, made by the Perseverance rover, suggests subsurface water flow continued long after the planet cooled."
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/byline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/headline"/>
-
-            <Button
-                android:id="@+id/readmore"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="Read more"
-                android:backgroundTint="@color/brand_primary"
-                android:textColor="#FFFFFF"
-                app:layout_constraintTop_toBottomOf="@id/body"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="6dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:text="Visual: Invoice # → Customer → Total → Pay now. Traversal: Pay now → Invoice # → Total → Customer."/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/card_bg">
-
-            <TextView
-                android:id="@+id/invNumber"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Invoice #INV-2042"
-                android:textColor="@color/text_primary"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/payNow"/>
-
-            <TextView
-                android:id="@+id/invCustomer"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="Customer: Acme Industries Pvt Ltd"
-                android:textColor="@color/text_secondary"
-                android:textSize="13sp"
-                app:layout_constraintTop_toBottomOf="@id/invNumber"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/invTotal"/>
-
-            <TextView
-                android:id="@+id/invTotal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Total due: ₹38,400 (incl. GST)"
-                android:textColor="@color/violation_red"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                app:layout_constraintTop_toBottomOf="@id/invCustomer"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/invNumber"/>
-
-            <Button
-                android:id="@+id/payNow"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="Pay now"
-                android:backgroundTint="@color/brand_primary"
-                android:textColor="#FFFFFF"
-                app:layout_constraintTop_toBottomOf="@id/invTotal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginTop="18dp"
+                android:hint="Enter name"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPersonName"
+                android:importantForAutofill="no"/>
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

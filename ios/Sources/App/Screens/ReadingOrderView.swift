@@ -1,72 +1,68 @@
 import SwiftUI
 
-/// Rule 4 — Meaningful reading order.
+/// Rule 4 — Meaningful reading order. Mirrors activity_reading_order.xml.
 ///
-/// VoiceOver focus order is scrambled away from the visual/logical order using
-/// `.accessibilitySortPriority` (higher = visited earlier). Mirrors activity_reading_order.xml,
-/// where Android used android:accessibilityTraversalAfter.
+/// The violation IS the layout order. There is no `.accessibilitySortPriority` scrambling here
+/// on purpose: a signup form has one logical sequence — name, then password, then confirm it,
+/// then submit — and this screen lays that out upside down. VoiceOver follows layout order, so
+/// it reaches "Signup now" first and "Enter name" last, asking the user to submit before being
+/// given anything to fill in.
+///
+/// That is what the judge reports: "the focus order follows an illogical bottom-to-top sequence
+/// instead of a logical top-to-bottom reading path".
+///
+/// Every element is INTERACTIVE (two Buttons, three text fields). The rule evaluates the focus
+/// order of interactive elements, so this is a stronger test than static text with traversal
+/// overrides. Expect the editable-element / input-label rules to report here too — the fields
+/// are named only by their placeholders, which is what makes the form read as shown.
 struct ReadingOrderView: View {
+    @State private var confirmPassword = ""
+    @State private var password = ""
+    @State private var name = ""
+
     var body: some View {
         RuleScreen {
-            // Visual: Title → Price → Description → Buy. VoiceOver: Buy → Title → Description → Price.
             Card {
-                orderedLine("Wireless Headphones X9", size: 18, bold: true,
-                            color: Theme.textPrimary, priority: 3)
-                orderedLine("₹4,999  (was ₹7,999)", size: 15, bold: true,
-                            color: Theme.violationRed, priority: 1, top: 6)
-                orderedLine("Active noise cancelling with 32-hour battery life and adaptive EQ tuned for podcasts and music.",
-                            size: 14, bold: false, color: Theme.textSecondary, priority: 2, top: 10)
-                cta("Buy now", priority: 4)
-            }
-            // Explicit container so VoiceOver orders the contained elements strictly by
-            // sortPriority — making the traversal-vs-visual mismatch a detectable violation.
-            .accessibilityElement(children: .contain)
+                // 1st in focus order, last in logic: submit, before anything has been entered.
+                cta("Signup now")
 
-            // Visual: Headline → Byline → Body → Read more. VoiceOver: Read more → Headline → Body → Byline.
-            Card {
-                orderedLine("Mars rover finds new mineral deposit", size: 18, bold: true,
-                            color: Theme.textPrimary, priority: 3)
-                orderedLine("By Sneha K. — 2h ago", size: 13, bold: false,
-                            color: Theme.textSecondary, priority: 1, top: 6)
-                orderedLine("The discovery, made by the Perseverance rover, suggests subsurface water flow continued long after the planet cooled.",
-                            size: 14, bold: false, color: Theme.textPrimary, priority: 2, top: 10)
-                cta("Read more", priority: 4)
-            }
-            .accessibilityElement(children: .contain)
-            .padding(.top, 22)
+                // Confirm a password that has not been asked for yet.
+                SecureField("Confirm password", text: $confirmPassword)
+                    .inputRow()
 
-            // Visual: Invoice # → Customer → Total → Pay now. VoiceOver: Pay now → Invoice # → Total → Customer.
-            Card {
-                orderedLine("Invoice #INV-2042", size: 18, bold: true,
-                            color: Theme.textPrimary, priority: 3)
-                orderedLine("Customer: Acme Industries Pvt Ltd", size: 13, bold: false,
-                            color: Theme.textSecondary, priority: 1, top: 6)
-                orderedLine("Total due: ₹38,400 (incl. GST)", size: 15, bold: true,
-                            color: Theme.violationRed, priority: 2, top: 10)
-                cta("Pay now", priority: 4)
+                cta("Login now", top: 18)
+
+                SecureField("Enter password", text: $password)
+                    .inputRow()
+
+                // Last in focus order, first in logic.
+                TextField("Enter name", text: $name)
+                    .inputRow()
             }
-            .accessibilityElement(children: .contain)
-            .padding(.top, 22)
         }
     }
 
-    private func orderedLine(_ text: String, size: CGFloat, bold: Bool,
-                             color: Color, priority: Double, top: CGFloat = 0) -> some View {
-        Text(text)
-            .font(.system(size: size, weight: bold ? .bold : .regular))
-            .foregroundColor(color)
-            .padding(.top, top)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .accessibilitySortPriority(priority)
-    }
-
-    private func cta(_ label: String, priority: Double) -> some View {
+    private func cta(_ label: String, top: CGFloat = 0) -> some View {
         Button(action: {}) {
             Text(label).foregroundColor(.white).frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
                 .background(Theme.brandPrimary).cornerRadius(8)
         }
-        .padding(.top, 14)
-        .accessibilitySortPriority(priority)
+        .padding(.top, top)
+    }
+}
+
+private extension View {
+    func inputRow() -> some View {
+        self
+            .font(.system(size: 15))
+            .foregroundColor(Theme.textPrimary)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 9)
+            .background(Theme.card)
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Theme.cardBorder, lineWidth: 1))
+            .autocorrectionDisabled(true)
+            .textInputAutocapitalization(.never)
+            .padding(.top, 18)
     }
 }
