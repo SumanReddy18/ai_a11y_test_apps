@@ -27,6 +27,6 @@
     <string name="rule8_title">8. Link text purpose</string>
     <string name="rule8_desc">Links labelled \"click here\", \"read more\", or a raw URL don\'t convey their destination out of context.</string>
 
-    <string name="rule9_title">9. Input field labels</string>
-    <string name="rule9_desc">Text inputs whose purpose isn\'t exposed to accessibility services. Covers both input-purpose checks: fields with no programmatic label (caption not linked, no hint) or only a placeholder, and fields whose inputType contradicts the label — including passwords with no secure input type.</string>
+    <string name="rule9_title">9. Input field labels (AI label review)</string>
+    <string name="rule9_desc">Every text input here is labelled and typed well enough to PASS both static input-purpose checks, but its accessible name is junk (\"field 1\", \"field 2\"). That is the only shape that reaches the AI judge: editable-element-content-label goes to AI review when a content label exists, and fails statically when one is missing. The two input-purpose rules themselves are static-only in the engine and cannot produce an AI verdict.</string>
 </resources>

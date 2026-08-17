@@ -1,17 +1,39 @@
 import SwiftUI
+import UIKit
 
-/// Rule 9 — Input field labels. Covers BOTH input-purpose checks on one screen:
+/// Rule 9 — Input field labels, reshaped so the violation is decided by the AI judge
+/// rather than by a deterministic engine branch.
 ///
-///  * **Accessible input field labels** (violations 1–3) — text fields whose visible caption is
-///    only a neighbouring `Text` (nothing associates the two), fields with no name at all, and
-///    fields named only by a placeholder, which vanishes the moment the user types.
-///  * **Input type for input fields** (violations 4–5) — fields that ARE labelled correctly but
-///    whose `keyboardType` / `textContentType` contradicts that label, and sensitive fields
-///    entered through a plain `TextField` instead of a `SecureField`.
+/// This screen is engine-implementation-coupled. Read before editing:
 ///
-/// Mirrors activity_input_field_labels.xml. NOTE (the gotcha): a SwiftUI `TextField`'s
-/// placeholder string becomes its accessibility label, so a field must be created with an EMPTY
-/// placeholder (`TextField("", …)`) to be genuinely unnamed to VoiceOver.
+/// The two input-purpose rules (`accessible-input-field-label`,
+/// `input-type-for-input-field`) are STATIC-ONLY — they sit in the engine's
+/// `standard_rules` bucket, appear in none of the eight `AI_TASKS`, and never return
+/// `RuleStatus::AI_REVIEW`. No fixture can make them produce an AI verdict.
+///
+/// `editable-element-content-label` can:
+///   * no content label  → `RuleStatus::FAIL` (static, the AI never runs)
+///   * content label set → `RuleStatus::AI_REVIEW` (the AI judges whether it is meaningful)
+///
+/// So every field below deliberately SATISFIES both static input rules and carries a
+/// junk `accessibilityLabel`, which is the only shape that reaches the AI judge:
+///
+///   * **No placeholder.** The iOS branch of the label rule FAILs on
+///     `placeholder.present?` for any accessible `UITextField` — a placeholder is treated
+///     as a label used in lieu of a real one, regardless of what else is on screen. Every
+///     field is therefore built as `TextField("", …)` with a separate visible caption.
+///   * **`SecureField` for secrets.** On iOS the type rule is only eligible for
+///     `SecureTextField`, and `IOS_TYPE_TO_CATEGORY` maps the Password category to exactly
+///     that type — so a masked field captioned "Password" / "Card CVV" passes, while a
+///     plain `TextField` is simply not eligible.
+///   * **Meaningless `accessibilityLabel`.** Present, so the rule reaches AI_REVIEW; junk,
+///     so the judge scores it a violation — and the visible caption is absent from the
+///     accessible name, which is a label-in-name failure too.
+///
+/// Do NOT "strengthen" this screen by stripping labels. A bare field short-circuits to a
+/// static FAIL and the AI is never consulted.
+///
+/// Mirrors activity_input_field_labels.xml.
 struct InputFieldLabelsView: View {
     @State private var name = ""
     @State private var surname = ""
@@ -21,124 +43,80 @@ struct InputFieldLabelsView: View {
     @State private var code3 = ""
     @State private var address1 = ""
     @State private var address2 = ""
-    @State private var emailHint = ""
-    @State private var cityHint = ""
-    @State private var dobHint = ""
-    @State private var emailTyped = ""
-    @State private var mobileTyped = ""
-    @State private var amountTyped = ""
-    @State private var urlTyped = ""
+    @State private var email = ""
+    @State private var city = ""
+    @State private var dob = ""
+    @State private var mobile = ""
+    @State private var amount = ""
+    @State private var url = ""
     @State private var password = ""
     @State private var confirmPassword = ""
     @State private var cvv = ""
 
     var body: some View {
         RuleScreen {
-            // ---- Sub-rule A: accessible input field labels -------------------------------
-            // Sign-up form: captions not linked to their inputs.
+            // Sign-up form.
             Card {
                 caption("Full name")
-                field($name)
+                field($name, axLabel: "field 1")
                 caption("Surname", top: 14)
-                field($surname)
-                // Caption says "Phone number", the field takes free text.
+                field($surname, axLabel: "field 2")
                 caption("Phone number", top: 14)
-                field($phone)
+                field($phone, axLabel: "field 3", keyboard: .phonePad)
             }
 
-            // No label at all — bare inputs.
+            // Verification code — one caption per box, mirroring the Android labelFor pairing.
             Card {
                 Text("Enter the 3-digit code we sent you")
                     .font(.system(size: 13))
                     .foregroundColor(Theme.textSecondary)
                 HStack(spacing: 8) {
-                    field($code1).multilineTextAlignment(.center)
-                    field($code2).multilineTextAlignment(.center)
-                    field($code3).multilineTextAlignment(.center)
+                    digit("Digit 1", $code1, axLabel: "field 4")
+                    digit("Digit 2", $code2, axLabel: "field 5")
+                    digit("Digit 3", $code3, axLabel: "field 6")
                 }
                 .padding(.top, 6)
 
-                // Two address lines, completely unnamed.
-                field($address1).padding(.top, 14)
-                field($address2).padding(.top, 8)
+                caption("Address line 1", top: 14)
+                field($address1, axLabel: "field 7")
+                caption("Address line 2", top: 14)
+                field($address2, axLabel: "field 8")
             }
 
-            // Placeholder used instead of a label.
+            // Contact details.
             Card {
-                // The placeholder is the ONLY thing naming these fields, and it is gone as
-                // soon as there is any text — the label is not persistent.
-                TextField("Email", text: $emailHint).inputBox()
-                TextField("City", text: $cityHint).inputBox().padding(.top, 10)
-                TextField("DD / MM / YYYY", text: $dobHint).inputBox().padding(.top, 10)
-            }
-
-            // ---- Sub-rule B: input type for input fields ---------------------------------
-            // Input type contradicts the label.
-            Card {
-                // These fields ARE named properly (visible caption + accessibilityLabel), so
-                // the label sub-rule passes. What fails is the TYPE: the keyboard and content
-                // type are wrong for the data the label asks for.
                 caption("Email address")
-                TextField("you@example.com", text: $emailTyped)
-                    .keyboardType(.phonePad)
-                    .textContentType(.telephoneNumber)
-                    .inputBox()
-                    .accessibilityLabel("Email address")
-
-                caption("Mobile number", top: 14)
-                TextField("+91 98765 43210", text: $mobileTyped)
-                    .keyboardType(.emailAddress)
-                    .textContentType(.emailAddress)
-                    .inputBox()
-                    .accessibilityLabel("Mobile number")
-
-                caption("Amount (USD)", top: 14)
-                TextField("0.00", text: $amountTyped)
-                    .keyboardType(.default)
-                    .textContentType(.name)
-                    .inputBox()
-                    .accessibilityLabel("Amount in US dollars")
-
-                caption("Website URL", top: 14)
-                TextField("https://example.com", text: $urlTyped)
-                    .keyboardType(.decimalPad)
-                    .inputBox()
-                    .accessibilityLabel("Website URL")
+                field($email, axLabel: "field 9", keyboard: .emailAddress)
+                caption("City", top: 14)
+                field($city, axLabel: "field 10")
+                caption("Date of birth", top: 14)
+                field($dob, axLabel: "field 11")
             }
 
-            // Sensitive fields without a secure input type.
+            // Payment and profile fields.
             Card {
-                // Passwords and the CVV go through a plain TextField, so characters are not
-                // masked and the element is a text field rather than a secure one — the half of
-                // this sub-rule iOS reliably exposes (keyboardType is not in the AX tree, the
-                // .secureTextField element type is). Each one also *declares* a sensitive
-                // autofill purpose via textContentType, which contradicts the plain entry.
+                caption("Mobile number")
+                field($mobile, axLabel: "field 12", keyboard: .phonePad)
+                caption("Amount (USD)", top: 14)
+                field($amount, axLabel: "field 13", keyboard: .decimalPad)
+                caption("Website URL", top: 14)
+                field($url, axLabel: "field 14")
+            }
+
+            // Secrets, properly masked so the type rule passes.
+            Card {
                 caption("Password")
-                TextField("Enter your password", text: $password)
-                    .textContentType(.password)
-                    .inputBox()
-                    .accessibilityLabel("Password")
-
-                // Password purpose, email keyboard, no masking.
+                secureField($password, axLabel: "field 15")
                 caption("Confirm password", top: 14)
-                TextField("Re-enter your password", text: $confirmPassword)
-                    .textContentType(.password)
-                    .keyboardType(.emailAddress)
-                    .inputBox()
-                    .accessibilityLabel("Confirm password")
-
+                secureField($confirmPassword, axLabel: "field 16")
                 caption("Card CVV", top: 14)
-                TextField("3 digits on the back of your card", text: $cvv)
-                    .textContentType(.creditCardNumber)   // label says CVV, purpose says card number
-                    .keyboardType(.default)
-                    .inputBox()
-                    .accessibilityLabel("Card CVV")
+                secureField($cvv, axLabel: "field 17")
             }
         }
     }
 
-    /// A visible caption. It sits above the field but nothing associates the two — the iOS
-    /// analogue of a TextView with no `android:labelFor`.
+    /// A visible caption above its field. iOS has no `labelFor` equivalent; the label rule
+    /// reads the element's own placeholder and accessible name, not the association.
     private func caption(_ text: String, top: CGFloat = 0) -> some View {
         Text(text)
             .font(.system(size: 13))
@@ -147,9 +125,43 @@ struct InputFieldLabelsView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    /// An input with an EMPTY placeholder — no accessible name at all.
-    private func field(_ text: Binding<String>) -> some View {
-        TextField("", text: text).inputBox()
+    /// An input with an EMPTY placeholder — a placeholder alone is a static FAIL on iOS —
+    /// and a present-but-meaningless accessible name, which is what the AI judges.
+    private func field(
+        _ text: Binding<String>,
+        axLabel: String,
+        keyboard: UIKeyboardType = .default
+    ) -> some View {
+        TextField("", text: text)
+            .keyboardType(keyboard)
+            .inputBox()
+            .accessibilityLabel(axLabel)
+    }
+
+    /// One box of the verification code, with its own caption.
+    private func digit(
+        _ label: String,
+        _ text: Binding<String>,
+        axLabel: String
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(label)
+                .font(.system(size: 12))
+                .foregroundColor(Theme.textPrimary)
+            TextField("", text: text)
+                .keyboardType(.numberPad)
+                .multilineTextAlignment(.center)
+                .inputBox()
+                .accessibilityLabel(axLabel)
+        }
+    }
+
+    /// A masked field. `SecureTextField` is the only iOS type the input-type rule accepts
+    /// for a password-category caption, so these pass it.
+    private func secureField(_ text: Binding<String>, axLabel: String) -> some View {
+        SecureField("", text: text)
+            .inputBox()
+            .accessibilityLabel(axLabel)
     }
 }
 

@@ -10,14 +10,45 @@
         android:descendantFocusability="beforeDescendants">
 
         <!-- ============================================================
-             Sub-rule A — "Accessible input field labels"
+             AI-REVIEW input labels — every field is announced by a
+             present-but-meaningless contentDescription.
+
+             This screen is engine-implementation-coupled. Read before editing:
+
+             The two input-purpose rules (accessible-input-field-label,
+             input-type-for-input-field) are STATIC-ONLY in the rule engine —
+             they are in the standard_rules bucket, in none of the eight
+             AI_TASKS, and they never return RuleStatus::AI_REVIEW. No fixture
+             can make them produce an AI verdict.
+
+             editable-element-content-label CAN:
+               no content label   -> RuleStatus::FAIL   (static, AI never runs)
+               content label set  -> RuleStatus::AI_REVIEW  (AI judges meaning)
+
+             So every field below deliberately SATISFIES both static input
+             rules and carries a junk contentDescription, which is the only
+             shape that reaches the AI judge:
+
+               labelFor on the caption -> accessible-input-field-label PASSes
+                                          (validate_labeledBy is true)
+               inputType matches the
+               caption's category      -> input-type-for-input-field PASSes
+               contentDescription set
+               but meaningless         -> editable-element-content-label
+                                          goes to AI_REVIEW, and the judge
+                                          scores it a violation (junk label +
+                                          visible caption absent from the
+                                          accessible name = label-in-name)
+
+             Do NOT "strengthen" this screen by stripping labels. A bare field
+             short-circuits to a static FAIL and the AI is never consulted.
+
+             inputType choices avoid the ambiguous 0x10 variation bit (both
+             date and number-password decode to 16), which would land the
+             field in the wrong category and fail the static type rule.
              ============================================================ -->
 
-        <!-- Each caption below is a plain TextView with NO android:labelFor, and each
-             EditText has no android:hint and no contentDescription. Sighted users see a
-             caption; TalkBack announces a bare "Edit box". The captions also imply a
-             specific data type ("Phone number", "Date of birth") while every field is
-             android:inputType="text" — so the input-type sub-rule fires here too. -->
+        <!-- Sign-up form. Captions are properly associated via labelFor. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,54 +60,69 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:labelFor="@+id/iflName"
                 android:text="Full name"
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"/>
 
+            <!-- textPersonName decodes to the "Text Input" category, which the
+                 type rule always passes once visible text exists. -->
             <EditText
-                android:id="@+id/iflName"
+                android:id="@id/iflName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:inputType="text"
+                android:hint="Jane Doe"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPersonName"
+                android:contentDescription="field 1"
                 android:importantForAutofill="no"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
+                android:labelFor="@+id/iflSurname"
                 android:text="Surname"
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"/>
 
             <EditText
-                android:id="@+id/iflSurname"
+                android:id="@id/iflSurname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:inputType="text"
+                android:hint="Doe"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPersonName"
+                android:contentDescription="field 2"
                 android:importantForAutofill="no"/>
 
-            <!-- Caption says "Phone number", inputType says free text. -->
+            <!-- "Phone number" matches the Phone Input regex, so inputType="phone" passes. -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
+                android:labelFor="@+id/iflPhone"
                 android:text="Phone number"
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"/>
 
             <EditText
-                android:id="@+id/iflPhone"
+                android:id="@id/iflPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:inputType="text"
+                android:hint="+91 98765 43210"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="phone"
+                android:contentDescription="field 3"
                 android:importantForAutofill="no"/>
         </LinearLayout>
 
-        <!-- Verification-code boxes and an address row with no caption, no hint and no
-             contentDescription: nothing at all identifies these fields. -->
+        <!-- Verification code. Each box gets its own caption so every EditText has a
+             labelFor of its own — labelFor is one-to-one. The digit in each caption
+             also satisfies the Number Input regex. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,140 +144,202 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="6dp">
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:labelFor="@+id/iflCode1"
+                    android:text="Digit 1"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:labelFor="@+id/iflCode2"
+                    android:text="Digit 2"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/iflCode3"
+                    android:text="Digit 3"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
                 <EditText
-                    android:id="@+id/iflCode1"
+                    android:id="@id/iflCode1"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:inputType="text"
+                    android:inputType="number"
+                    android:contentDescription="field 4"
                     android:importantForAutofill="no"/>
 
                 <EditText
-                    android:id="@+id/iflCode2"
+                    android:id="@id/iflCode2"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:inputType="text"
+                    android:inputType="number"
+                    android:contentDescription="field 5"
                     android:importantForAutofill="no"/>
 
                 <EditText
-                    android:id="@+id/iflCode3"
+                    android:id="@id/iflCode3"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:inputType="text"
+                    android:inputType="number"
+                    android:contentDescription="field 6"
                     android:importantForAutofill="no"/>
             </LinearLayout>
 
-            <!-- Two address lines, completely unlabelled. -->
-            <EditText
-                android:id="@+id/iflAddress1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:inputType="text"
-                android:importantForAutofill="no"/>
-
-            <EditText
-                android:id="@+id/iflAddress2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:inputType="text"
-                android:importantForAutofill="no"/>
-        </LinearLayout>
-
-        <!-- Hint-only fields. The hint is the ONLY thing naming the field, and it
-             disappears as soon as the user types — the label is not persistent. -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
-            <EditText
-                android:id="@+id/iflEmailHint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email"
-                android:textColorHint="@color/text_secondary"
-                android:inputType="text"
-                android:importantForAutofill="no"/>
-
-            <EditText
-                android:id="@+id/iflCityHint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="City"
-                android:textColorHint="@color/text_secondary"
-                android:inputType="text"
-                android:importantForAutofill="no"/>
-
-            <EditText
-                android:id="@+id/iflDobHint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="DD / MM / YYYY"
-                android:textColorHint="@color/text_secondary"
-                android:inputType="text"
-                android:importantForAutofill="no"/>
-        </LinearLayout>
-
-        <!-- ============================================================
-             Sub-rule B — "Input type for input fields"
-             ============================================================ -->
-
-        <!-- These fields ARE labelled properly (visible caption + android:labelFor +
-             hint), so the label sub-rule passes. What fails is the TYPE: each
-             android:inputType is wrong for the data the label asks for, so the user
-             gets the wrong keyboard and no useful autofill.
-
-             android:autofillHints deliberately contradicts the label as well, and these
-             fields do NOT carry importantForAutofill="no" the way the rest of the screen
-             does. The rule inspects "declared type, keyboard type, and autofill metadata";
-             opting a field out of autofill removed the metadata it wants to compare, so
-             there was nothing left to disagree with. -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
-            <!-- Email field typed as a phone number. -->
+            <!-- textPostalAddress lands in "Postal Address Input", which has no entry in
+                 CATEGORY_TO_REGEX — the type rule returns NOT_APPLICABLE rather than FAIL. -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:labelFor="@+id/iflEmailTyped"
+                android:layout_marginTop="14dp"
+                android:labelFor="@+id/iflAddress1"
+                android:text="Address line 1"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"/>
+
+            <EditText
+                android:id="@id/iflAddress1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:hint="Flat or building"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPostalAddress"
+                android:contentDescription="field 7"
+                android:importantForAutofill="no"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:labelFor="@+id/iflAddress2"
+                android:text="Address line 2"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"/>
+
+            <EditText
+                android:id="@id/iflAddress2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:hint="Street or area"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPostalAddress"
+                android:contentDescription="field 8"
+                android:importantForAutofill="no"/>
+        </LinearLayout>
+
+        <!-- Contact details. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/iflEmailHint"
                 android:text="Email address"
                 android:textColor="@color/text_primary"
                 android:textSize="13sp"/>
 
             <EditText
-                android:id="@id/iflEmailTyped"
+                android:id="@id/iflEmailHint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:hint="you@example.com"
                 android:textColorHint="@color/text_secondary"
-                android:inputType="phone"
-                android:autofillHints="phone"/>
+                android:inputType="textEmailAddress"
+                android:contentDescription="field 9"
+                android:importantForAutofill="no"/>
 
-            <!-- Phone field typed as an email address. -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
+                android:labelFor="@+id/iflCityHint"
+                android:text="City"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"/>
+
+            <EditText
+                android:id="@id/iflCityHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:hint="Bengaluru"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="text"
+                android:contentDescription="field 10"
+                android:importantForAutofill="no"/>
+
+            <!-- Kept as plain text: inputType="date" decodes through the ambiguous 0x10
+                 variation and would be categorised as Password Input, failing the type rule. -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:labelFor="@+id/iflDobHint"
+                android:text="Date of birth"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"/>
+
+            <EditText
+                android:id="@id/iflDobHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:hint="DD / MM / YYYY"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="text"
+                android:contentDescription="field 11"
+                android:importantForAutofill="no"/>
+        </LinearLayout>
+
+        <!-- Payment and profile fields with matching types. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg">
+
+            <!-- "Mobile number" matches the Phone Input regex. -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:labelFor="@+id/iflMobileTyped"
                 android:text="Mobile number"
                 android:textColor="@color/text_primary"
@@ -244,10 +352,11 @@
                 android:layout_marginTop="4dp"
                 android:hint="+91 98765 43210"
                 android:textColorHint="@color/text_secondary"
-                android:inputType="textEmailAddress"
-                android:autofillHints="emailAddress"/>
+                android:inputType="phone"
+                android:contentDescription="field 12"
+                android:importantForAutofill="no"/>
 
-            <!-- Numeric amount typed as a person's name. -->
+            <!-- "Amount (USD)" matches the Number Input regex. -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -264,10 +373,11 @@
                 android:layout_marginTop="4dp"
                 android:hint="0.00"
                 android:textColorHint="@color/text_secondary"
-                android:inputType="textPersonName"
-                android:autofillHints="name"/>
+                android:inputType="numberDecimal"
+                android:contentDescription="field 13"
+                android:importantForAutofill="no"/>
 
-            <!-- Website URL typed as a decimal number. -->
+            <!-- textUri also decodes through 0x10, so this stays plain text. -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -284,13 +394,14 @@
                 android:layout_marginTop="4dp"
                 android:hint="https://example.com"
                 android:textColorHint="@color/text_secondary"
-                android:inputType="numberDecimal"
-                android:autofillHints="postalCode"/>
+                android:inputType="text"
+                android:contentDescription="field 14"
+                android:importantForAutofill="no"/>
         </LinearLayout>
 
-        <!-- Password / CVV entered as plain visible text: no textPassword, no
-             numberPassword — the characters are not masked and the field is not
-             announced as a password field. -->
+        <!-- Secrets, properly masked. textPassword decodes to the unambiguous 0x80
+             variation, so all three land in Password Input, and each caption
+             ("Password", "Confirm password", "Card CVV") matches that regex. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -314,8 +425,9 @@
                 android:layout_marginTop="4dp"
                 android:hint="Enter your password"
                 android:textColorHint="@color/text_secondary"
-                android:inputType="text"
-                android:autofillHints="password"/>
+                android:inputType="textPassword"
+                android:contentDescription="field 15"
+                android:importantForAutofill="no"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -333,8 +445,9 @@
                 android:layout_marginTop="4dp"
                 android:hint="Re-enter your password"
                 android:textColorHint="@color/text_secondary"
-                android:inputType="textEmailAddress"
-                android:autofillHints="password"/>
+                android:inputType="textPassword"
+                android:contentDescription="field 16"
+                android:importantForAutofill="no"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -352,8 +465,9 @@
                 android:layout_marginTop="4dp"
                 android:hint="3 digits on the back of your card"
                 android:textColorHint="@color/text_secondary"
-                android:inputType="text"
-                android:autofillHints="creditCardSecurityCode"/>
+                android:inputType="textPassword"
+                android:contentDescription="field 17"
+                android:importantForAutofill="no"/>
         </LinearLayout>
 
     </LinearLayout>
