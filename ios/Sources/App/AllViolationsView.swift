@@ -11,7 +11,9 @@ import SwiftUI
 /// TextFields/Toggles + 10 images), which is what made this screen slow to open and janky to
 /// advance. Trade-off: no swipe gesture and no page dots — use "Next", or wait for the timer.
 struct AllViolationsView: View {
-    private static let initialDelay: Double = 5    // settle before the first hop (matches Android)
+    // 7s, not 5: the app must sit still while it loads so the first capture is a settled screen
+    // rather than one mid-scroll. Matches AllViolationsActivity.
+    private static let initialDelay: Double = 7    // settle before the first hop
     // One dwell per rule, not per viewport. RuleScreen no longer scrolls itself, so there is
     // nothing to wait for beyond the scan capturing this screen once. It used to be
     // RulePaging.fullPassSeconds (41s), which made a full cycle of nine rules take over six
