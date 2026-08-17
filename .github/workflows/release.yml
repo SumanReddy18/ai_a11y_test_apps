@@ -41,7 +41,7 @@ jobs:
       version: ${{ steps.calc.outputs.version }}
       code: ${{ steps.calc.outputs.code }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Compute next version
         id: calc
         env:
@@ -70,12 +70,12 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
-      - uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v4
       - name: Build release APK flavors (full, allViolations, allViolationsSmall)
         working-directory: android
         env:
@@ -90,7 +90,7 @@ jobs:
           mkdir -p ../out
           find app/build/outputs/apk -name '*.apk' -exec cp {} ../out/ \;
           ls -lh ../out
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: apks
           path: out/*.apk
@@ -101,7 +101,7 @@ jobs:
     needs: prepare
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install XcodeGen
         run: brew install xcodegen
       - name: Generate Xcode project
@@ -139,7 +139,7 @@ jobs:
             echo "::endgroup::"
           done
           ls -lh ../out
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ipas
           path: out/*.ipa
@@ -150,14 +150,14 @@ jobs:
     needs: [prepare, android, ios]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: apks
           path: dist
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: ipas
           path: dist
