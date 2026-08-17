@@ -75,14 +75,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Click here"
-                android:textColor="@color/info_blue"/>
+                android:textColor="#0B57D0"/>
 
             <TextView
                 android:id="@+id/tsLinkReadMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Read more"
-                android:textColor="@color/info_blue"
+                android:textColor="#0B57D0"
                 android:paddingTop="10dp"/>
 
             <TextView
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="https://help.example.com/articles/8842-returns"
-                android:textColor="@color/info_blue"
+                android:textColor="#0B57D0"
                 android:paddingTop="10dp"/>
         </LinearLayout>
 
@@ -108,6 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Delivery partners may call you from a masked number before arriving."
+                android:lineSpacingMultiplier="1.5"
                 android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:accessibilityHeading="true"/>

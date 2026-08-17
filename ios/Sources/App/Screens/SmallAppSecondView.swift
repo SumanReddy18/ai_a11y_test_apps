@@ -83,7 +83,7 @@ struct SmallAppSecondView: View {
         Link(destination: Self.dest) {
             Text(phrase)
                 .font(.system(size: 15, weight: .semibold))
-                .foregroundColor(Theme.brandPrimary)
+                .foregroundColor(Color(red: 0.043, green: 0.341, blue: 0.816)) // #0B57D0, >=4.5:1
                 .underline()
         }
         .padding(.top, top)

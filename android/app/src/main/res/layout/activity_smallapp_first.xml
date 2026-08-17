@@ -60,7 +60,7 @@
                 android:layout_height="52dp"
                 android:layout_weight="1"
                 android:layout_marginStart="12dp"
-                android:background="@color/brand_primary"
+                android:background="#C2410C"
                 android:clickable="true"
                 android:focusable="true">
                 <ImageView
@@ -113,6 +113,7 @@
                 android:text="3 items in your cart, arriving Friday between 9am and 1pm."
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
+                android:lineSpacingMultiplier="1.5"
                 android:paddingTop="2dp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -120,6 +121,7 @@
                 android:text="Signature required on delivery. Contactless drop-off is available from settings."
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
+                android:lineSpacingMultiplier="1.5"
                 android:paddingTop="2dp"/>
 
             <TextView
@@ -136,6 +138,7 @@
                 android:text="Visa ending 4242, billed to your home address."
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
+                android:lineSpacingMultiplier="1.5"
                 android:paddingTop="2dp"/>
             <TextView
                 android:layout_width="match_parent"
@@ -143,6 +146,7 @@
                 android:text="Your next charge is on the 1st of every month unless you cancel earlier."
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
+                android:lineSpacingMultiplier="1.5"
                 android:paddingTop="2dp"/>
         </LinearLayout>
 
@@ -208,6 +212,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="6dp"
                 android:text="4. Drop the parcel at any partner store"
+                android:lineSpacingMultiplier="1.5"
                 android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:accessibilityTraversalAfter="@+id/saRoStep1"/>

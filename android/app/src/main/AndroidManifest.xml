@@ -37,11 +37,14 @@
         <activity android:name=".AllViolationsActivity" android:exported="false"
             android:label="All violations" android:theme="@style/Theme.Child" />
 
-        <!-- All-violations-small fixture (allViolationsSmall flavor): all 9 rules across 2 auto-cycling screens. -->
+        <!-- All-violations-small fixture (allViolationsSmall flavor): all 9 rules across
+             2 auto-cycling screens. Theme.Main = NoActionBar: the ActionBar title is
+             chrome — a standing heading candidate, a responsive-containers candidate,
+             and it leaked the stale "Two screens N of 2" labels into scans. -->
         <activity android:name=".SmallAppFirstActivity" android:exported="true"
-            android:label="Two screens 1 of 2" android:theme="@style/Theme.Child" />
+            android:theme="@style/Theme.Main" />
         <activity android:name=".SmallAppSecondActivity" android:exported="true"
-            android:label="Two screens 2 of 2" android:theme="@style/Theme.Child"
+            android:theme="@style/Theme.Main"
             android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
