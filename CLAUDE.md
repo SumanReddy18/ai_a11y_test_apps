@@ -68,7 +68,7 @@ defined in `app/build.gradle`. There are **11 flavors**: `full` + 9 single-issue
 | `missingHeading` | `.missingheading` | Missing heading |
 | `incorrectHeading` | `.incorrectheading` | Incorrect heading |
 | `linkTextPurpose` | `.linktextpurpose` | Link text purpose |
-| `inputFieldLabels` | `.inputfieldlabels` | Input field labels — **AI label review** via `editable-element-content-label` (see [[input-fields-are-static-only]] below) |
+| `inputFieldLabels` | `.inputfieldlabels` | Input field labels (accessible labels + input type) — static FAIL with an AI pass on top, see [[input-fields-are-ai-on-top-of-static]] |
 | `allViolations` | `.allviolations` | all rules on one screen — launches straight into `AllViolationsActivity` (no home/install screen) |
 
 How a single-issue APK is produced:
@@ -146,44 +146,44 @@ element isn't the right *type*. Concrete examples that have bitten us:
   the rule returns NOT_APPLICABLE without looking at the app at all. It also processes only the
   *first* element of a snapshot, so at most one finding per screen. If the traversal attributes are
   right and nothing is reported, the gap is scan-side focus-order capture, not the fixture.
-- **[[input-fields-are-static-only]]** — the two input-purpose rules, "Accessible input field
-  labels" (`accessible-input-field-label`) and "Input type for input fields"
-  (`input-type-for-input-field`), **cannot ever produce an AI verdict.** In the rule engine both
-  sit in the `standard_rules` bucket (`config/initializers/bucket_config.rb`), appear in none of
-  the eight `AI_TASKS` (`config/initializers/constants.rb`), never return
-  `RuleStatus::AI_REVIEW`, and are absent from the `AI_BASED_*` branch chain in
-  `scan_helper.rb` — so they are also invisible to the dashboard's AI-only filter. Their
-  `extra_info.AI_remediation_rule_name` is AI-authored *fix text* for an
-  already-detected issue, not AI detection. **No fixture change can move them to AI.** An AI
-  input-field agent does exist in the `ai-accessibility` service
-  (`POST /app-ally/input-field-purpose`, flag `appAllyInputFieldPurpose`) but nothing calls it;
-  wiring it up is backend work, not fixture work.
+- **[[input-fields-are-ai-on-top-of-static]]** — the two input-purpose rules, "Accessible input
+  field labels" (`accessible-input-field-label`) and "Input type for input fields"
+  (`input-type-for-input-field`), are **static rules with an AI pass layered on top**. The engine
+  hook is `mark_for_input_field_ai_review`, called from `run` right after `validate_rule`:
 
-  So `activity_input_field_labels.xml` / `InputFieldLabelsView.swift` deliberately target
-  `editable-element-content-label` instead, which is AI-eligible and does have an AI branch:
-
-  | content label | verdict |
+  | deterministic verdict | what happens |
   |---|---|
-  | missing | `RuleStatus::FAIL` — static, the AI never runs |
-  | present | `RuleStatus::AI_REVIEW` — the AI judges whether it is meaningful |
+  | `NOT_APPLICABLE` | returns early, no AI |
+  | `FAIL` / `NEEDS_REVIEW` | keeps its deterministic status **and** still emits the aiCandidate |
+  | `PASS` | escalated to `RuleStatus::AI_REVIEW` so the model can find what the static check missed |
 
-  Every field therefore **passes** both static input rules and carries a junk
-  `contentDescription` / `accessibilityLabel` (`"field 1"`, `"field 2"`, …). **Do not
-  "strengthen" this screen by stripping labels** — a bare field short-circuits to a static FAIL
-  and the AI is never consulted. That mistake is what commit `a781fa2` made: it tuned the fields
-  against the live AI judge prompts, which the engine never reaches.
+  Every eligible editable field emits an aiCandidate either way, for the shared
+  `AI_TASKS::CHECK_INPUT_FIELD_PURPOSE` task. The AI **refines and attributes; it never clears** —
+  `collapse_input_field_rule_to_pass` will only collapse an element that was an `AI_REVIEW`
+  (i.e. a deterministic PASS sent for verification). A deterministic FAIL survives even when the
+  model returns `not_an_issue`.
 
-  Mechanics that matter when editing: "Accessible input field labels" passes on
-  `android:labelFor` on the caption *or* text/OCR content — `labelFor` is one-to-one, so the
-  three verification-code boxes each need their own caption. "Input type for input fields"
-  derives its visible text from the field's own `text`, falling back to the `labelFor` caption,
-  then either auto-passes the `Text Input` category or regex-matches the caption against the
-  type's category — so captions and `inputType` must agree. Avoid `date` and `textUri`: both
-  decode through the ambiguous `0x10` variation bit that also means number-password, landing the
-  field in `Password Input` and failing the match. On iOS the label rule FAILs on
-  `placeholder.present?` for any accessible text field, so fields are built as
-  `TextField("", …)` with a separate visible caption; and the iOS type rule is only *eligible*
-  for `SecureTextField`, which is why the secrets use `SecureField`.
+  **Consequence for this fixture: a field must FAIL the static check to reliably report.** Give a
+  field a good visible caption linked with `android:labelFor` and it PASSes, escalates to
+  AI_REVIEW, the model sees a well-labelled field, returns not-an-issue, and the finding is
+  collapsed to PASS — the violation disappears. That is exactly what happened when this screen was
+  briefly rewritten to satisfy both rules; "Accessible Input Field Labels" went to zero while
+  junk `contentDescription` values inflated `editable-element-content-label` instead.
+
+  So the fields here are deliberately **bare**: no `android:labelFor`, no `hint`, no
+  `contentDescription`, with only an unlinked caption `TextView` above them. On iOS the label rule
+  FAILs on `placeholder.present?` for any accessible text field, so placeholder-named fields are
+  the violation there, and an unnamed field needs `TextField("", …)`.
+
+  Mechanics for the type rule: it derives visible text from the field's own `text`, falling back
+  to the `labelFor` caption, then either auto-passes the `Text Input` category or regex-matches
+  that text against the type's category. With a bare field it fires on the *empty-text* branch
+  ("Element has no text") rather than a type mismatch — if you want the mismatch branch, the field
+  needs text plus a contradicting `inputType`.
+
+  **Check the engine before trusting any of this.** These rules gained their AI wiring in
+  `app-accessibility` after 2026-08-04; a checkout older than that shows them as static-only and
+  is misleading.
 - **Below the fold is invisible** — the scan captures the viewport and does not scroll, so a
   violation on the second screenful is simply never seen. This is why the input-type violations
   (~960dp down a 1700dp screen) were rarely reported while the label violations at the top always

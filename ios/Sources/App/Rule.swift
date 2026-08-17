@@ -29,7 +29,7 @@ enum Rule: String, CaseIterable, Identifiable {
         case .missingHeading:   return "6. Missing heading"
         case .incorrectHeading: return "7. Incorrect heading"
         case .linkTextPurpose:  return "8. Link text purpose"
-        case .inputFieldLabels: return "9. Input field labels (AI label review)"
+        case .inputFieldLabels: return "9. Input field labels"
         }
     }
 
@@ -53,7 +53,7 @@ enum Rule: String, CaseIterable, Identifiable {
         case .linkTextPurpose:
             return "Links labelled \"click here\", \"read more\", or a raw URL don't convey their destination out of context."
         case .inputFieldLabels:
-            return "Every text input here is labelled and typed well enough to PASS both static input-purpose checks, but its accessible name is junk (\"field 1\", \"field 2\"). That is the only shape that reaches the AI judge: editable-element-content-label goes to AI review when a content label exists, and fails statically when one is missing. The two input-purpose rules themselves are static-only in the engine and cannot produce an AI verdict."
+            return "Text inputs whose purpose isn't exposed to accessibility services. Covers both input-purpose checks: fields with no accessible label or only a placeholder, and fields whose keyboard/content type contradicts the label — including passwords entered through a plain TextField. The first card is the AI-raised variant: those fields pass the static check (no placeholder) but their names are generic, so the verdict comes from the AI pass rather than a deterministic FAIL."
         }
     }
 
