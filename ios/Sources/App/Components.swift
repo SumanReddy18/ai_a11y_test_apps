@@ -17,6 +17,13 @@ import SwiftUI
 enum RulePaging {
     static let initialDelay: Double = 5      // settle before the first hop
     static let dwell: Double = 9             // seconds a screen is held before the next one
+
+    /// Retained for `SmallAppRootView`, which uses it as the interval for swapping its two
+    /// halves. It used to mean "how long one screen needs to page through itself once"
+    /// (initialDelay + pages * dwell = 41s); with per-screen paging gone there is no self-pass
+    /// to wait for, so this is just a dwell long enough for the scan to capture one half —
+    /// matching the 14s per-section dwell AllViolationsActivity uses on Android.
+    static var fullPassSeconds: Double { initialDelay + dwell }
 }
 
 /// A rule screen. Deliberately does NOT scroll itself.
