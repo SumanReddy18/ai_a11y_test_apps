@@ -92,14 +92,27 @@ portrait-only for `screen-orientation`.
 
 ## Scan-side dependencies (fixture is correct, capture must cooperate)
 
-- `meaningful-reading-order`, `focus-order-for-interactive-elements`,
-  `missing-view-type-in-spoken-output` need the TalkBack/VoiceOver **focus-order capture**;
-  without it they are NOT_APPLICABLE, never FAIL.
+Verified against the on-device engine (`browserstack/talkback` → `talkback-rule-engine`,
+wire version 2026.10.0) after two real scans:
+
+- **Focus order is always captured on-device** (`ensureTraversalOrderComputed` runs on
+  every snapshot) — but scanner-mode TalkBack sets `FLAG_INCLUDE_NOT_IMPORTANT_VIEWS`
+  and `shouldFocusNode` ignores importance, so `importantForAccessibility="no"` does NOT
+  remove a clickable leaf from the traversal. The working `focus-order` fixture is a
+  clickable container with children and nothing to speak (TalkBack: "focusable but has
+  nothing to speak").
+- `traversal-order-cycle` **cannot fire on-device today**: no serializer code emits
+  `traversalBeforeCycle` / `belongsToCycle` (the engine only reads them). Engine gap.
+- `app-orientation-support` / `screen-orientation` get their orientation list only on
+  the **App Automate path** (`currentAutomateSupportedOrientations` from appDetails,
+  `AppAccessibility.java:1877`); manual scans serialize `""` → both rules silently pass.
+  `screen-orientation` is additionally absent from the org rule config we scanned with.
+- `screen-reader-for-interactive-elements` never FAILs in the engine (PASS/NA carrier);
+  the server marks it violated alongside its dependent label rules.
 - `readable-text-spacing` needs OCR data; `text-truncation` (Android) needs
   `characterLocations`; the contrast rules need agent-computed swatches.
-- `app-orientation-support` fires once per session (24 h Redis key);
-  `screen-orientation` is excluded from Automate scans.
-- AI-assisted rules surface as AI_REVIEW → issue only after the AI callback.
+- AI-assisted rules surface as AI_REVIEW → issue only after the AI callback (and only
+  when the org has AI checks enabled).
 
 ## Building
 

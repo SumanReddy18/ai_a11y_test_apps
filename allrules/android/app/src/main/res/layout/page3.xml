@@ -114,16 +114,26 @@
                 android:textSize="14sp" />
         </RelativeLayout>
 
-        <!-- focus-order-for-interactive-elements: clickable but removed from the
-             accessibility tree, so the TalkBack traversal capture never includes it. -->
-        <View
+        <!-- focus-order-for-interactive-elements: a clickable container TalkBack skips.
+             importantForAccessibility="no" does NOT work here: the scanner runs TalkBack
+             with FLAG_INCLUDE_NOT_IMPORTANT_VIEWS and shouldFocusNode never checks
+             importance, so a clickable LEAF is always focused (the unlabeled-button
+             special case). What TalkBack genuinely skips is a clickable container WITH
+             children and nothing to speak ("focusable but has nothing to speak") — it
+             stays clickable and in the tree, but never enters the computed focus order. -->
+        <FrameLayout
             android:id="@+id/focus_order_missing"
             android:layout_width="200dp"
             android:layout_height="56dp"
             android:layout_marginTop="16dp"
             android:background="#3F51B5"
-            android:clickable="true"
-            android:importantForAccessibility="no" />
+            android:clickable="true">
+            <View
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:background="#7986CB" />
+        </FrameLayout>
 
         <!-- keyboard-focus-for-interactive-elements: clickable yet focusable=false —
              it can never gain keyboard focus. -->
