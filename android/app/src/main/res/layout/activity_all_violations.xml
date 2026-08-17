@@ -388,184 +388,72 @@
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 4. Reading order ============== -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- The violation IS the layout order: no android:accessibilityTraversal* overrides.
+             A signup form's logical sequence is name, password, confirm, submit; this lays it
+             out upside down, so focus hits "Signup now" first and "Enter name" last. Every
+             element is interactive, which is what the rule actually evaluates.
+
+             Kept to one short card so it fits a single viewport. The auto-scroll jumps to a
+             section's anchor (its top), so a section taller than the viewport is only ever
+             half seen. The previous product/news/invoice trio was ~180 lines of static
+             TextViews with traversal overrides and mostly sat below the fold. -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="16dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/card_bg">
 
-            <TextView
-                android:id="@+id/ro_title"
-                android:layout_width="0dp"
+            <Button
+                android:id="@+id/av_roSignup"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Wireless Headphones X9"
-                android:textColor="@color/text_primary"
+                android:text="Signup now"
+                android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="18sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/ro_buy"/>
+                android:backgroundTint="@color/brand_primary"/>
 
-            <TextView
-                android:id="@+id/ro_price"
-                android:layout_width="0dp"
+            <EditText
+                android:id="@+id/av_roConfirmPassword"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="₹4,999  (was ₹7,999)"
-                android:textColor="@color/violation_red"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                app:layout_constraintTop_toBottomOf="@id/ro_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/ro_desc"/>
-
-            <TextView
-                android:id="@+id/ro_desc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Active noise cancelling with 32-hour battery life and adaptive EQ tuned for podcasts and music."
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/ro_price"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/ro_title"/>
+                android:layout_marginTop="18dp"
+                android:hint="Confirm password"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPassword"
+                android:importantForAutofill="no"/>
 
             <Button
-                android:id="@+id/ro_buy"
-                android:layout_width="0dp"
+                android:id="@+id/av_roLogin"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="Buy now"
-                android:backgroundTint="@color/brand_primary"
+                android:layout_marginTop="18dp"
+                android:text="Login now"
                 android:textColor="#FFFFFF"
-                app:layout_constraintTop_toBottomOf="@id/ro_desc"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
-            <TextView
-                android:id="@+id/ro_headline"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Mars rover finds new mineral deposit"
-                android:textColor="@color/text_primary"
                 android:textStyle="bold"
-                android:textSize="18sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/ro_readmore"/>
+                android:backgroundTint="@color/brand_primary"/>
 
-            <TextView
-                android:id="@+id/ro_byline"
-                android:layout_width="0dp"
+            <EditText
+                android:id="@+id/av_roPassword"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="By Sneha K. — 2h ago"
-                android:textColor="@color/text_secondary"
-                android:textSize="13sp"
-                app:layout_constraintTop_toBottomOf="@id/ro_headline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/ro_body"/>
+                android:layout_marginTop="18dp"
+                android:hint="Enter password"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPassword"
+                android:importantForAutofill="no"/>
 
-            <TextView
-                android:id="@+id/ro_body"
-                android:layout_width="0dp"
+            <EditText
+                android:id="@+id/av_roName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="The discovery, made by the Perseverance rover, suggests subsurface water flow continued long after the planet cooled."
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/ro_byline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/ro_headline"/>
-
-            <Button
-                android:id="@+id/ro_readmore"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="Read more"
-                android:backgroundTint="@color/brand_primary"
-                android:textColor="#FFFFFF"
-                app:layout_constraintTop_toBottomOf="@id/ro_body"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
-            <TextView
-                android:id="@+id/ro_invNumber"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Invoice #INV-2042"
-                android:textColor="@color/text_primary"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/ro_payNow"/>
-
-            <TextView
-                android:id="@+id/ro_invCustomer"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="Customer: Acme Industries Pvt Ltd"
-                android:textColor="@color/text_secondary"
-                android:textSize="13sp"
-                app:layout_constraintTop_toBottomOf="@id/ro_invNumber"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/ro_invTotal"/>
-
-            <TextView
-                android:id="@+id/ro_invTotal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Total due: ₹38,400 (incl. GST)"
-                android:textColor="@color/violation_red"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                app:layout_constraintTop_toBottomOf="@id/ro_invCustomer"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:accessibilityTraversalAfter="@+id/ro_invNumber"/>
-
-            <Button
-                android:id="@+id/ro_payNow"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="Pay now"
-                android:backgroundTint="@color/brand_primary"
-                android:textColor="#FFFFFF"
-                app:layout_constraintTop_toBottomOf="@id/ro_invTotal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginTop="18dp"
+                android:hint="Enter name"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPersonName"
+                android:importantForAutofill="no"/>
+        </LinearLayout>
 
         <View android:id="@+id/sec5" android:layout_width="match_parent" android:layout_height="1dp"
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
@@ -1396,11 +1284,20 @@
             android:background="@color/card_border" android:layout_marginVertical="24dp"/>
 
         <!-- ============== 9. Input field labels ============== -->
-        <!-- Covers both input-purpose checks: inputs with no programmatic label
-             (caption not linked via labelFor, no hint) or a placeholder-only name,
-             and inputs whose android:inputType contradicts their label — including
-             password fields left as plain text. Mirrors
-             activity_input_field_labels.xml. -->
+        <!-- ONE card on purpose: two bare inputs whose captions carry no android:labelFor,
+             which is the shape that actually gets reported here (Accessible Input Field
+             Labels, inputLabel: "").
+
+             This section used to mirror all of activity_input_field_labels.xml — five cards
+             covering placeholder-only names, inputType mismatches and unmasked passwords. None
+             of it was ever reported from this screen. The auto-scroll jumps to a section's
+             ANCHOR, i.e. its top, so a section taller than the viewport is only ever half
+             seen, and five cards of inputs is several viewports. Everything past the first
+             card was permanently below the fold.
+
+             Keep this card short enough to fit one viewport. The full set of input-purpose
+             sub-cases still lives on the dedicated inputFieldLabels flavor, which pages
+             through its own height and reports them all. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1437,132 +1334,6 @@
                 android:layout_marginTop="4dp"
                 android:inputType="text"
                 android:importantForAutofill="no"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
-            <!-- No caption, no hint, no contentDescription. -->
-            <EditText
-                android:id="@+id/av_iflBare"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:importantForAutofill="no"/>
-
-            <!-- Named only by a placeholder that disappears on typing. -->
-            <EditText
-                android:id="@+id/av_iflEmailHint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Email"
-                android:textColorHint="@color/text_secondary"
-                android:inputType="text"
-                android:importantForAutofill="no"/>
-
-            <EditText
-                android:id="@+id/av_iflCityHint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="City"
-                android:textColorHint="@color/text_secondary"
-                android:inputType="text"
-                android:importantForAutofill="no"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@+id/av_iflEmailTyped"
-                android:text="Email address"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"/>
-            <EditText
-                android:id="@id/av_iflEmailTyped"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:hint="you@example.com"
-                android:textColorHint="@color/text_secondary"
-                android:inputType="phone"
-                android:autofillHints="phone"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:labelFor="@+id/av_iflMobileTyped"
-                android:text="Mobile number"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"/>
-            <EditText
-                android:id="@id/av_iflMobileTyped"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:hint="+91 98765 43210"
-                android:textColorHint="@color/text_secondary"
-                android:inputType="textEmailAddress"
-                android:autofillHints="emailAddress"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/card_bg">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@+id/av_iflPassword"
-                android:text="Password"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"/>
-            <EditText
-                android:id="@id/av_iflPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:hint="Enter your password"
-                android:textColorHint="@color/text_secondary"
-                android:inputType="text"
-                android:autofillHints="password"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:labelFor="@+id/av_iflCvv"
-                android:text="Card CVV"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"/>
-            <EditText
-                android:id="@id/av_iflCvv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:hint="3 digits on the back of your card"
-                android:textColorHint="@color/text_secondary"
-                android:inputType="text"
-                android:autofillHints="creditCardSecurityCode"/>
         </LinearLayout>
 
     </LinearLayout>
