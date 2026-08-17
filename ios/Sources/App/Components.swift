@@ -26,6 +26,16 @@ enum RulePaging {
 }
 
 struct RuleScreen<Content: View>: View {
+    /// Set `false` for screens whose rule reads POSITION or FOCUS ORDER.
+    ///
+    /// Paging is a net win on most screens (it drags below-the-fold violations into a captured
+    /// viewport), but meaningful-reading-order and meaningful-visual-order are whole-tree rules
+    /// evaluated against one snapshot: reading order intersects the focus caption with elements
+    /// that have non-zero bounds, and visual order sorts by y/x. If the screen moves between the
+    /// caption capture and the tree capture, elements scroll out of bounds and drop from the
+    /// sequence — and reading order bails outright when the surviving uid list contains a
+    /// duplicate. A still screen that fits one viewport is what makes those two fire every run.
+    var paged: Bool = true
     @ViewBuilder var content: () -> Content
     @State private var page = 0
 
@@ -47,6 +57,7 @@ struct RuleScreen<Content: View>: View {
             // reported while the label violations at the top always were. Page down on a loop;
             // it loops because the scan starts well after launch.
             .task {
+                guard paged else { return }
                 try? await Task.sleep(nanoseconds: UInt64(RulePaging.initialDelay * 1_000_000_000))
                 while !Task.isCancelled {
                     page = (page + 1) % RulePaging.pages
@@ -106,5 +117,39 @@ private struct OptionalLabel: ViewModifier {
     func body(content: Content) -> some View {
         if let label { content.accessibilityLabel(Text(label)) }
         else { content }
+    }
+}
+
+/// Names the AI task a screen is for, the on-device rules that feed it, and any other task
+/// that is expected to appear anyway — so the expected result can be read off a screenshot
+/// instead of the source.
+///
+/// NOT hidden from VoiceOver. missing-heading has no isAccessible guard — it fires on any
+/// visible static-text leaf carrying text — so `.accessibilityHidden(true)` did not keep these
+/// out of its candidate set. It only made them hidden text that the AI then judged "should be a
+/// heading", producing a junk missing-heading violation at the top of every screen. The title
+/// line is a real heading instead, which is what it visually is; the detail line stays plain
+/// body text, small and clearly subordinate, so it should pass on its own merits.
+struct AiCaption: View {
+    let task: String
+    let rules: String
+    var also: String? = nil
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(task)
+                .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                .foregroundColor(Theme.brandPrimary)
+                .accessibilityAddTraits(.isHeader)
+            Text(rules)
+                .font(.system(size: 10, design: .monospaced))
+                .foregroundColor(Theme.textSecondary)
+            if let also {
+                Text(also)
+                    .font(.system(size: 10, design: .monospaced))
+                    .foregroundColor(Theme.textSecondary)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

@@ -4,6 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="12dp">
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_image_label  ·  imageview-element-content-label"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="Also expected on every screen: reading/visual order + missing/incorrect heading"/>
+
 
     <GridLayout
         android:layout_width="match_parent"

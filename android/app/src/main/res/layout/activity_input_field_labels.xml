@@ -8,6 +8,13 @@
     <LinearLayout style="@style/ScreenRoot"
         android:focusableInTouchMode="true"
         android:descendantFocusability="beforeDescendants">
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_input_field_purpose"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="accessible-input-field-label + input-type-for-input-field · also raises check_accessibility_label (any editable)"/>
+
 
         <!-- ============================================================
              Sub-rule A — "Accessible input field labels"
@@ -247,7 +254,12 @@
                 android:inputType="textEmailAddress"
                 android:autofillHints="emailAddress"/>
 
-            <!-- Numeric amount typed as a person's name. -->
+            <!-- Numeric amount typed as a phone number.
+                 NOTE: this used to be android:inputType="textPersonName", which reads
+                 better as a bug but is undetectable — TYPE_TEXT_VARIATION_PERSON_NAME maps
+                 to category "Text Input", and the rule short-circuits every Text Input to
+                 PASS ("Text Input fields are always valid") before any regex runs. Phone is
+                 an equally real mistake that the rule can actually catch. -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -264,8 +276,8 @@
                 android:layout_marginTop="4dp"
                 android:hint="0.00"
                 android:textColorHint="@color/text_secondary"
-                android:inputType="textPersonName"
-                android:autofillHints="name"/>
+                android:inputType="phone"
+                android:autofillHints="phone"/>
 
             <!-- Website URL typed as a decimal number. -->
             <TextView
@@ -354,6 +366,108 @@
                 android:textColorHint="@color/text_secondary"
                 android:inputType="text"
                 android:autofillHints="creditCardSecurityCode"/>
+        </LinearLayout>
+
+
+        <!-- ============================================================
+             Categories the screen never reached.
+
+             The four groups above only ever produce two verdicts: "Element has no
+             text" (11x, the fields with no labelFor) and three type mismatches. Three
+             of the rule's six categories were never exercised at all, and the
+             PASS-by-regex-match branch — a correctly typed field — had no fixture, so
+             the rule could have been inverted and this screen would not have noticed.
+             ============================================================ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_bg">
+
+            <!-- Password Input, correctly typed. The ONLY PASS-by-regex-match on this
+                 screen: category "Password Input", label "Password" matches its regex. -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/iflPasswordCorrect"
+                android:text="Password"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"/>
+
+            <EditText
+                android:id="@id/iflPasswordCorrect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:hint="Enter your password"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPassword"
+                android:autofillHints="password"/>
+
+            <!-- Password Input on an email-labelled field: masks what the user types into
+                 a field that is not a secret. Category matches nothing in the label. -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:labelFor="@+id/iflEmailAsPassword"
+                android:text="Email address"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"/>
+
+            <EditText
+                android:id="@id/iflEmailAsPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:hint="you@example.com"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPassword"
+                android:autofillHints="emailAddress"/>
+
+            <!-- Date &amp; Time Input on a name-labelled field. -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:labelFor="@+id/iflNameAsDate"
+                android:text="Full name"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"/>
+
+            <EditText
+                android:id="@id/iflNameAsDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:hint="DD / MM / YYYY"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="date"
+                android:autofillHints="birthDateFull"/>
+
+            <!-- Postal Address Input. TYPE_TO_CATEGORY maps this type, but CATEGORY_REGEX
+                 has NO entry for it — so the rule returns NOT_APPLICABLE. That branch had
+                 no fixture, which means nothing would have noticed if it started failing. -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:labelFor="@+id/iflAddressTyped"
+                android:text="Delivery address"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"/>
+
+            <EditText
+                android:id="@id/iflAddressTyped"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:hint="Flat, street, city"
+                android:textColorHint="@color/text_secondary"
+                android:inputType="textPostalAddress"
+                android:autofillHints="postalAddress"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -12,6 +12,7 @@ struct InteractiveLabelView: View {
     @State private var checkGeneric  = false
     @State private var editMissing   = ""
     @State private var editEmail     = ""
+    @State private var editNamed     = ""
 
     private let columns = [GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6)]
 
@@ -27,6 +28,9 @@ struct InteractiveLabelView: View {
 
     var body: some View {
         RuleScreen {
+            AiCaption(task: "AI: check_accessibility_label",
+                      rules: "interactable-element-content-label · missing / generic / wrong names")
+
             // Icon buttons / tappable views.
             LazyVGrid(columns: columns, spacing: 6) {
                 ForEach(Array(iconButtons.enumerated()), id: \.offset) { _, b in
@@ -53,20 +57,26 @@ struct InteractiveLabelView: View {
                 }
             }
 
+            AiCaption(task: "AI: check_accessibility_label",
+                      rules: "switch-element-content-label · iOS has no native checkbox, so both pairs are Toggles")
+
             // Switch-style toggles: missing, then generic label.
-            Toggle("", isOn: $toggleMissing).labelsHidden().padding(.top, 16)
+            Toggle("", isOn: $toggleMissing).labelsHidden().padding(.top, 8)
             Toggle("", isOn: $toggleGeneric).labelsHidden().padding(.top, 8)
                 .accessibilityLabel("switch")
 
             // Checkbox-style toggles: same two failures again.
-            Toggle("", isOn: $checkMissing).labelsHidden().padding(.top, 16)
+            Toggle("", isOn: $checkMissing).labelsHidden().padding(.top, 12)
             Toggle("", isOn: $checkGeneric).labelsHidden().padding(.top, 8)
                 .accessibilityLabel("checkbox")
+
+            AiCaption(task: "AI: check_accessibility_label",
+                      rules: "editable-element-content-label · both fields below FAIL deterministically")
 
             // No placeholder, no accessibility label → missing name.
             TextField("", text: $editMissing)
                 .textFieldStyle(.roundedBorder)
-                .padding(.top, 16)
+                .padding(.top, 8)
 
             // A visible "Email" caption that is NOT programmatically associated with
             // the field below it, so the field still has no accessible name.
@@ -77,6 +87,21 @@ struct InteractiveLabelView: View {
             TextField("", text: $editEmail)
                 .textFieldStyle(.roundedBorder)
                 .keyboardType(.emailAddress)
+
+            // ─────────────────────────────────────────────────────────────────
+            // Everything above has a MISSING label, which is the deterministic
+            // FAIL branch of each rule — the AI is never asked to judge anything,
+            // so the screen could look full of violations while the AI was dead.
+            // That is the RCA-1294 failure mode. The element below carries a
+            // label that is PRESENT but poor, which is the only way this rule
+            // reaches AI review.
+            // ─────────────────────────────────────────────────────────────────
+            AiCaption(task: "AI: check_accessibility_label",
+                      rules: "editable-element-content-label · expects \"Meaningful Label\"")
+
+            TextField("Name", text: $editNamed)
+                .textFieldStyle(.roundedBorder)
+
         }
     }
 }

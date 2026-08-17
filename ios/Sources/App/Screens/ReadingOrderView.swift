@@ -5,16 +5,25 @@ import SwiftUI
 /// VoiceOver focus order is scrambled away from the visual/logical order using
 /// `.accessibilitySortPriority` (higher = visited earlier). Mirrors activity_reading_order.xml,
 /// where Android used android:accessibilityTraversalAfter.
+///
+/// `paged: false`, and the copy is kept short so all twelve elements fit one viewport. This rule
+/// is evaluated against a single snapshot — it intersects the focus caption with elements that
+/// have non-zero bounds, and bails outright if the surviving uid list contains a duplicate. A
+/// screen that scrolls underneath the capture drops elements from that intersection, which is
+/// why the rule did not fire on every run.
 struct ReadingOrderView: View {
     var body: some View {
-        RuleScreen {
+        RuleScreen(paged: false) {
+            AiCaption(task: "AI: check_reading_order  ·  meaningful-reading-order",
+                      rules: "Every screen also raises reading/visual order + missing/incorrect heading")
+
             // Visual: Title → Price → Description → Buy. VoiceOver: Buy → Title → Description → Price.
             Card {
                 orderedLine("Wireless Headphones X9", size: 18, bold: true,
                             color: Theme.textPrimary, priority: 3)
                 orderedLine("₹4,999  (was ₹7,999)", size: 15, bold: true,
                             color: Theme.violationRed, priority: 1, top: 6)
-                orderedLine("Active noise cancelling with 32-hour battery life and adaptive EQ tuned for podcasts and music.",
+                orderedLine("Active noise cancelling, 32-hour battery.",
                             size: 14, bold: false, color: Theme.textSecondary, priority: 2, top: 10)
                 cta("Buy now", priority: 4)
             }
@@ -28,12 +37,12 @@ struct ReadingOrderView: View {
                             color: Theme.textPrimary, priority: 3)
                 orderedLine("By Sneha K. — 2h ago", size: 13, bold: false,
                             color: Theme.textSecondary, priority: 1, top: 6)
-                orderedLine("The discovery, made by the Perseverance rover, suggests subsurface water flow continued long after the planet cooled.",
+                orderedLine("Perseverance data suggests subsurface water flow.",
                             size: 14, bold: false, color: Theme.textPrimary, priority: 2, top: 10)
                 cta("Read more", priority: 4)
             }
             .accessibilityElement(children: .contain)
-            .padding(.top, 22)
+            .padding(.top, 10)
 
             // Visual: Invoice # → Customer → Total → Pay now. VoiceOver: Pay now → Invoice # → Total → Customer.
             Card {
@@ -46,7 +55,7 @@ struct ReadingOrderView: View {
                 cta("Pay now", priority: 4)
             }
             .accessibilityElement(children: .contain)
-            .padding(.top, 22)
+            .padding(.top, 10)
         }
     }
 
@@ -60,13 +69,15 @@ struct ReadingOrderView: View {
             .accessibilitySortPriority(priority)
     }
 
+    /// Rendered as styled Text, not a Button, on purpose. A real Button is a candidate for
+    /// interactable-element-content-label, which would make this screen report
+    /// check_accessibility_label issues on top of its own AI task. It keeps its text and its
+    /// place in the traversal order, which is what this screen actually tests.
     private func cta(_ label: String, priority: Double) -> some View {
-        Button(action: {}) {
-            Text(label).foregroundColor(.white).frame(maxWidth: .infinity)
-                .padding(.vertical, 10)
-                .background(Theme.brandPrimary).cornerRadius(8)
-        }
-        .padding(.top, 14)
-        .accessibilitySortPriority(priority)
+        Text(label).foregroundColor(.white).frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(Theme.brandPrimary).cornerRadius(8)
+            .padding(.top, 14)
+            .accessibilitySortPriority(priority)
     }
 }

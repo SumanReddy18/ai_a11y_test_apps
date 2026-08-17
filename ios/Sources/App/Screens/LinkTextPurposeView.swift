@@ -24,6 +24,9 @@ struct LinkTextPurposeView: View {
 
     var body: some View {
         RuleScreen {
+            AiCaption(task: "AI: check_link_text_purpose  ·  link-text-purpose",
+                      rules: "Every screen also raises reading/visual order + missing/incorrect heading")
+
             // Vague action phrases.
             Card {
                 link("To view our refund policy,", "click here")
@@ -86,13 +89,17 @@ struct LinkTextPurposeView: View {
         }
     }
 
-    /// A link whose only label is the word "link" on an icon — no destination information at all.
+    /// A link whose only label is the word "link" on a glyph — no destination information at all.
+    ///
+    /// Drawn as Text, not an Image. A SwiftUI `Image` carries the `.isImage` trait, and
+    /// `imageview-element-content-label` gates only on `isLikelyImage` + `isAccessible` — it does
+    /// not skip elements carrying the Link trait the way `interactable-element-content-label`
+    /// does. So an icon here would have raised `check_image_label` on the link screen, which is
+    /// the imageviewLabel screen's task.
     private func imageLink(_ context: String, top: CGFloat = 0) -> some View {
         row(context, top: top) {
-            Image(systemName: "arrow.up.forward.square.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 26, height: 26)
+            Text("↗")
+                .font(.system(size: 22, weight: .semibold))
                 .foregroundColor(Theme.brandPrimary)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("link")

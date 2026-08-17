@@ -6,10 +6,12 @@ import SwiftUI
 /// marked WITH the `.isHeader` trait — so the VoiceOver heading rotor lands on noise
 /// instead of real sections. Mirrors activity_incorrect_heading.xml.
 struct IncorrectHeadingView: View {
-    @State private var email = ""
 
     var body: some View {
         RuleScreen {
+            AiCaption(task: "AI: check_incorrect_heading  ·  incorrect-heading",
+                      rules: "missing-heading always fires too — same eligibility, shared ai:mis-head hash")
+
             // Body paragraph as heading.
             Card {
                 heading("Terms of service", size: 18)
@@ -22,7 +24,14 @@ struct IncorrectHeadingView: View {
             Card {
                 Text("Email").foregroundColor(Theme.textPrimary)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                TextField("you@example.com", text: $email).textFieldStyle(.roundedBorder)
+                // Styled Text rather than a TextField — a real editable would add
+                // check_accessibility_label and check_input_field_purpose to this screen.
+                Text("you@example.com")
+                    .foregroundColor(Theme.textSecondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(10)
+                    .background(Theme.card)
+                    .overlay(RoundedRectangle(cornerRadius: 6).stroke(Theme.cardBorder, lineWidth: 1))
                 // Transient error state wrongly marked as a heading.
                 Text("Email is required.")
                     .font(.system(size: 12)).foregroundColor(Theme.violationRed)
@@ -56,13 +65,12 @@ struct IncorrectHeadingView: View {
                 Text("Mumbai → Goa · Sat 9:40 AM · 2 passengers")
                     .font(.system(size: 14)).foregroundColor(Theme.textPrimary)
                     .padding(.top, 8).frame(maxWidth: .infinity, alignment: .leading)
-                // A Button wrongly carrying the header trait as well.
-                Button(action: {}) {
-                    Text("Pay ₹12,450").foregroundColor(.white).frame(maxWidth: .infinity)
-                        .padding(.vertical, 10).background(Theme.brandPrimary).cornerRadius(8)
-                }
-                .padding(.top, 14)
-                .accessibilityAddTraits(.isHeader)
+                // A call-to-action wrongly carrying the header trait. Styled Text rather
+                // than a Button: a real Button would add check_accessibility_label here.
+                Text("Pay ₹12,450").foregroundColor(.white).frame(maxWidth: .infinity)
+                    .padding(.vertical, 10).background(Theme.brandPrimary).cornerRadius(8)
+                    .padding(.top, 14)
+                    .accessibilityAddTraits(.isHeader)
             }
         }
     }

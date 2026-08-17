@@ -4,6 +4,13 @@
     android:layout_height="match_parent">
 
     <LinearLayout style="@style/ScreenRoot">
+        <TextView
+            style="@style/AiTaskCaption"
+            android:text="AI: check_missing_heading  ·  missing-heading"/>
+        <TextView
+            style="@style/AiRuleCaption"
+            android:text="incorrect-heading always fires too — same eligibility, shared ai:mis-head hash"/>
+
 
         <!-- "Account", "Notifications", "Privacy" read as section titles but are styled as plain
              body text AND lack android:accessibilityHeading="true". Neither sighted users nor
