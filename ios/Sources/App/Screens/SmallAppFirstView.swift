@@ -3,9 +3,8 @@ import UIKit
 
 /// allViolationsSmall build, page 1 of 2 — visual & label violations jam-packed:
 ///
-///  * **Images with text** — two of the shared unsplash JPEGs (same pixels Android detects on),
-///    with decent human labels; the violation is the text living in pixels only.
-///  * **ImageView label** — a meaningful image exposed as an image element with NO name.
+///  * **Images with text** — one shared unsplash JPEG whose words live in pixels only.
+///  * **ImageView label** — the same image element carries NO accessible name.
 ///  * **Interactive element label** — an icon Button with no name and a coloured tappable
 ///    shape whose name is empty.
 ///  * **Missing heading** — two 22pt-bold section titles over 13pt body, no `.isHeader`.
@@ -32,18 +31,10 @@ struct SmallAppRootView: View {
 struct SmallAppFirstView: View {
     var body: some View {
         RuleScreen {
-            // Images with text: words exist only in the JPEG pixels, never as text elements.
-            HStack(spacing: 8) {
-                artwork("unsplash_text_01.jpg", label: "Summer sale banner")
-                artwork("unsplash_text_02.jpg", label: "Quarterly results chart")
-            }
-
-            // ImageView label: a real image element, focusable, with no accessible name.
-            Image(systemName: "person.crop.circle.fill")
-                .resizable().scaledToFit()
-                .frame(width: 84, height: 84)
-                .foregroundColor(Theme.textSecondary)
-                .asImageElement(label: nil)
+            // One image, two violations: the page's words exist only in the JPEG pixels,
+            // never as text elements (images with text), and the element has no
+            // accessible name at all (imageview label).
+            artwork("unsplash_text_02.jpg", label: nil)
 
             // Interactive element label: unnamed icon button + empty-named tappable shape.
             HStack(spacing: 14) {
@@ -93,7 +84,7 @@ struct SmallAppFirstView: View {
         }
     }
 
-    private func artwork(_ name: String, label: String) -> some View {
+    private func artwork(_ name: String, label: String?) -> some View {
         guard let image = UIImage(named: name) else {
             fatalError("\(name) is not in the app bundle — check the resources entry in ios/project.yml")
         }
