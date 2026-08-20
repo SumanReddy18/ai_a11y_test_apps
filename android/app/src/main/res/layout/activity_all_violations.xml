@@ -1460,9 +1460,9 @@
 
     <!-- The nav button lives in its own bar BELOW the ScrollView, never over content.
          As a floating bottom|end overlay it sat inside other sections' bounding boxes,
-         so OCR attributed its text to the fixture's images (images-of-text FP on the
-         flames photo) and it interleaved into visual-order sequences on screens that
-         plant no order violation (PAAA-492 report 17eddfde, snapshots 750104/750117/750154). -->
+         so OCR attributed its text to the fixture's images (a false images-of-text
+         finding on the flames photo) and it interleaved into visual-order sequences
+         on screens that plant no order violation. Keep it out of the overlay. -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
