@@ -13,13 +13,9 @@
           title announced last (shuffled ordered list + heading-after-content).
        6. Meaningful visual order — Sign up card with the CTA ABOVE its input fields
           (the judge's one named violation shape).
-     No manual navigation: the activity auto-advances to screen 2 after one full
-     auto-scroll pass (see SmallAppFirstActivity). -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout style="@style/ScreenRoot">
+     Both pages live in ONE activity (see activity_smallapp.xml for why). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ScreenRoot">
 
         <!-- 1+2. One image, two violations: a flat PROMO banner — the only image class
              the images-with-text judge does not exempt (wordmarks -> Logo, typographic
@@ -28,7 +24,7 @@
              all (imageview label). -->
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="104dp"
             android:layout_marginTop="4dp"
             android:scaleType="fitXY"
             android:src="@drawable/banner_offer50"/>
@@ -43,7 +39,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="8dp">
 
             <ImageButton
                 android:layout_width="56dp"
@@ -57,7 +53,7 @@
                  not-important so the parents stay genuinely unlabeled. -->
             <FrameLayout
                 android:layout_width="0dp"
-                android:layout_height="52dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:layout_marginStart="12dp"
                 android:background="#C2410C"
@@ -74,7 +70,7 @@
 
             <FrameLayout
                 android:layout_width="0dp"
-                android:layout_height="52dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:layout_marginStart="12dp"
                 android:background="@color/violation_red"
@@ -96,8 +92,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="10dp"
+            android:padding="12dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/card_bg">
 
             <TextView
@@ -131,7 +127,7 @@
                 android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:paddingTop="14dp"/>
+                android:paddingTop="10dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,8 +159,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="10dp"
+            android:padding="12dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/card_bg">
 
             <TextView
@@ -226,8 +222,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="10dp"
+            android:padding="12dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/card_bg">
 
             <TextView
@@ -262,4 +258,3 @@
         </LinearLayout>
 
     </LinearLayout>
-</ScrollView>

@@ -19,7 +19,7 @@ struct SmallAppSecondView: View {
     @State private var password = ""
 
     var body: some View {
-        RuleScreen {
+        VStack(alignment: .leading, spacing: 8) {
             // Link text purpose: each phrase is its own real link element.
             Card {
                 linkRow("Click here")
@@ -69,7 +69,7 @@ struct SmallAppSecondView: View {
             if let image = UIImage(named: "banner_freedelivery.jpg") {
                 Image(uiImage: image)
                     .resizable().scaledToFill()
-                    .frame(maxWidth: .infinity, minHeight: 110, maxHeight: 110)
+                    .frame(maxWidth: .infinity, minHeight: 92, maxHeight: 92)
                     .clipped()
                     .cornerRadius(8)
                     .asImageElement(label: "Feature artwork")
@@ -94,7 +94,7 @@ struct SmallAppSecondView: View {
         field
             .font(.system(size: 15))
             .padding(.horizontal, 12)
-            .frame(height: 44)
+            .frame(height: 40)
             .background(Theme.card)
             .overlay(RoundedRectangle(cornerRadius: 8).stroke(Theme.cardBorder, lineWidth: 1))
             .cornerRadius(8)

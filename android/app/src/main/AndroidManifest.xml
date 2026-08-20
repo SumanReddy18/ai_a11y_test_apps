@@ -41,9 +41,7 @@
              2 auto-cycling screens. Theme.Main = NoActionBar: the ActionBar title is
              chrome — a standing heading candidate, a responsive-containers candidate,
              and it leaked the stale "Two screens N of 2" labels into scans. -->
-        <activity android:name=".SmallAppFirstActivity" android:exported="true"
-            android:theme="@style/Theme.Main" />
-        <activity android:name=".SmallAppSecondActivity" android:exported="true"
+        <activity android:name=".SmallAppActivity" android:exported="true"
             android:theme="@style/Theme.Main"
             android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>

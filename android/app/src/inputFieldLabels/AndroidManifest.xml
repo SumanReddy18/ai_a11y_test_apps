@@ -23,8 +23,7 @@
         <activity android:name=".IncorrectHeadingActivity" tools:node="remove" />
         <activity android:name=".LinkTextPurposeActivity" tools:node="remove" />
         <activity android:name=".AllViolationsActivity" tools:node="remove" />
-        <activity android:name=".SmallAppFirstActivity" tools:node="remove" />
-        <activity android:name=".SmallAppSecondActivity" tools:node="remove" />
+        <activity android:name=".SmallAppActivity" tools:node="remove" />
     </application>
 
 </manifest>

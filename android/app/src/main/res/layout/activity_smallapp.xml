@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- All-violations-small fixture: BOTH jam-packed pages stacked in ONE activity/window,
+     auto-paged by BaseChildActivity — structurally identical to AllViolationsActivity,
+     the screen where meaningful-reading-order provably fires.
+
+     Why one window is load-bearing: TalkBack's traversal-order cache keys live
+     AccessibilityNodeInfo objects and is only cleared on new-screen detection. The
+     previous two-activity design recreated the window every 60s, so scans were served
+     a stale map, every node missed it, and the MRO focus order collapsed to a single
+     overlay element ("Not an Issue" every time). A single long-lived window keeps the
+     map valid, exactly like the old app. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/smallapp_page1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <include layout="@layout/smallapp_page2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</ScrollView>

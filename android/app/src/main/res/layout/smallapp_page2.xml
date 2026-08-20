@@ -11,18 +11,15 @@
           nearby; spanned end-to-end in the Activity.
        4. Incorrect heading — body prose + vague "Info", both accessibilityHeading=true.
        5. Images with text — a second flat promo banner, mirroring screen 1. -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout style="@style/ScreenRoot">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ScreenRoot">
 
         <!-- 1 + 2. Input field labels & input type. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="12dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/card_bg">
 
@@ -39,8 +36,12 @@
                 android:paddingEnd="12dp"
                 android:background="@drawable/card_bg"/>
 
-            <!-- Labelled correctly (caption + labelFor + hint), but the TYPE lies:
-                 an email field declared as phone, autofill agreeing with the lie. -->
+            <!-- Labelled correctly, but the TYPE lies. The judge receives the RAW
+                 inputType int and has been seen mis-decoding ambiguous values in the
+                 label's favour (it read 3/phone as "email"), so both mismatches below
+                 use famously-decodable constants:
+                 129 = textPassword on an EMAIL field (renders dots over an email hint),
+                 1   = plain text on a PASSWORD field (typed password stays visible). -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,17 +54,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="you@example.com"
-                android:inputType="phone"
-                android:autofillHints="phone"/>
+                android:inputType="textPassword"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:textColor="@color/text_primary"
+                android:paddingTop="14dp"
+                android:labelFor="@+id/tsPasswordPlain"/>
+            <EditText
+                android:id="@+id/tsPasswordPlain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter password"
+                android:inputType="text"/>
         </LinearLayout>
 
         <!-- 3. Link text purpose: each phrase is its own TextView, whole-text-spanned in
-             SmallAppSecondActivity, so the phrase IS the accessible name. -->
+             SmallAppActivity, so the phrase IS the accessible name. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="12dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/card_bg">
 
@@ -100,7 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="12dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/card_bg">
 
@@ -128,11 +142,10 @@
              images-with-text fires here. -->
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="104dp"
             android:layout_marginTop="10dp"
             android:scaleType="fitXY"
             android:src="@drawable/banner_freedelivery"
             android:contentDescription="Feature artwork"/>
 
     </LinearLayout>
-</ScrollView>

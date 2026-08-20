@@ -17,18 +17,15 @@ import UIKit
 ///
 /// No manual navigation: `SmallAppRootView` swaps to page 2 after one full auto-scroll
 /// pass and the pair cycles forever — the scan just watches.
-struct SmallAppRootView: View {
-    @State private var onSecondPage = false
-
+/// Single long-lived page holding BOTH halves, auto-paged by RuleScreen — the
+/// AllViolationsView model. (The previous timer-swapped two-view design recreated the
+/// element tree every 60s, which on Android starved the focus-order capture; one stable
+/// tree is the shape that provably works.)
+struct SmallAppView: View {
     var body: some View {
-        Group {
-            if onSecondPage { SmallAppSecondView() } else { SmallAppFirstView() }
-        }
-        .task {
-            while !Task.isCancelled {
-                try? await Task.sleep(nanoseconds: UInt64(RulePaging.fullPassSeconds * 1_000_000_000))
-                onSecondPage.toggle()
-            }
+        RuleScreen {
+            SmallAppFirstView()
+            SmallAppSecondView()
         }
     }
 }
@@ -38,7 +35,7 @@ struct SmallAppFirstView: View {
     @State private var email = ""
 
     var body: some View {
-        RuleScreen {
+        VStack(alignment: .leading, spacing: 8) {
             // One image, two violations: a flat PROMO banner (the judge's own named
             // Informative example — wordmarks/typographic art/document scans are all
             // exempt buckets), words in pixels only, and no accessible name at all.
@@ -49,7 +46,7 @@ struct SmallAppFirstView: View {
                 Button(action: {}) {
                     Image(systemName: "square.and.arrow.up")
                         .resizable().scaledToFit().padding(16)
-                        .frame(width: 64, height: 64)
+                        .frame(width: 56, height: 56)
                         .foregroundColor(Theme.textPrimary)
                         .background(Theme.card)
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(Theme.cardBorder, lineWidth: 1))
@@ -62,7 +59,7 @@ struct SmallAppFirstView: View {
                 Button(action: {}) {
                     Image(systemName: "trash")
                         .resizable().scaledToFit().padding(14)
-                        .frame(width: 64, height: 48)
+                        .frame(width: 56, height: 44)
                         .foregroundColor(.white)
                         .background(Theme.violationRed)
                         .cornerRadius(8)
@@ -167,7 +164,7 @@ struct SmallAppFirstView: View {
         }
         return Image(uiImage: image)
             .resizable().scaledToFill()
-            .frame(maxWidth: .infinity, minHeight: 110, maxHeight: 110)
+            .frame(maxWidth: .infinity, minHeight: 92, maxHeight: 92)
             .clipped()
             .cornerRadius(8)
             .asImageElement(label: label)
