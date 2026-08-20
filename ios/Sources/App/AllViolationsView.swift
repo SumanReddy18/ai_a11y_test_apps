@@ -38,15 +38,30 @@ struct AllViolationsView: View {
             rules[index].screen
                 .id(index)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            // Manual advance lives in its own bar BELOW the content, mirroring the Android
+            // port's bottom bar. It was a navigationBarTrailing toolbar item, but that put a
+            // labelled harness control into the accessibility tree at the top-right of every
+            // rule screen, and scans judged that chrome against the fixture content's order
+            // (spurious visual-order findings on screens that plant no order violation).
+            // Hidden from the tree like the caption above: harness chrome, not fixture content.
+            HStack {
+                Spacer()
+                Button("Next section") { advance() }
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(.white)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 20)
+                    .background(Theme.brandPrimary)
+                    .cornerRadius(8)
+            }
+            .padding(10)
+            .background(Theme.bg)
+            .accessibilityHidden(true)
         }
         .background(Theme.bg)
         .navigationTitle("All violations")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Next") { advance() }
-            }
-        }
         // Hands-free auto-advance loop; cancelled automatically when the view goes away.
         .task {
             try? await Task.sleep(nanoseconds: UInt64(Self.initialDelay * 1_000_000_000))
