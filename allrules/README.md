@@ -23,10 +23,17 @@ own Gradle project, own XcodeGen project, own bundle ids (`com.browserstack.a11y
 
 ## Page map
 
-The app cycles Page 1 → 2 → 3 → 1 forever (~30 s per page); each Android page also pages
+The app cycles pages forever (~30 s per page); each Android page also pages
 its own scroll content down so everything spends time fully inside the viewport (the scan
 captures the viewport and never scrolls). iOS pages are non-scrolling single viewports —
 an iOS `ScrollView` ancestor would exempt every element from `responsive-containers`.
+
+**Android has 3 pages (1 → 2 → 3); iOS has 2** — pages 1 and 2 below are merged into one
+dense iOS screen (two sparse screens wasted viewport). On iOS every row must fit the
+390pt screen width: the on-device rule processor SKIPS any element not fully inside the
+screen bounds, so an overflowing row silently kills its fixtures. The iOS duplicate-label
+and special-character fixtures each ship in two element shapes (UIButton pair + trait-button UIView pair; SwiftUI "🔔" + symbol-only UILabel) so detection doesn't hinge on one
+capture shape.
 
 ### Page 1 — labels & controls
 

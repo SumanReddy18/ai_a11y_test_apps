@@ -38,6 +38,31 @@ struct KitButton: UIViewRepresentable {
     }
 }
 
+/// Plain UIView carrying the `.button` trait and a label — the exact element shape
+/// the duplicate-label rule demonstrably processed in earlier scans (same as the
+/// keyboard-focus fixture's NonRespondingButton, minus the responds-to-interaction
+/// override). A pair of these with one label is a second, shape-diverse
+/// duplicate-element-content-label fixture beside the UIButton pair.
+struct KitTraitButton: UIViewRepresentable {
+    var label: String
+
+    func makeUIView(context: Context) -> UIView {
+        let v = UIView()
+        v.backgroundColor = .systemIndigo
+        v.isAccessibilityElement = true
+        v.accessibilityLabel = label
+        v.accessibilityTraits = .button
+        return v
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {}
+
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIView, context: Context) -> CGSize? {
+        guard let w = proposal.width, let h = proposal.height else { return nil }
+        return CGSize(width: w, height: h)
+    }
+}
+
 /// Accessible UIImageView with NO label — the deterministic
 /// imageview-element-content-label FAIL (a present label only goes to AI review).
 struct KitImageView: UIViewRepresentable {

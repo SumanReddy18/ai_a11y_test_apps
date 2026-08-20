@@ -1,11 +1,12 @@
 import SwiftUI
 import UIKit
 
-/// All-rules fixture: three jam-packed pages that together violate every active
-/// cross-platform rule in the App Accessibility rule engine (35 of 40; the other
-/// five are Android-only). Pages auto-advance on a loop and each page fits one
-/// viewport, so no violating element is ever below the fold — the scan captures
-/// the visible viewport only and skips anything partially off-screen.
+/// All-rules fixture: two jam-packed pages that together violate every active
+/// cross-platform rule in the App Accessibility rule engine (the rest are
+/// Android-only or iOS engine dead-ends — see allrules/README.md). Pages
+/// auto-advance on a loop and each page fits one viewport, so no violating
+/// element is ever below the fold — the scan captures the visible viewport only
+/// and the rule processor skips anything even partially off-screen.
 @main
 struct A11yAllRulesApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
@@ -42,14 +43,13 @@ struct RootView: View {
     var body: some View {
         Group {
             switch page {
-            case 0: Page1View()
-            case 1: Page2View()
-            default: Page3View()
+            case 0: Page1View()   // former pages 1+2 merged — one dense viewport
+            default: Page3View()  // forms / order / focus (portrait-locked)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(Color.white.ignoresSafeArea())
-        .onReceive(timer) { _ in page = (page + 1) % 3 }
+        .onReceive(timer) { _ in page = (page + 1) % 2 }
     }
 }
 
