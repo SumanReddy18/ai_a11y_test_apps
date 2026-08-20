@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ScrollView
         android:id="@+id/allScroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp"
-        android:paddingBottom="96dp">
+        android:paddingBottom="24dp">
 
         <!-- ============== 1. Images with text ============== -->
         <!-- sec1…sec9 are the auto-scroll anchors (AllViolationsActivity). They sit on layout
@@ -1456,16 +1458,27 @@
     </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/btnNextViolation"
-        android:layout_width="wrap_content"
+    <!-- The nav button lives in its own bar BELOW the ScrollView, never over content.
+         As a floating bottom|end overlay it sat inside other sections' bounding boxes,
+         so OCR attributed its text to the fixture's images (images-of-text FP on the
+         flames photo) and it interleaved into visual-order sequences on screens that
+         plant no order violation (PAAA-492 report 17eddfde, snapshots 750104/750117/750154). -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
-        android:paddingHorizontal="20dp"
-        android:text="Next ↓"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:backgroundTint="@color/brand_primary"
-        android:elevation="6dp"/>
-</FrameLayout>
+        android:orientation="horizontal"
+        android:gravity="end|center_vertical"
+        android:background="@color/card_border"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/btnNextViolation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:text="Next section"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:backgroundTint="@color/brand_primary"/>
+    </LinearLayout>
+</LinearLayout>
