@@ -10,11 +10,12 @@ struct Page2View: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 28) {
                 // text-color-contrast: #999999 on white at 14pt ≈ 2.85:1 (< 4.5:1).
-                // The explicit background is required — nil background is skipped.
-                Text("Low contrast body copy")
-                    .font(.system(size: 14))
-                    .foregroundColor(Color(white: 0.6))
-                    .background(Color.white)
+                // UIKit-backed: the capture extracts textColor/backgroundColor swatches
+                // from real UILabels only — SwiftUI Text gets none and the rule abstains.
+                // lines: 0 keeps the may-clip flag off so this doesn't also fire truncation.
+                KitLabel(text: "Low contrast body copy", size: 14,
+                         color: UIColor(white: 0.6, alpha: 1), lines: 0)
+                    .frame(width: 190, height: 20)
 
                 // non-text-contrast: light-grey glyph on white ≈ 2.0:1 (< 3.0:1).
                 Image(systemName: "chevron.right")
@@ -30,9 +31,10 @@ struct Page2View: View {
 
             HStack(spacing: 44) {
                 // text-truncation: fixed 140pt frame clips the line at large type sizes.
-                Text("Order confirmation details for your recent purchase")
-                    .font(.system(size: 17))
-                    .lineLimit(1)
+                // UIKit-backed: the may-clip flag is computed from UILabel.numberOfLines —
+                // SwiftUI Text never gets textProperties, so the rule abstains on it.
+                KitLabel(text: "Order confirmation details for your recent purchase",
+                         size: 17, lines: 1)
                     .frame(width: 140, height: 20)
 
                 // touch-target-size: 30pt < 44pt on both axes; isolated so the
@@ -64,8 +66,12 @@ struct Page2View: View {
                 }
 
                 // overlapping-interactive-elements: two buttons, byte-identical frames.
-                // The frame lives INSIDE the button label so the reported element
-                // bounds are exactly 200x48 for both.
+                // KNOWN ENGINE DEAD-END on iOS: the rule filters on hittable(), and
+                // hittability is a hitTest at the element's centre — of two views sharing
+                // a frame, at most ONE can own the shared centre pixel, so a same-bounds
+                // pair never survives the filter (and only the first UIWindow is
+                // serialized, ruling out the two-window trick). Kept for the day the
+                // engine drops or softens the hittable gate.
                 ZStack {
                     Button(action: {}) {
                         Text("Buy now").frame(width: 200, height: 48)
@@ -78,15 +84,9 @@ struct Page2View: View {
             }
 
             // two-dimensional-scroll: one scroll container scrollable on both axes.
-            // This embedded ScrollView is the fixture itself — nothing else sits in it.
-            ScrollView([.horizontal, .vertical]) {
-                Color.gray.frame(width: 2000, height: 3000)
-            }
-            .frame(width: 300, height: 140)
-            .accessibilityElement(children: .contain)
-            // SwiftUI has no .isAdjustable trait; an adjustable action adds the
-            // "adjustable" trait the iOS two-dimensional-scroll gate looks for.
-            .accessibilityAdjustableAction { _ in }
+            // UIKit-backed: the rule matches type == "UIScrollView" literally, and
+            // SwiftUI's ScrollView is backed by a different class name.
+            KitTwoAxisScroll().frame(width: 300, height: 140)
 
             // missing-heading: heading-styled text (title2 bold over footnote body)
             // with NO .isHeader trait anywhere on this page's section titles.
