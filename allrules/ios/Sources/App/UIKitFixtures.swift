@@ -28,6 +28,14 @@ struct KitButton: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIButton, context: Context) {}
+
+    // Clamp to the SwiftUI-proposed size: without this, the view's
+    // intrinsicContentSize (full-res image / long text line) wins over .frame()
+    // and overflows the page — see the v1.0.4 screenshot bug.
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIButton, context: Context) -> CGSize? {
+        guard let w = proposal.width, let h = proposal.height else { return nil }
+        return CGSize(width: w, height: h)
+    }
 }
 
 /// Accessible UIImageView with NO label — the deterministic
@@ -44,6 +52,14 @@ struct KitImageView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIImageView, context: Context) {}
+
+    // Clamp to the SwiftUI-proposed size: without this, the view's
+    // intrinsicContentSize (full-res image / long text line) wins over .frame()
+    // and overflows the page — see the v1.0.4 screenshot bug.
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIImageView, context: Context) -> CGSize? {
+        guard let w = proposal.width, let h = proposal.height else { return nil }
+        return CGSize(width: w, height: h)
+    }
 }
 
 /// UILabel wrapper — the capture pass reads textColor / backgroundColor / the
@@ -68,6 +84,14 @@ struct KitLabel: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UILabel, context: Context) {}
+
+    // Clamp to the SwiftUI-proposed size: without this, the view's
+    // intrinsicContentSize (full-res image / long text line) wins over .frame()
+    // and overflows the page — see the v1.0.4 screenshot bug.
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView: UILabel, context: Context) -> CGSize? {
+        guard let w = proposal.width, let h = proposal.height else { return nil }
+        return CGSize(width: w, height: h)
+    }
 }
 
 /// Real UIScrollView scrollable on both axes — the two-dimensional-scroll rule matches
@@ -84,4 +108,12 @@ struct KitTwoAxisScroll: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIScrollView, context: Context) {}
+
+    // Clamp to the SwiftUI-proposed size: without this, the view's
+    // intrinsicContentSize (full-res image / long text line) wins over .frame()
+    // and overflows the page — see the v1.0.4 screenshot bug.
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIScrollView, context: Context) -> CGSize? {
+        guard let w = proposal.width, let h = proposal.height else { return nil }
+        return CGSize(width: w, height: h)
+    }
 }
